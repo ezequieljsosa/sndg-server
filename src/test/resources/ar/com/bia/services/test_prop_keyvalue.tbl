@@ -1,0 +1,10 @@
+#diarrea	si tiene que ir al toalete seguido	has
+#mana		variable
+#futuro	puede ver el futuro	choises	a veces;siempre
+gene	_type	description	property	value	url	source
+Rv1547	test2	produce diarrea	diarrea	True	www.google.com	mi imaginacion
+Rv1547	test2	predice el futuro	futuro	a veces	www.google.com	mi imaginacion
+Rv1547	test3	magic points	mana	68	www.google.com	mi imaginacion
+Rv2850c	test2	produce diarrea	diarrea	True	www.google.com	mi imaginacion
+Rv2850c	test2	predice el futuro	futuro	siempre		mi imaginacion
+Rv2850c	test3	magic points	mana	44	www.google.com	mi imaginacion

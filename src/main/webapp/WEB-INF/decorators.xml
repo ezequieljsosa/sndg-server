@@ -1,0 +1,13 @@
+<decorators defaultdir="/WEB-INF/views/">
+	<excludes>
+		<pattern>/login.jsp</pattern>
+				<pattern>/login*</pattern>
+		<pattern>/public/*</pattern>
+		<pattern>/krona/*</pattern>
+		
+	</excludes>
+	<decorator name="default" page="MasterPage.jsp">
+
+		<pattern>*</pattern>
+	</decorator>
+</decorators>

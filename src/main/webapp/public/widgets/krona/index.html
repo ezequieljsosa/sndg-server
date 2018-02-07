@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="shortcut icon" href="img/favicon.ico" />
+
+<script src="krona-2.0.js"></script>
+<script type="text/javascript" src="../../public/jslibs/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+
+
+//<![CDATA[
+           
+</script>
+<script type="text/javascript">
+	
+	$(document).ready(
+			function() {
+				
+				(function($) {
+					$.QueryString = (function(a) {
+						if (a == "")
+							return {};
+						var b = {};
+						for (var i = 0; i < a.length; ++i) {
+							var p = a[i].split('=');
+							if (p.length != 2)
+								continue;
+							b[p[0]] = decodeURIComponent(p[1].replace(/\+/g,
+									" "));
+						}
+						return b;
+					})(window.location.search.substr(1).split('&'))
+				})(jQuery);
+				
+				$.ajax({
+					url : "/xomeq/krona/" + $.QueryString["genome"]
+							+ "?term=" + $.QueryString["term"] + "&ontology="	+ $.QueryString["ontology"], dataType : 'text',
+					success : function(xml) {
+						$("#jojo").html(xml)						
+						load()			
+						
+						$(window.parent.document.getElementById("krona-box")).removeClass("loading-img2");
+					},
+					error : function(jqxhr, textStatus, error) {
+						var err = textStatus + ", " + error;
+						//console.log("Request Failed: " + err);
+					}
+				});
+
+			}) //Document ready end
+</script>
+
+<script type="text/javascript">
+		// ]]>
+	</script>
+
+</head>
+<body>
+	<img id="hiddenImage" src="img/hidden.png" style="display: none" />
+	<img id="loadingImage" src="img/loading.gif" style="display: none" />
+	<noscript>Javascript must be enabled to view this page.
+	</noscript>
+	<div id="jojo" style="display: none;"></div>
+</body>
+</html>

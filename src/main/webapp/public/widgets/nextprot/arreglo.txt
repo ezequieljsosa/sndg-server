@@ -1,0 +1,4 @@
+pepe = pepe.replace("$=","nxloco=")
+
+In [4]: pepe = pepe.replace("$.","nxloco.")
+

@@ -1,0 +1,38 @@
+.visualizationHeader {
+background-color: #F6F6F6;
+color: #1C94C4;
+font-family: Arial;
+font-size: 12px;
+height: 14px;
+font-weight: bold;
+padding: 4px 4px 4px 6px;
+border-bottom: 1px solid #CCCCCC;
+
+}
+
+.pocketHeader{
+background-color: #F6F6F6;
+color: #1C94C4;
+font-family: Arial;
+font-size: 12px;
+border-bottom: 1px solid #CCCCCC;
+}
+
+.pocketHeaderth {
+	 	padding: 2px 4px 2px 4px;
+	 	border: 1px solid #CCCCCC;
+}
+
+.panelVisualization {
+vertical-align: top;
+border: 1px solid #CCCCCC;
+}
+
+.controlPanelVisualization {
+float: left;
+margin-top: 5px;
+margin-right: 5px;
+margin-left: 5px;
+/* width: 325px; */
+}
+

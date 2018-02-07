@@ -1,0 +1,6 @@
+#element	elemento de avatar	choises	fire;water
+#power	fuerza con la espada	variable
+gene	element	power	resist cold
+Rv1547	fire	3	yes
+Rv2850c	water	2	no
+Rv2748c	fire	1	no

@@ -1,0 +1,6 @@
+#element	elemento de avatar	choises	fire;water
+#power	fuerza con la espada	variable
+gene	_type	element	power	description
+Rv1547	test	fire	3	burn his enemies
+Rv2850c	test	water	2	drown monsters
+Rv2748c	test	fire	1	burn his enemies
