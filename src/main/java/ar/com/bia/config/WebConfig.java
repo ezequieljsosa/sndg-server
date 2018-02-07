@@ -2,10 +2,12 @@ package ar.com.bia.config;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -26,11 +28,15 @@ import ar.com.bia.DataTablesUtils;
 @ComponentScan(basePackages = { "ar.com.bia.controllers",
 		 "ar.com.bia.config","ar.com.bia.backend.dao.impl",
 		"ar.com.bia.controllers.services" })
+@PropertySource("classpath:xomeq.properties")
 @EnableWebMvc
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	private static final String VIEW_EXTENTION_JSP = ".jsp";
 	private static final String VIEW_DIR = "/WEB-INF/views/";
+
+    @Value("${lang}")
+    private String lang;
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -105,7 +111,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public LocaleResolver localeResolver() {
 		CookieLocaleResolver resolver = new CookieLocaleResolver();
-		resolver.setDefaultLocale(new Locale("es"));
+		resolver.setDefaultLocale(new Locale(this.lang ));
 		resolver.setCookieName("myLocaleCookie");
 		resolver.setCookieMaxAge(4800);
 		return resolver;
