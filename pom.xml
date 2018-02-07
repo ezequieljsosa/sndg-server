@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ar.com.bia</groupId>
-	<artifactId>sndg_patho</artifactId>
+	<artifactId>sndg-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sndg_patho</name>
+	<name>sndg-server</name>
 
 	<packaging>war</packaging>
 
@@ -18,19 +18,23 @@
 		<servletapi.version>3.1.0</servletapi.version>
 
 		<!-- Default Dist config variables -->
+		<finalname>sndg</finalname>
+		<basepath>sndg</basepath>
+		<default.lang>es</default.lang> <!-- en/es -->
+
 		<mongo.host>localhost</mongo.host>
-		<mongo.database>saureus</mongo.database>
+		<mongo.database>sndg</mongo.database>
 		<mongo.port>27017</mongo.port>
 
 		<!-- Default Test config variables -->
 		<test.mongo.host>localhost</test.mongo.host>
-		<test.mongo.database>saureus</test.mongo.database>
+		<test.mongo.database>test</test.mongo.database>
 		<test.mongo.port>27017</test.mongo.port>
 
 	</properties>
 
 	<build>
-		<finalName>sndg</finalName>
+		<finalName>${finalname}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
