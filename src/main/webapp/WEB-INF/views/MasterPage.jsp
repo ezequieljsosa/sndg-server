@@ -10,18 +10,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-89927538-3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-89927538-3');
-</script>
-
-
-
 		<c:set var="reqUrl">${pageContext.request.requestURL}</c:set>
 	<c:set var="baseURL" value="${fn:replace(reqUrl, pageContext.request.requestURI,pageContext.request.contextPath)}" />
 
@@ -33,7 +21,7 @@
 <meta http-equiv="Expires" content="0" />
 
 
-<title><decorator:title default="SNDG" /></title>
+<title><decorator:title default="XOMEQ" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 <meta
@@ -79,13 +67,13 @@ div.dataTables_processing {
 
 <!-- Google Analytics -->
 <script>
-/* (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-89927538-2', 'auto');
-ga('send', 'pageview'); */
+ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
@@ -197,7 +185,7 @@ ga('send', 'pageview'); */
 											"<tr><td>" + link + "</td><td>"
 													+ value.type + "</td><td> "
 													+ value.description);
-									
+									//+ "</td><td>" + value.timestamp+ "</td></tr>"
 								});
 			}
 			if (user.menues != null) {
@@ -206,7 +194,7 @@ ga('send', 'pageview'); */
 								user.menues,
 								function(index, menu) {
 
-									
+									//if( ! $("#" + menu.parent)){
 									$("#" + menu.parent)
 											.addClass("treeview")
 											.append(
@@ -216,7 +204,7 @@ ga('send', 'pageview'); */
 											.append(
 													' <i class="fa fa-angle-left pull-right"></i>');
 
-									
+									//}
 									$("#" + menu.parent + " ul")
 											.append(
 													'<li id="' + menu.selector + '"><a href="' + menu.link 
@@ -254,21 +242,24 @@ ga('send', 'pageview'); */
 	</script>
 
 	<header class="header">
-
+		<%-- <a href="${baseURL}" class="logo"> <!-- Add the class icon to your logo image or logo icon to add the margining -->
+			
+			Home
+		</a> --%>
+		<!-- Header Navbar: style can be found in header.less -->
 		<nav class="navbar navbar-static-top" role="navigation">
 
 			<div class="navbar-left">
 				<ul class="nav navbar-nav">
 					
-<li class="active"><a href="${baseURL}/"><img height="25px" src="${baseURL}/public/bia/images/favicon.png" />
+<li class="active"><a href="${baseURL}/"><img height="25px" src="${baseURL}/public/html/Logo PathogenTARGET.jpg" />
 					</a></li>
 			
 
-					<li class="active"><a href="${baseURL}/"> <i
-							class="fa fa-align-left"></i> <span> Inicio </span>
+					<li class="active"><a href="${baseURL}/genome/"> <i
+							class="fa fa-align-left"></i> <span> <spring:message
+									code="master.genomes" /></span>
 					</a></li>
-					
-					
 					
 
 
@@ -291,33 +282,38 @@ ga('send', 'pageview'); */
 
 						</ul></li>
 					
-					<li style="display: None"><a href="${baseURL}/user/methodology"> <i
+					<li><a href="${baseURL}/user/methodology"> <i
 							class="fa fa-list-ol"></i> <span>Methodology</span>
 					</a></li>
 					
-					<li style="display: None"><a href="${baseURL}/user/user_guide"> <i
+					<li><a href="${baseURL}/user/user_guide"> <i
 							class="fa fa-question-circle"></i> <span>User Guide</span>
 					</a></li>
 					
-					<li style="display: None"><a href="${baseURL}/user/tutorial"> <i
+					<li><a href="${baseURL}/user/tutorial"> <i
 							class="fa fa-file-text"></i> <span>Tutorial</span>
 					</a></li>
 					
-					<li><a href="${baseURL}/tool/blast"> <i
-							class="fa  fa-search"></i> <span>Blast</span>
-					</a></li>
-					
-					
 					<li><a href="${baseURL}/user/about"> <i
-							class="fa  fa-info-circle"></i> <span>Informaci&#243;n</span>
+							class="fa  fa-info-circle"></i> <span>About</span>
 					</a></li>
 
 				</ul>
 
 			</div>
-			<div style="display:None;" class="navbar-right">
+			<div class="navbar-right">
 				<ul class="nav navbar-nav">
 
+					<!-- Notifications: style can be found in dropdown.less
+							<li class="dropdown notifications-menu"><a href="#"
+								class="dropdown-toggle" data-toggle="dropdown"> <i
+									class="fa fa-warning"></i> <span class="label label-warning">0</span>
+							</a>
+								<ul class="dropdown-menu">
+
+								</ul></li>
+ 						-->
+					<!-- User Account: style can be found in dropdown.less -->
 					<li class="dropdown user user-menu"><a href="#"
 						class="dropdown-toggle" data-toggle="dropdown"> <i
 							class="glyphicon glyphicon-user"></i> <span> <span
@@ -341,8 +337,11 @@ ga('send', 'pageview'); */
 								</p>
 							</li>
 
+							<!-- Menu Footer-->
 							<li class="user-footer">
-				
+								<!-- <div class="pull-left">
+									<a href="#" class="btn btn-default btn-flat">Profile</a>
+								</div> -->
 								<div class="pull-right">
 									<form id="formlogout" method="POST"
 										enctype="application/x-www-form-urlencoded"

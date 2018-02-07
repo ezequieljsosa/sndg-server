@@ -15,8 +15,8 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="header_title" content="Buscar" />
-
+<meta name="header_title" content="Search" />
+<meta name="header_title_desc" content="Gene Products" />
 
 
 <style type="text/css">
@@ -416,10 +416,10 @@ tr.selected:hover {
 			var keywordFilter = new $.FreeTextFilter($("#search_txt"),
 					$.filterTable);
 			$.search_table.addFilter(keywordFilter);
-			/*$.search_table.addFilter(new $.DruggabilityFilter(
+			$.search_table.addFilter(new $.DruggabilityFilter(
 					$('#select_struct'), $.filterTable));
 			$.search_table.addFilter(new $.PathwaysFilter(
-					$("#pathways_autocomplete"), $.filterTable));*/
+					$("#pathways_autocomplete"), $.filterTable));
 			var gene_filter = new $.GeneFilter($('#gene_filter'), $.filterTable)
 			$.search_table.addFilter(gene_filter);
 			$.search_table
@@ -556,11 +556,11 @@ tr.selected:hover {
 
 			<div  id="filterBox" class="box box-primary">
 				<div class="box-header">
-					<h3 class="box-title">Filtro</h3>
+					<h3 class="box-title">Filter</h3>
 
 				</div>
 				<div class="box-body">
-					
+					<p>Removes the proteins that do not fulfill ALL the conditions</p>
 					<a data-id="filter_keyword" data-target="#searchDialog"
 						class="btn btn-app open-modal"> <i class="fa fa-plus-circle">&#160;</i>Keyword
 					</a> <a data-id="filter_activity" class="btn btn-app open-modal"> <i
@@ -569,13 +569,32 @@ tr.selected:hover {
 						class="fa  fa-gears">&#160;</i>Biological Process
 					</a> <a data-id="filter_localization" class="btn btn-app open-modal">
 						<i class="fa  fa-circle-o">&#160;</i>Localization
-					</a> 
-
-<a id="structureFilterButton" data-id="filter_structure" class="btn btn-app open-modal">
+					</a> <a data-id="filter_pathways" class="btn btn-app open-modal"> <i
+						class="fa fa-random">&#160;</i>Pathways
+					</a> <a id="structureFilterButton" data-id="filter_structure" class="btn btn-app open-modal">
 						<i class="fa fa-sitemap">&#160;</i>Structure
+					</a> <a data-id="filter_pocket" class="btn btn-app open-modal"> <i
+						class="fa  fa-puzzle-piece">&#160;</i>Pocket
 					</a> 
 					
-					<a class="btn btn-app open-modal" data-id="filter_metadata" id="filter_metadata"><i class="fa fa-tags">&#160;</i>Metadata
+					<a  data-id="filter_variant-db" class="btn btn-app open-modal"> <i
+						class="fa fa-barcode">&#160;</i>DB Variants
+					</a> 
+					
+					<a  data-id="filter_variant-strain" class="btn btn-app open-modal"> <i
+						class="fa fa-barcode">&#160;</i>Strain Variants
+					</a> 
+					
+					<a id="filter_metadata" data-id="filter_metadata" class="btn btn-app open-modal"> <i
+						class="fa fa-tags">&#160;</i>Metadata
+					</a>
+					<!-- 	<a data-id="filter_uploaded" 
+						class="btn btn-app open-modal"> <i class="fa fa-book">&#160;</i>Uploaded
+						Properties
+					</a> -->
+					<a class="btn btn-app open-modal"
+						href="${baseURL}/genome/${organism}?isUpload=true"> <i
+						class="fa fa-plus-circle">&#160;</i>Add new Properties
 					</a>
 
 
@@ -588,7 +607,10 @@ tr.selected:hover {
 								<td width="100px">Operation</td>
 								<td width="100px">Value</td>
 								<td width="100px">
-									
+									<button id="duplicateToScoreBtn"
+										style="width: 100px; word-wrap: break-word;" class="btn">
+										Duplicate <br /> in Score
+									</button>
 								</td>
 
 							</tr>
@@ -598,7 +620,67 @@ tr.selected:hover {
 				</div>
 			</div>
 		</section>
-		
+		<section style="min-width: 600px" class="col-xs-6">
+
+			<div id="scoreBox" class="box box-primary">
+
+				<div class="box-header">
+					<h3 class="box-title">Score</h3>
+				</div>
+				<div class="box-body">
+					<p>Sorts all / the filtered proteins by calculating a numeric
+						value o score. Score formula is a weighted linear sum of the
+						protein properties.</p>
+					<a id="activityScoreButton" data-id="score_activity" class="btn btn-app open-modal"> <i
+						class="fa  fa-cog">&#160;</i>Activity
+					</a> <a data-id="score_process" class="btn btn-app open-modal"> <i
+						class="fa  fa-gears">&#160;</i>Biological Process
+					</a> <a data-id="score_localization" class="btn btn-app open-modal">
+						<i class="fa  fa-circle-o">&#160;</i>Localization
+					</a> <a data-id="score_pathways" class="btn btn-app open-modal"> <i
+						class="fa fa-random">&#160;</i>Pathways
+					</a> <a data-id="score_structure" id="structureScoreButton" class="btn btn-app open-modal"> <i
+						class="fa fa-sitemap">&#160;</i>Structure
+					</a> <a data-id="score_pocket" class="btn btn-app open-modal"> <i
+						class="fa  fa-puzzle-piece">&#160;</i>Pocket
+					</a> 
+					<a style="display:none"  data-id="score_variant" class="btn btn-app open-modal"> <i
+						class="fa fa-barcode">&#160;</i>Variants
+					</a> 
+					
+					<a data-id="score_metadata" class="btn btn-app open-modal"> <i
+						class="fa fa-tags">&#160;</i>Metadata
+					</a>
+					<!-- 	 <a data-id="score_uploaded" 
+						class="btn btn-app open-modal"> <i class="fa fa-book">&#160;</i>Uploaded
+						Properties
+					</a> -->
+					<a class="btn btn-app open-modal"
+						href="${baseURL}/genome/${organism}?isUpload=true"> <i
+						class="fa fa-plus-circle">&#160;</i>Add new Properties
+					</a>
+
+					<table id="search_params_table" class="table">
+						<thead>
+							<tr>
+								<td width="10px"></td>
+								<td>Name</td>
+								<td>Description</td>
+								<td>Coefficient</td>
+								<td></td>
+								<td>Norm.</td>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+
+					<h3 style="display: none;" id="score_div_h3">
+						<div id="score_div"></div>
+					</h3>
+
+				</div>
+			</div>
+		</section>
 	</div>
 
 
@@ -662,6 +744,14 @@ tr.selected:hover {
 		<section class="col-lg-12 ">
 			<div class="box">
 				<div class="box-body">
+<span style="display:none" id="sizeWarning"> 
+									<large class="badge bg-red">!</large> You are making an score with more than 4000 proteins. 
+									It may take a few minutes, adding some filters is recommended.   
+								</span>
+						<span style="display:none" id="sizeAdvice"> 
+									<large class="badge bg-yellow">!</large> You are making an score with more than 4000 proteins. 
+									It may take a few minutes, depending on how many proteins are filtered   
+								</span>
 
 					<table id="search-table" class="table table-striped"
 						style="table-layout: fixed;">
@@ -674,10 +764,15 @@ tr.selected:hover {
 								</a>
 								
 								</th>
-								
-								<th width="20px"></th>
-								<!-- <th width="60px"></th>
-								<th style="width: 50px"></th> -->
+
+								<th width="20px"><a id="download_btn"
+									title="You must select at least one parameter for the score"
+									class="btn btn-app"> <i class="fa fa-download">&#160;</i>Download
+										list
+								</a></th>
+								<th width="10px"></th>
+								<th width="60px"></th>
+								<th style="width: 50px"></th>
 
 
 
@@ -686,28 +781,28 @@ tr.selected:hover {
 									id="gene_filter" type="text" style="width: 50px;"
 									placeholder="gene..." /></th>
 
-								
+								<!-- 	<th></th>	 -->
 
 
 
 								<th width="200px"><input id="desc_filter" type="text"
 									style="width: 100%" placeholder="description..." /></th>
 
-								<!-- <th></th>
-								<th width="25px"></th> -->
+								<th></th>
+								<th width="25px"></th>
 
 							</tr>
 							<tr>
 								<th>0</th>
 								<th>1</th>
 								<th>2</th>
-								<!-- <th>3</th>
-								<th>4</th> -->
+								<th>3</th>
+								<th>4</th>
 								<th>5</th>
 								<th>6</th>
 								<th>7</th>
-								<!-- <th>8</th>
-								<th>9</th> -->
+								<th>8</th>
+								<th>9</th>
 
 								<!-- <th>11</th> -->
 							</tr>

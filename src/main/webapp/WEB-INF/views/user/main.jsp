@@ -4,303 +4,74 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 	<jsp:directive.page language="java" contentType="text/html" />
-	<c:set var="reqUrl">${pageContext.request.requestURL}</c:set>
-	<c:set var="baseURL"
-		value="${fn:replace(reqUrl, pageContext.request.requestURI,pageContext.request.contextPath)}" />
+		<c:set var="reqUrl">${pageContext.request.requestURL}</c:set>
+	<c:set var="baseURL" value="${fn:replace(reqUrl, pageContext.request.requestURI,pageContext.request.contextPath)}" />
 	<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
+<meta name="header_title" content="Pathway" />
+<meta name="header_title_desc" content="reactions in pathway" />
 
 <meta name="_csrf" content="${_csrf.token}" />
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<title>SNDG</title>
+<title>Target Pathogen</title>
+
+<style type="text/css">
+.box .box-header {
+	padding-bottom: 10px;
+}
+</style>
+
+<!-- DATA TABLES -->
+<link
+	href="${baseURL}/public/theme/css/datatables/dataTables.bootstrap.css"
+	rel="stylesheet" type="text/css" />
 
 </head>
-
 <body>
-
-
 <script type="text/javascript">
-		//<![CDATA[
-	</script>
-	
-		<script src="${baseURL}/public/widgets/chartjs/Chart.min.js"
-		type="text/javascript"></script>
+$("body").addClass("container")
+$(".content-header").remove()
+</script>
+<div class="jumbotron text-justify text-center" style="padding-top:20,padding-bottom:20">
+        <img src="${baseURL}/public/html/Logo PathogenTARGET.jpg" />
+        
+      </div>
+<div class="page-header">
+								
+				Target-Pathogen database is a bioinformatic approach to prioritize drug targets in pathogens. Available genomic data for pathogens has created new opportunities for drug discovery and development, including new species, resistant and multiresistant ones. However, this data must be cohesively integrated to be fully exploited and be easy to interrogate. Target-Pathogen has been designed and developed as an online resource to allow genome wide based data consolidation from diverse sources focusing on structural druggability, essentiality and metabolic role of proteins. By allowing the integration and weighting of this information, this bioinformatic tool aims to facilitate the identification and prioritization of candidate drug targets for pathogens. With the structurome and drugome information Target-Pathogen is a unique resource to analyze whole genomes of relevants pathogens.
+</div>
 
-	<script type="text/javascript">
-		$("body").addClass("container")
-		$(".content-header").remove()
-		
-		function searchUrl(){
-			window.location.href='${baseURL}/search/results?type=' +  $('#search_select').val() + "&query=" + $("#searchInput").val(); 
-		}
-		
-		function init(){			
-			
-			
-			var ctx = document.getElementById('myChart').getContext('2d');
-			var chart = new Chart(ctx, {
-			    
-			    type: 'bar',
-
-			    data: {
-			        labels: ${tooltypes},
-			        datasets: [{
-			            label: "Tipos de Herramientas",
-			            //backgroundColor: 'rgb(255, 99, 132)',
-			            //borderColor: 'rgb(255, 99, 132)',
-			            data: ${toolvalues},
-			        }]
-			    },		    
-			    options: {
-			    	legend: {
-			           // display: false
-			        },
-			        tooltips: {
-			            callbacks: {
-			               label: function(tooltipItem) {
-			                      return tooltipItem.yLabel;
-			               }
-			            }
-			        }
-			    }
-			});
-			
-			
-			
-			$('#searchBtn').click(function(evt){
-				evt.preventDefault()
-				searchUrl()
-			})
-			
-			$("#searchInput").keyup(
-					function(evt) {
-						if (evt.keyCode == 13) {
-							evt.preventDefault()
-							searchUrl();
-							
-						}
-					});
-			
-		}
-		
-		$(document).ready(init);		
-	</script>
+<section class="col-lg-6" >
+<a href="${baseURL}/genome/" class="btn btn-primary btn-lg btn-block">Select Your Genome</a>
+</section>
 	
 
-	
-	
-	<script type="text/javascript">
-		// ]]>
-	</script>
-	
-	
-	
-	
-	
+<section class="col-lg-6" >
+<a href="${baseURL}/login" class="btn btn-success btn-lg btn-block">LogIn</a>
+</section>
 
-	<div class="jumbotron text-justify text-center"
-		style="height: 600px; background-color: white">
-		<div class="row">
-			<section class="col-lg-6">
-				<img alt=""
-					src="http://datos.sndg.mincyt.gob.ar/assets/logo_sistemas_nacionales-48dd30357d8c0e7dc192ba175f34427a.png" />
+<br />
+<br />
+<br />
+<br />
+ 
+<section class="col-lg-12" >
+			<p>
+			<a href="https://academic.oup.com/nar/article/doi/10.1093/nar/gkx1015/4584621">
+			<i>Target-Pathogen: a structural bioinformatic approach to prioritize drug targets in pathogens</i></a>
+			: Ezequiel J. Sosa,  Germ&#225;n Burguener,  Esteban Lanzarotti,  Lucas Defelipe, Leandro Radusky,  Agust&#237;n M. Pardo,  Marcelo Marti,  Adri&#225;n G. Turjanski, Dar&#237;o Fern&#225;ndez Do Porto <br />
+			</p>
+			<b>Nucleic Acids Research</b> (2017)  Database Issue 
 
-				<form class="form-inline">
-					<div class="form-group">
-						<table width="100%">
-							<tr>
-								<td width="100px"><select id="search_select" class="form-control">
-										<option value="all">Todo</option>										
-										<option value="prot">Proteinas</option>
-										<option value="genome">Genomas</option>
-										<option value="struct">Estructuras</option>
-										<option value="barcode">Barcodes</option>
-										<option value="tool">Herramientas</option>
+</section>
 
-								</select></td>
-								<td width="100%"><input width="100%" type="text" id="searchInput"
-									class="form-control" /></td>
-								<td><button class="btn btn-info" id="searchBtn">
-										<i class="fa fa-search">&#160;</i>
-									</button></td>
-							</tr>
-
-						</table>
-						<small class="form-text text-muted">Ejemplo de
-							b&#250;squedas: <a href="search/results?type=all&#38;query=gyra">gyrA</a> &#160;
-							<a href="search/results?type=all&#38;query=tuberculosis">tuberculosis</a> &#160;
-							<a href="search/results?type=barcode&#38;query=COI-5P">COI-5P</a>
-							
-							
-							</small> <br />
-
-						<button class="btn info">
-							<i class="fa fa-cloud-upload">&#160;</i>Depositar Datos o
-							Herramientas
-						</button>
-					</div>
-				</form>
-			</section>
-			<section class="col-lg-3">
-
-				<div class="small-box bg-aqua">
-					<div align="left" class="inner">
-						<h3 id="genome_count"> ${generalStats.genome}</h3>
-						<p>Genomas</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-circle-o">&#160;</i>
-					</div>
-					<a href="#stats_genome" class="small-box-footer"> &#160; <i
-						class="fa fa-arrow-circle-right">&#160;</i>
-					</a>
-
-				</div>
-			</section>
-			<section  class="col-lg-3">
-				<div class="small-box bg-aqua">
-					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.prot}</h3>
-						<p>Proteinas</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-file-text">&#160;</i>
-					</div>
-					<a href="#stats_prot" class="small-box-footer"> &#160; <i
-						class="fa fa-arrow-circle-right">&#160;</i>
-					</a>
-
-				</div>
-			</section>
-			<section class="col-lg-3">
-				<div class="small-box bg-aqua">
-					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.tool}</h3>
-						<p>Herramientas</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-wrench">&#160;</i>
-					</div>
-					<a href="#stats_tool" class="small-box-footer"> &#160; <i
-						class="fa fa-arrow-circle-right">&#160;</i>
-					</a>
-
-				</div>
-			</section>
-			<section class="col-lg-3">
-				<div class="small-box bg-aqua">
-					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.struct}</h3>
-						<p>Estructuras</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-sitemap">&#160;</i>
-					</div>
-					<a href="#stats_struct" class="small-box-footer"> &#160; <i
-						class="fa fa-arrow-circle-right">&#160;</i>
-					</a>
-
-				</div>
-
-			</section>
-			<section style="float: right !important;" class="col-lg-3">
-				<div class="small-box bg-aqua">
-					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.seq}</h3>
-						<p>Secuencias <br /> Ensambladas</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-file-text">&#160;</i>
-					</div>
-					<a href="#stats_seq" class="small-box-footer"> &#160; <i
-						class="fa fa-arrow-circle-right">&#160;</i>
-					</a>
-
-				</div>
-
-			</section>
-			<section style="float: right !important;" class="col-lg-3">
-				<div class="small-box bg-aqua">
-					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.barcode}</h3>
-						<p>Barcodes</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-barcode">&#160;</i>
-					</div>
-					<a href="#stats_barcode" class="small-box-footer"> &#160; <i
-						class="fa fa-arrow-circle-right">&#160;</i>
-					</a>
-
-				</div>
-
-			</section>
-
-		</div>
-
-	</div>
-
-	<br />
-	<section class="col-lg-6" >
-	<div width="100%" id="stats_genome">
-	<![CDATA[
-		<iframe id="stats_prot_iframe" height="400px" width="100%"
-			src="${baseURL}/krona/stats/tax_genome.html?depth=4">.</iframe>
-		]]>
-	</div>
-	</section>
-	<section class="col-lg-6">
-	<div width="100%" id="stats_prot">
-	<![CDATA[
-		<iframe id="stats_prot_iframe" height="400px" width="100%"
-			src="${baseURL}/krona/stats/tax_prot.html?depth=4">.</iframe>
-		]]>
-	</div>
-	</section>
-	
-	<section class="col-lg-6">
-	<div width="100%" id="stats_struct">
-	<![CDATA[
-		<iframe id="stats_struct_iframe"  height="400px" width="100%"
-			src="${baseURL}/krona/stats/tax_struct.html?depth=4">.</iframe>
-		]]>
-	</div>
-	</section>
-	<section class="col-lg-6">
-	<div width="100%" id="stats_barcode">
-	<![CDATA[
-		<iframe id="stats_barcode_iframe"  height="400px" width="100%"
-			src="${baseURL}/krona/stats/tax_barcode.html?depth=4">.</iframe>
-		]]>
-	</div>
-	</section>
-	<section class="col-lg-6">
-	<div width="100%" id="stats_seq">
-	<![CDATA[
-		<iframe id="stats_seq_iframe"  height="400px" width="100%"
-			src="${baseURL}/krona/stats/tax_seq.html?depth=4">.</iframe>
-		]]>
-	</div>
-	</section>
-	
-	<section class="col-lg-6">
-	<div width="100%" id="stats_tool">
-	<![CDATA[
-		<canvas id="myChart"></canvas>
-		]]>
-	</div>
-	</section>
-	
-	<br />
-	<hr />
-	<br />
-	
-	
-	
+<br />
+<hr />
+<br />
 
 
 </body>

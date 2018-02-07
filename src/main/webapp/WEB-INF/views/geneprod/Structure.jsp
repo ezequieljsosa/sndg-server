@@ -698,7 +698,7 @@ div.colorPicker-specialSwatch {
 		
 		var init = function() {
 			window.used = null;
-			//$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
+			$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
 			
 			
 			if (protein != undefined){

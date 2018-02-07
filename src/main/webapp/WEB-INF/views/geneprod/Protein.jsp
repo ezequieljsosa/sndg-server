@@ -106,9 +106,15 @@ input[type="search"] {
 		src="${baseURL}/public/theme/js/plugins/datatables/jquery.dataTables.js"
 		type="text/javascript"></script>
 
+
+
 	<script
 		src="${baseURL}/public/theme/js/plugins/datatables/dataTables.bootstrap.js"
 		type="text/javascript"></script>
+
+
+
+
 
 	<script type="text/javascript"
 		src="${baseURL}/public/widgets/color-picker/jquery.colorPicker.js"></script>
@@ -278,8 +284,7 @@ input[type="search"] {
 
 				
 			} else {
-				
-				$('#sequence_row').remove()
+
 				$('#dbvariants-box').remove()
 
 			}
@@ -724,7 +729,7 @@ input[type="search"] {
 		var document_ready_fn = function() {
 			$("#aln_section").hide();
 			
-			//$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
+			$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
 			var li = $("<li/>").appendTo( $(".breadcrumb") );
 			$("<a/>",{"href":"${baseURL}/genome/" + protein.organism}).html("<i>" + protein.organism + "</i>").appendTo(li);
 			

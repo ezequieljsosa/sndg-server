@@ -4,9 +4,8 @@
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form" version="2.0">
 	<jsp:directive.page language="java" contentType="text/html" />
-	<c:set var="reqUrl">${pageContext.request.requestURL}</c:set>
-	<c:set var="baseURL"
-		value="${fn:replace(reqUrl, pageContext.request.requestURI,pageContext.request.contextPath)}" />
+		<c:set var="reqUrl">${pageContext.request.requestURL}</c:set>
+	<c:set var="baseURL" value="${fn:replace(reqUrl, pageContext.request.requestURI,pageContext.request.contextPath)}" />
 	<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -18,7 +17,7 @@
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<title>SNDG</title>
+<title>Genome Pathways</title>
 
 <style type="text/css">
 .box .box-header {
@@ -26,32 +25,62 @@
 }
 </style>
 
+<!-- DATA TABLES -->
+<link
+	href="${baseURL}/public/theme/css/datatables/dataTables.bootstrap.css"
+	rel="stylesheet" type="text/css" />
+
 </head>
 <body>
-	<script type="text/javascript">
-		$("body").addClass("container")
-		$(".content-header").remove()
-	</script>
+<script type="text/javascript">
+$("body").addClass("container")
+$(".content-header").remove()
+</script>
 
 
 	<div class="row">
 
-		<h2>Visualizador de genomas</h2>
+		<h2>Citing Target-Pathogen</h2>
 		<div class="col-md-12">
-			El visualizador de genomas del SNDG tiene los siguientes objetivos:
-			<ul>
-				<li>Buscar informaci&#243;n biol&#243;gica, en especial la asociada a secuencias</li>
-				<li>Presentar datos de manera clara y precisa</li>
-				<li>Integrar resultados de otras herramientas y cruzar informacil&#243;n con otras bases de datos</li>
-				
-			</ul>
-			Tambi&#233;n cruza y actualiza sus datos peridodicamente con el  <a href="http://datos.sndg.mincyt.gob.ar/">Portal de datos</a>			
+			
+			If you find Target-Pathogen useful, please consider citing the reference that describes this work:<br /><br />
+			<p>
+			<a href="https://academic.oup.com/nar/article/doi/10.1093/nar/gkx1015/4584621">
+			<i>Target-Pathogen: a structural bioinformatic approach to prioritize drug targets in pathogens</i></a>
+			: Ezequiel J. Sosa,  Germ&#225;n Burguener,  Esteban Lanzarotti,  Lucas Defelipe, Leandro Radusky,  Agust&#237;n M. Pardo,  Marcelo Marti,  Adri&#225;n G. Turjanski, Dar&#237;o Fern&#225;ndez Do Porto <br />
+			</p>
+			<b>Nucleic Acids Research</b> (2017)  Database Issue 
+		
+			
 		</div>
+
+	</div>
+
+	
+
+	<div class="row">
+
+		<h2>Related Publications</h2>
+		<div class="col-md-12">
+			<ul>
+				<li>Leandro Radusky, Lucas A. Defelipe, Esteban Lanzarotti, Javier Luque, Xavier Barril, Marcelo A. Marti and Adri&#225;n G. Turjanski (2014) <b>TuberQ: a Mycobacterium tuberculosis protein druggability database</b></li>
+				<li> Lucas A. Defelipe, Dario Fern&#225;ndez Do Porto, Pablo Ivan Pereira Ramos, d, Marisa Fabiana Nicol&#225;s, 
+					Ezequiel Sosa, Leandro Radusky, Esteban Lanzarotti, Adri&#225;n G. Turjanski, 
+					Marcelo A. Marti, (2015) <b>A whole genome bioinformatic approach to determine potential latent phase specific targets in Mycobacterium tuberculosis</b></li>
+
+<li style="display:None">Karp, P. D., Latendresse, M., Paley, S. M., Krummenacker, M., Ong, Q. D., Billington, R., . . . Caspi, R. (2015). Pathway Tools version 19.0 update: software for pathway/genome informatics and systems biology. Brief Bioinform. doi: 10.1093/bib/bbv079</li>
+<li style="display:None">Le Guilloux, V., Schmidtke, P., &#38; Tuffery, P. (2009). Fpocket: an open source platform for ligand pocket detection. BMC Bioinformatics, 10, 168. doi: 10.1186/1471-2105-10-168</li>
+<li style="display:None">Sonnhammer, E. L., Eddy, S. R., &#38; Durbin, R. (1997). Pfam: a comprehensive database of protein domain families based on seed alignments. Proteins, 28(3), 405-420. </li>
+
+
+			</ul>
+		</div>
+
 	</div>
 
 	<div class="row">
 		<div class="col-md-12">
-			<h1 id="software">Visualizaciones de 3ros</h1>
+			<h1 id="software">Used Software</h1>
 
 			<ul>
 				<li id="jbrowse"><a href="http://jbrowse.org/">JBrowse</a></li>
@@ -62,8 +91,8 @@
 
 
 			</ul>
-			<h2 style="display: None">Search, processes and annotations</h2>
-			<ul style="display: None">
+			<h2>Search, processes and annotations</h2>
+			<ul>
 				<li><a href="http://hmmer.org/">Hmmer</a></li>
 				<li><a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">Blast</a></li>
 				<li><a href="http://www.ebi.ac.uk/Tools/msa/clustalo/">Clustal
@@ -73,7 +102,7 @@
 
 			</ul>
 
-			<h1 id="databases">Bases de datos</h1>
+			<h1 id="databases">Databases</h1>
 			<ul>
 				<li><a href="http://pfam.xfam.org/">PFam</a></li>
 				<li><a href="www.rcsb.org/">PDB</a></li>
@@ -81,21 +110,18 @@
 				<li><a href="www.sequenceontology.org/">SO</a></li>
 				<li><a href="www.ncbi.nlm.nih.gov/COG/">COG</a></li>
 				<li><a href="http://enzyme.expasy.org/">EC</a></li>
-				<li style="display: None"><a
-					href="https://www.ebi.ac.uk/thornton-srv/databases/CSA/">CSA</a></li>
-				<li style="display: None"><a
-					href="http://modbase.compbio.ucsf.edu/modbase-cgi/index.cgi">ModBase</a></li>
-
-				<li style="display: None"><a
-					href="http://tritrypdb.org/tritrypdb/">TriTrypDB</a></li>
-				<li style="display: None"><a href="http://plasmodb.org/plasmo/">PlasmoDB</a></li>
-				<li style="display: None"><a href="toxodb.org">ToxoDB</a></li>
-
-				<li style="display: None"><a href="http://biocyc.org/">BioCyc</a></li>
-
+				<li><a href="https://www.ebi.ac.uk/thornton-srv/databases/CSA/">CSA</a></li>
+				<li><a href="http://modbase.compbio.ucsf.edu/modbase-cgi/index.cgi">ModBase</a></li>
+				
+				<li><a href="http://tritrypdb.org/tritrypdb/">TriTrypDB</a></li>
+				<li><a href="http://plasmodb.org/plasmo/">PlasmoDB</a></li>
+				<li><a href="toxodb.org">ToxoDB</a></li>
+				
+				<li><a href="http://biocyc.org/">BioCyc</a></li>
+				
 				<li><a href="http://www.uniprot.org/">UNIPROT</a></li>
 				<li><a href="www.ncbi.nlm.nih.gov/">NCBI</a></li>
-
+				
 
 			</ul>
 

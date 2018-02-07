@@ -59,7 +59,7 @@ var product_obj = ${protein};
 
 		function load_gene(organism, gene) {
 
-			//$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
+			$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
 			var li = $("<li/>").appendTo( $(".breadcrumb") );
 			$("<a/>",{"href":"${baseURL}/genome/" + organism}).html("<i>" + organism + "</i>").appendTo(li);
 			

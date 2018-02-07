@@ -9,7 +9,7 @@
 		value="${fn:replace(reqUrl, pageContext.request.requestURI,pageContext.request.contextPath)}" />
 	<html>
 <head>
-<title><spring:message code="genome.title"/></title>
+<title>Dataset</title>
 
 <style type="text/css">
 .loading-img2 {
@@ -33,10 +33,6 @@
 
 </head>
 <body>
-
-
-<c:set var="genomes_breadcrum"><spring:message code="genome.genome_breadcrum"/></c:set>
-			
 
 	<script type="text/javascript">
 		//<![CDATA[
@@ -293,7 +289,7 @@
 
 			$("<a/>", {
 				"href" : "${baseURL}/genome"
-			}).html('${genomes_breadcrum}').appendTo($("#base_breadcrumb"));
+			}).html("Genomes").appendTo($("#base_breadcrumb"));
 			var li = $("<li/>").addClass("active").appendTo($(".breadcrumb"));
 			$("<a/>", {
 				"href" : "${baseURL}/genome/" + genome.name
@@ -549,15 +545,13 @@
 		<!-- Tabs within a box -->
 		<ul class="nav nav-tabs ">
 			<li class="pull-left active" id="overview_tab_link"><a
-				href="#overview_tab" data-toggle="tab" aria-expanded="false"><spring:message
-						code="genome.overview" /> </a></li>
+				href="#overview_tab" data-toggle="tab" aria-expanded="false">Overview</a></li>
 			<li class="pull-left" id="data_tab_link"><a href="#data_tab"
-				data-toggle="tab" aria-expanded="true"><spring:message
-						code="genome.datatab" /></a></li>
+				data-toggle="tab" aria-expanded="true">Data</a></li>
 			<li class="pull-left  "><a id="druggability_button"
-				aria-expanded="true"><spring:message code="genome.search_button" />
-			</a></li>
-
+				aria-expanded="true">Prioritize Targets</a></li>
+			<li class="pull-left  "><a id="pathways_button"> Prioritize
+					Pathways</a></li>
 
 
 		</ul>
@@ -610,12 +604,12 @@
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th colspan="2"><spring:message code="genome.search_by" /></th>
+											<th colspan="2">Search Gene Product By</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<td><a id="keyword_search" href="#"> <spring:message code="genome.keyword_search" /> </a>
+											<td><a id="keyword_search" href="#"> Keyword </a>
 												<div class="input-group">
 													<input id="keyword_search_text" class="form-control"
 														type="text" /> <span id="keyword_search_icon"
@@ -629,7 +623,7 @@
 										<tr>
 
 
-											<td><a id="gene_search" href="#"> <spring:message code="genome.gene_search" /> </a>
+											<td><a id="gene_search" href="#"> Gene </a>
 												<div class="input-group">
 													<input id="gene_search_text" class="form-control"
 														type="text" /> <span id="gene_search_icon"
@@ -705,23 +699,23 @@
 								<h3>Projects</h3>
 							</div>
 							<div class="box-body no-padding">
-								<table id="projects_table" class="table table-striped">
+								<table id="projects_table" class="table table-striped">									
 									<tbody>
-
+									
 									</tbody>
 								</table>
 							</div>
-
+							
 						</div>
 					</section>
 
-
+					
 
 					<section id="statistics_section" class="col-lg-6 ">
 						<!-- small box -->
 						<div class="box">
 							<div class="box-header no-padding">
-								<h3><spring:message code="genome.statistics" /></h3>
+								<h3>Statistics</h3>
 							</div>
 							<div class="box-body no-padding">
 								<table id="statistics_table" class="table table-striped">
@@ -729,11 +723,12 @@
 									<tbody></tbody>
 								</table>
 							</div>
-							
+							<div class="overlay">&#160;</div>
+							<div class="loading-img">&#160;</div>
 						</div>
 					</section>
-
-
+					
+					
 
 
 				</div>

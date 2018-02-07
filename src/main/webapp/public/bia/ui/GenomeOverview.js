@@ -81,9 +81,6 @@ $.GenomeOverview.prototype = {
 			});
 			$("#statistics_table").dataTable({
 				 "order": [[ 1, "desc" ]],
-				 "language" : {					
-						"url": "/sndg/public/widgets/datatables/Spanish.json"
-					},
 				 paging: false,
 				 "dom": "tip",
 				"data" : dataSet,
