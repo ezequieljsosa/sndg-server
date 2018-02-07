@@ -86,8 +86,7 @@ public class UserResourse {
 	public String dashboard( Model model, Principal principal) {
 		
 		UserDoc user = this.userRepository.findUser(principal.getName());
-		int projectCount = this.projectRepository.projects_from_user(
-				user.getId()).size();
+
 		List<ObjectId> auth =  this.dataTablesUtils.authCriteria(principal);
 		
 		long genomeCount =  mongoTemplate.count(new Query( Criteria.where("auth").in(auth) ), SeqCollectionDoc.class); ;
@@ -95,7 +94,7 @@ public class UserResourse {
 		
 		model.addAttribute("user", principal);
 		model.addAttribute("genomeCount", genomeCount);
-		model.addAttribute("projectCount", projectCount);
+
 		
 		
 		
