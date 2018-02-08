@@ -294,7 +294,7 @@ $.SearchTable.prototype = {
 				this._options.columns.push(filter.column());
 			}
 		}.bind(this));
-git		this._options.columns.push(this.properties_column);
+		this._options.columns.push(this.properties_column);
 		this._options.columns.push(this.score_column);
 	},
 	_init_control_values : function() {

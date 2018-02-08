@@ -576,14 +576,15 @@ tr.selected:hover {
 					</a> <a data-id="filter_pocket" class="btn btn-app open-modal"> <i
 						class="fa  fa-puzzle-piece">&#160;</i>Pocket
 					</a> 
-					
+					<!--
 					<a  data-id="filter_variant-db" class="btn btn-app open-modal"> <i
 						class="fa fa-barcode">&#160;</i>DB Variants
 					</a> 
 					
 					<a  data-id="filter_variant-strain" class="btn btn-app open-modal"> <i
 						class="fa fa-barcode">&#160;</i>Strain Variants
-					</a> 
+					</a>
+					-->
 					
 					<a id="filter_metadata" data-id="filter_metadata" class="btn btn-app open-modal"> <i
 						class="fa fa-tags">&#160;</i>Metadata
