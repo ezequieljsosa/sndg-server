@@ -53,9 +53,13 @@ public class StructureService {
 	private GeneProductDocumentRepository geneProdRepository;
 
 	public List<StructureDoc> structures(GeneProductDoc protein) {
+		List<String> alias = protein.getAlias();
+		if (alias == null){
+			alias = protein.getGeneList().stream().map(String.class::cast).collect(Collectors.toList());
+		}
 
 		Criteria criteria = Criteria.where("organism").is(protein.getOrganism()).and("templates.aln_query.name")
-				.in(protein.getAlias()).and("_cls").is("Structure.ModeledStructure");
+				.in(alias).and("_cls").is("Structure.ModeledStructure");
 
 		List<StructureDoc> findAll = this.structureRepository.findAll(new Query(criteria));
 		List<String> addedStructs = new ArrayList<String>();

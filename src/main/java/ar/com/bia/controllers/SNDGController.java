@@ -78,6 +78,10 @@ public class SNDGController {
 		model.addAttribute("query", query);
 		model.addAttribute("datatype", type);
 
+		if( query.isEmpty()){
+			return "redirect:../";
+		}
+
 		if (type.equals("all")) {
 			Set<String> keywords = extractKw(query);
 
