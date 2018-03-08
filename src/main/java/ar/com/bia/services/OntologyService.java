@@ -223,9 +223,12 @@ public class OntologyService {
 				&& x.containsKey("property")
 				&& x.get("property").equals("chokepoint")  ).findFirst();
 		oChokeProp.ifPresent(chokeProp->{
-			Arrays.asList(chokeProp.get("metabolites").split(",")).forEach(x -> {
-				ontologies.add( x.toLowerCase().split("\"")[1]   );
-			});
+			if (!chokeProp.get("metabolites").equals("[ ]")){
+				Arrays.asList(chokeProp.get("metabolites").split(",")).forEach(x -> {
+					ontologies.add( x.toLowerCase().split("\"")[1]   );
+				});
+			}
+
 			
 		});
 
