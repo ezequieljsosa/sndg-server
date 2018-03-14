@@ -2,6 +2,7 @@ package ar.com.bia.controllers;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,51 +33,55 @@ import ar.com.bia.pdb.StructureDoc;
 @Controller
 @RequestMapping("/")
 public class FrontController {
-	
-	@Autowired
-	private MongoOperations mongoTemplate;
-	@Autowired
-	private MongoOperations mongoTemplateStruct;
-	
-	@Autowired
-	private ObjectMapper mapperJson;
-	
-	public Map<String, CollectionConfig> typesMap()  {
-		Map<String, CollectionConfig> types = new HashMap<>();
 
-		types.put("seq", new CollectionConfig("seq", "contig_colletion", ContigDoc.class,  mongoTemplate));
-		types.put("genome",
-				new CollectionConfig("genome", "sequence_collection", SeqCollectionDoc.class, mongoTemplate));
-		types.put("struct", new CollectionConfig("struct", "structures", StructureDoc.class, mongoTemplateStruct));
-		types.put("tool", new CollectionConfig("tool", "tools", ToolDoc.class,  mongoTemplate));
-		types.put("prot", new CollectionConfig("prot", "proteins", GeneProductDoc.class, mongoTemplate));
-		types.put("barcode", new CollectionConfig("barcode", "barcodes", BarcodeDoc.class, mongoTemplate));
-		return types;
-	}
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String printWelcome(ModelMap model) throws JsonProcessingException{
+    @Autowired
+    private MongoOperations mongoTemplate;
+    @Autowired
+    private MongoOperations mongoTemplateStruct;
 
-		Map<String,Object> generalStats = new HashMap<String,Object>();
-		
-		typesMap().keySet().stream().forEach(x -> {
-			CollectionConfig cc = typesMap().get(x);
-			generalStats.put(x, cc.getMongoTemplate().count(new Query(),cc.getClazz()));	
-		});
-		
-		AggregationOutput aggregate = mongoTemplate.getCollection("tools").aggregate( 
-				Arrays.asList( new BasicDBObject("$group", 
-						new BasicDBObject("_id","$type").append("count", 
-								new BasicDBObject("$sum",1) ))  ) ); 
+    @Autowired
+    private ObjectMapper mapperJson;
 
-		
-		Map<Object, Object> map = StreamSupport.stream( aggregate.results().spliterator(),false).map(DBObject.class::cast).collect(Collectors.toMap(x->x.get("_id"), y->y.get("count")));
-		
-		model.addAttribute("tooltypes",mapperJson.writeValueAsString(  map.keySet() )  );
-		model.addAttribute("toolvalues", map.keySet().stream().map(x -> map.get(x)).collect(Collectors.toList()) );
-		
-		model.addAttribute("generalStats", generalStats);
-		return "user/main";
+    public Map<String, CollectionConfig> typesMap() {
+        Map<String, CollectionConfig> types = new HashMap<>();
 
-	}
+        types.put("seq", new CollectionConfig("seq", "contig_colletion", ContigDoc.class, mongoTemplate));
+        types.put("genome",
+                new CollectionConfig("genome", "sequence_collection", SeqCollectionDoc.class, mongoTemplate));
+        types.put("struct", new CollectionConfig("struct", "structures", StructureDoc.class, mongoTemplateStruct));
+        types.put("tool", new CollectionConfig("tool", "tools", ToolDoc.class, mongoTemplate));
+        types.put("prot", new CollectionConfig("prot", "proteins", GeneProductDoc.class, mongoTemplate));
+        types.put("barcode", new CollectionConfig("barcode", "barcodes", BarcodeDoc.class, mongoTemplate));
+        return types;
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String printWelcome(ModelMap model) throws JsonProcessingException {
+
+        Map<String, Object> generalStats = new HashMap<String, Object>();
+
+        typesMap().keySet().stream().forEach(x -> {
+            CollectionConfig cc = typesMap().get(x);
+            generalStats.put(x, cc.getMongoTemplate().count(new Query(), cc.getClazz()));
+        });
+
+        List<DBObject> pipeline = Arrays.asList(new BasicDBObject("$group",
+                new BasicDBObject("_id", "$type").append("count",
+                        new BasicDBObject("$sum", 1))));
+        AggregationOutput aggregate = mongoTemplate.getCollection("tools").aggregate(
+                pipeline);
+
+
+        Map<Object, Object> map = StreamSupport.stream(aggregate.results().spliterator(), false)
+                .map(DBObject.class::cast).collect(Collectors.toMap(x -> x.get("_id"), y -> y.get("count")));
+
+
+        model.addAttribute("tooltypes", mapperJson.writeValueAsString(map.keySet()));
+        model.addAttribute("toolvalues", map.keySet().stream().map(x -> map.get(x)).collect(Collectors.toList()));
+
+        model.addAttribute("generalStats", generalStats);
+
+        return "user/main";
+
+    }
 }

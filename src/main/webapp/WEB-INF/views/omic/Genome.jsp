@@ -42,7 +42,6 @@
 		//<![CDATA[
 	</script>
 
-	<!-- DATA TABES SCRIPT -->
 	<script
 		src="${baseURL}/public/theme/js/plugins/datatables/jquery.dataTables.js"
 		type="text/javascript"></script>
@@ -551,9 +550,11 @@
 			<li class="pull-left active" id="overview_tab_link"><a
 				href="#overview_tab" data-toggle="tab" aria-expanded="false"><spring:message
 						code="genome.overview" /> </a></li>
-			<li class="pull-left" id="data_tab_link"><a href="#data_tab"
+
+			<!--<li class="pull-left" id="data_tab_link"><a href="#data_tab"
 				data-toggle="tab" aria-expanded="true"><spring:message
-						code="genome.datatab" /></a></li>
+						code="genome.datatab" /></a></li> -->
+
 			<li class="pull-left  "><a id="druggability_button"
 				aria-expanded="true"><spring:message code="genome.search_button" />
 			</a></li>

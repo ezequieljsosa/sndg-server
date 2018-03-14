@@ -139,8 +139,7 @@
 							</small> <br />
 
 						<button class="btn info">
-							<i class="fa fa-cloud-upload">&#160;</i>Depositar Datos o
-							Herramientas
+							<i class="fa fa-cloud-upload">&#160;</i>Depositar Datos
 						</button>
 					</div>
 				</form>
@@ -149,13 +148,13 @@
 
 				<div class="small-box bg-aqua">
 					<div align="left" class="inner">
-						<h3 id="genome_count"> ${generalStats.genome}</h3>
+						<h3> ${generalStats.genome}</h3>
 						<p>Genomas</p>
 					</div>
 					<div class="icon">
 						<i class="fa fa-circle-o">&#160;</i>
 					</div>
-					<a href="#stats_genome" class="small-box-footer"> &#160; <i
+					<a href="${baseURL}/search/results?type=genome" class="small-box-footer"> &#160; <i
 						class="fa fa-arrow-circle-right">&#160;</i>
 					</a>
 
@@ -164,13 +163,13 @@
 			<section  class="col-lg-3">
 				<div class="small-box bg-aqua">
 					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.prot}</h3>
+						<h3>${generalStats.prot}</h3>
 						<p>Proteinas</p>
 					</div>
 					<div class="icon">
 						<i class="fa fa-file-text">&#160;</i>
 					</div>
-					<a href="#stats_prot" class="small-box-footer"> &#160; <i
+					<a href="${baseURL}/search/results?type=prot" class="small-box-footer"> &#160; <i
 						class="fa fa-arrow-circle-right">&#160;</i>
 					</a>
 
@@ -179,13 +178,13 @@
 			<section class="col-lg-3">
 				<div class="small-box bg-aqua">
 					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.tool}</h3>
+						<h3>${generalStats.tool}</h3>
 						<p>Herramientas</p>
 					</div>
 					<div class="icon">
 						<i class="fa fa-wrench">&#160;</i>
 					</div>
-					<a href="#stats_tool" class="small-box-footer"> &#160; <i
+					<a href="${baseURL}/search/results?type=tool" class="small-box-footer"> &#160; <i
 						class="fa fa-arrow-circle-right">&#160;</i>
 					</a>
 
@@ -194,13 +193,13 @@
 			<section class="col-lg-3">
 				<div class="small-box bg-aqua">
 					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.struct}</h3>
+						<h3 id="struct_count">${generalStats.struct}</h3>
 						<p>Estructuras</p>
 					</div>
 					<div class="icon">
 						<i class="fa fa-sitemap">&#160;</i>
 					</div>
-					<a href="#stats_struct" class="small-box-footer"> &#160; <i
+					<a href="${baseURL}/search/results?type=struct" class="small-box-footer"> &#160; <i
 						class="fa fa-arrow-circle-right">&#160;</i>
 					</a>
 
@@ -210,13 +209,13 @@
 			<section style="float: right !important;" class="col-lg-3">
 				<div class="small-box bg-aqua">
 					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.seq}</h3>
+						<h3>${generalStats.seq}</h3>
 						<p>Secuencias <br /> Ensambladas</p>
 					</div>
 					<div class="icon">
 						<i class="fa fa-file-text">&#160;</i>
 					</div>
-					<a href="#stats_seq" class="small-box-footer"> &#160; <i
+					<a href="${baseURL}/search/results?type=seq" class="small-box-footer"> &#160; <i
 						class="fa fa-arrow-circle-right">&#160;</i>
 					</a>
 
@@ -226,13 +225,13 @@
 			<section style="float: right !important;" class="col-lg-3">
 				<div class="small-box bg-aqua">
 					<div align="left" class="inner">
-						<h3 id="genome_count">${generalStats.barcode}</h3>
+						<h3>${generalStats.barcode}</h3>
 						<p>Barcodes</p>
 					</div>
 					<div class="icon">
 						<i class="fa fa-barcode">&#160;</i>
 					</div>
-					<a href="#stats_barcode" class="small-box-footer"> &#160; <i
+					<a href="${baseURL}/search/results?type=barcode" class="small-box-footer"> &#160; <i
 						class="fa fa-arrow-circle-right">&#160;</i>
 					</a>
 

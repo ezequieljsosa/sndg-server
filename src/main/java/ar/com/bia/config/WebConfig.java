@@ -35,7 +35,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	private static final String VIEW_EXTENTION_JSP = ".jsp";
 	private static final String VIEW_DIR = "/WEB-INF/views/";
 
-    @Value("${lang}")
+    @Value("${sndglang}")
     private String lang;
 
 	@Override
@@ -104,7 +104,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("/WEB-INF/i18/usermsg");
-		messageSource.setDefaultEncoding("ISO-8859-1");
+		//messageSource.setDefaultEncoding("ISO-8859-1");
+		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}
 

@@ -14,7 +14,7 @@
 <head>
 
 
-<title>XomeQ <spring:message code="login.login"/></title>
+<title><spring:message code="errorpage.page"/></title>
 
 <link href="public/theme/css/bootstrap.min.css" rel="stylesheet"
 	media="screen" />
@@ -37,16 +37,16 @@
 
 
 
-<h1>Error Page</h1>
-  <p>Application has encountered an error. Do you want to leave your contact, describe what you were doing and report the error?</p>
+<h1> <spring:message code="errorpage.page"/></h1>
+  <p><spring:message code="errorpage.msg"/> </p>
     
    <form method="POST" action="${baseURL}/user/issue/">
-   Failed URL: ${url}<br />
-  	Your mail: <input name="email" type="email" /><br />
-    <b>Error Description:</b><br /> 
+   URL: ${url}<br />
+  	Email: <input name="email" type="email" /><br />
+    <b><spring:message code="errorpage.desc"/>:</b><br />
     <textarea name="description" rows="15" cols="100">-</textarea><br />
-    (don't be shy, it helps a lot!)
-    <input type="submit"  value="Report Error" />
+
+    <input type="submit"  value="Report" />
     
     <input type="hidden" name="exception" value="${exception.message}" />
     <textarea  style="display:None" name="stackTrace">

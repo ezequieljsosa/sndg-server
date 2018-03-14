@@ -23,7 +23,7 @@
 		<default.lang>es</default.lang> <!-- en/es -->
 
 		<mongo.host>localhost</mongo.host>
-		<mongo.database>sndg</mongo.database>
+		<mongo.database>saureus</mongo.database>
 		<mongo.port>27017</mongo.port>
 
 		<!-- Default Test config variables -->
@@ -43,6 +43,7 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -149,7 +150,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-			<version>1.10.7.RELEASE</version>
+			<version>1.10.10.RELEASE</version>
 		</dependency>
 
 		<dependency>

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,124 +47,178 @@ import ar.com.bia.services.exception.OrganismNotFoundException;
 @RequestMapping("/search")
 public class SNDGController {
 
-	@Autowired
-	private MongoOperations mongoTemplate;
-	@Autowired
-	private MongoOperations mongoTemplateStruct;
+    @Autowired
+    private MongoOperations mongoTemplate;
+    @Autowired
+    private MongoOperations mongoTemplateStruct;
 
-	@Autowired
-	private ObjectMapper mapperJson;
+    @Autowired
+    private ObjectMapper mapperJson;
 
-	public Map<String, CollectionConfig> typesMap() {
-		Map<String, CollectionConfig> types = new HashMap<>();
+    public static Map<String, BiConsumer<String, DBObject>> reqFilters() {
+        Map<String, BiConsumer<String, DBObject>> map = new HashMap<>();
+        map.put("species", (value, dbObject) -> {
+            dbObject.put("sndg_index.tax", value.toLowerCase());
+        });
+        map.put("taxonomia", (value, dbObject) -> {
+            dbObject.put("sndg_index.tax", value.toLowerCase());
+        });
+        map.put("ensayo", (value, dbObject) -> {
+            dbObject.put("experiment", "/" + value.toLowerCase() + "/");
+        });
+        map.put("has_ligand", (value, dbObject) -> {
+            dbObject.put("ligands.0", new BasicDBObject("$exists",true));
+        });
+        map.put("has_structure", (value, dbObject) -> {
+            dbObject.put("keywords", "has_structure");
+        });
+        map.put("length", (value, dbObject) -> {
+            dbObject.put("size.len", value.toLowerCase());
+        });
+        map.put("assembly_level", (value, dbObject) -> {
+            dbObject.put("assembly_level", value.toLowerCase());
+        });
+        map.put("markercode", (value, dbObject) -> {
+            dbObject.put("sequences.sequence.markercode", value.toLowerCase());
+        });
+        map.put("tool_type", (value, dbObject) -> {
+            dbObject.put("type", value.toLowerCase());
+        });
+        return map;
+    }
 
-		types.put("seq", new CollectionConfig("seq", "contig_colletion", ContigDoc.class, mongoTemplate));
-		types.put("genome",
-				new CollectionConfig("genome", "sequence_collection", SeqCollectionDoc.class, mongoTemplate));
-		types.put("struct", new CollectionConfig("struct", "structures", StructureDoc.class, mongoTemplateStruct));
-		types.put("tool", new CollectionConfig("tool", "tools", ToolDoc.class, mongoTemplate));
-		types.put("prot", new CollectionConfig("prot", "proteins", GeneProductDoc.class, mongoTemplate));
-		types.put("barcode", new CollectionConfig("barcode", "barcodes", BarcodeDoc.class, mongoTemplate));
-		return types;
-	}
+    private Map<String, BiConsumer<String, DBObject>> reqFilters = reqFilters();
 
-	@RequestMapping(value = { "results" }, method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-	public String resultsTable(@RequestParam(value = "query", defaultValue = "") String query,
-			@RequestParam(value = "type", defaultValue = "seq") String type,
-			@RequestParam(value = "start", defaultValue = "0") Integer offset,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer perPage,
 
-			Model model, Principal principal) {
+    public Map<String, CollectionConfig> typesMap() {
+        Map<String, CollectionConfig> types = new HashMap<>();
 
-		model.addAttribute("user", principal);
-		model.addAttribute("query", query);
-		model.addAttribute("datatype", type);
+        types.put("seq", new CollectionConfig("seq", "contig_collection", ContigDoc.class, mongoTemplate));
+        types.put("genome",
+                new CollectionConfig("genome", "sequence_collection", SeqCollectionDoc.class, mongoTemplate));
+        types.put("struct", new CollectionConfig("struct", "structures", StructureDoc.class, mongoTemplateStruct));
+        types.put("tool", new CollectionConfig("tool", "tools", ToolDoc.class, mongoTemplate));
+        types.put("prot", new CollectionConfig("prot", "proteins", GeneProductDoc.class, mongoTemplate));
+        types.put("barcode", new CollectionConfig("barcode", "barcodes", BarcodeDoc.class, mongoTemplate));
+        return types;
+    }
 
-		if( query.isEmpty()){
-			return "redirect:../";
-		}
+    @RequestMapping(value = {"results"}, method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String resultsTable(@RequestParam(value = "query", defaultValue = "") String query,
+                               @RequestParam(value = "type", defaultValue = "seq") String type,
+                               @RequestParam(value = "start", defaultValue = "0") Integer offset,
+                               @RequestParam(value = "pageSize", defaultValue = "50") Integer perPage,
 
-		if (type.equals("all")) {
-			Set<String> keywords = extractKw(query);
+                               Model model, Principal principal) {
 
-			typesMap().keySet().forEach(k -> {
-				model.addAttribute(k, queryCount(k, typesMap(), keywords));
-			});
+        model.addAttribute("user", principal);
+        model.addAttribute("query", query);
+        model.addAttribute("datatype", type);
 
-			return "sndg/search";
-		} else {
+        if (type.equals("all")) {
+            Set<String> keywords = extractKw(query);
 
-			model.addAttribute("page", new Integer(offset / perPage));
-			return "sndg/results";
+            typesMap().keySet().forEach(k -> {
+                model.addAttribute(k, queryCount(k, typesMap(), keywords, new HashMap<>()));
+            });
 
-		}
+            return "sndg/search";
+        } else {
 
-	}
+            model.addAttribute("page", new Integer(offset / perPage));
+            return "sndg/results";
 
-	// @Cacheable(cacheNames = "queries", key = "T(ar.com.bia.MD5).hash(#search
-	// , #perPage.toString() + '_' + #offset.toString(),#request,#httpSession)")
-	@RequestMapping(value = "/data_result", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public String listData(@RequestParam(value = "type", defaultValue = "seq") String type,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer perPage,
-			@RequestParam(value = "start", defaultValue = "0") Integer offset,
-			@RequestParam(value = "query", defaultValue = "") String query, Principal principal,
-			HttpSession httpSession, HttpServletRequest request)
-			throws JsonParseException, JsonMappingException, IOException, OrganismNotFoundException {
+        }
 
-		Set<String> keywords = extractKw(query);
+    }
 
-		long count = typesMap().get(type).getMongoTemplate().count(new Query(), typesMap().get(type).getClazz());
+    // @Cacheable(cacheNames = "queries", key = "T(ar.com.bia.MD5).hash(#search
+    // , #perPage.toString() + '_' + #offset.toString(),#request,#httpSession)")
+    @RequestMapping(value = "/data_result", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String listData(@RequestParam(value = "type", defaultValue = "seq") String type,
+                           @RequestParam(value = "pageSize", defaultValue = "50") Integer perPage,
+                           @RequestParam(value = "start", defaultValue = "0") Integer offset,
+                           @RequestParam(value = "query", defaultValue = "") String query,
+                           @RequestParam Map<String, String> reqParams)
+            throws IOException {
 
-		PaginatedResult<DBObject> result = new PaginatedResult<>();
-		result.setRecordsTotal(count);
+        Set<String> keywords = extractKw(query);
 
-		result.setRecordsFiltered(queryCount(type, typesMap(), keywords));
+        long count = typesMap().get(type).getMongoTemplate().count(new Query(), typesMap().get(type).getClazz());
 
-		BasicDBObject projection = new BasicDBObject().append("name", 1).append("description", 1).append("organism", 1)
-				.append("url", 1).append("ncbi_assembly", 1).append("processid", 1);
+        PaginatedResult<DBObject> result = new PaginatedResult<>();
+        result.setRecordsTotal(count);
 
-		List<DBObject> list = queryList(type, perPage, offset, typesMap(), keywords, projection);
-		
-		if(type.equals("prot")){
-			list.stream().forEach(p -> {
-				DBObject genome = this.mongoTemplate.getCollection("sequence_collection").findOne(
-						new BasicDBObject("name",p.get("organism")),new BasicDBObject("description",1));
-				p.put("organism",genome.get("description"));
-			});
-		}
-		
-		result.setData(list);
 
-		return mapperJson.writeValueAsString(result);
+        result.setRecordsFiltered(queryCount(type, typesMap(), keywords, reqParams));
 
-	}
 
-	private List<DBObject> queryList(String type, Integer perPage, Integer offset, Map<String, CollectionConfig> types,
-			Set<String> keywords, BasicDBObject projection) {
+        BasicDBObject projection = new BasicDBObject().append("name", 1).append("description", 1).append("organism", 1)
+                .append("url", 1).append("ncbi_assembly", 1).append("processid", 1);
 
-		BasicDBList keyquery = new BasicDBList();
-		keywords.forEach(x -> keyquery.add(new BasicDBObject("keywords", x)));
+        List<DBObject> list = queryList(type, perPage, offset, typesMap(), keywords, projection, reqParams);
 
-		List<DBObject> list = types.get(type).getMongoTemplate().getCollection(types.get(type).getCollection())
-				.find(new BasicDBObject("$and", keyquery), projection).limit(perPage).skip(offset).toArray();
-		list.stream().forEach(x -> {
-			x.put("_id", x.get("_id").toString());
+        if (type.equals("prot")) {
+            list.stream().forEach(p -> {
+                DBObject genome = this.mongoTemplate.getCollection("sequence_collection").findOne(
+                        new BasicDBObject("name", p.get("organism")), new BasicDBObject("description", 1));
+                p.put("organism", genome.get("description"));
+            });
+        }
 
-		});
-		return list;
-	}
+        result.setData(list);
 
-	private long queryCount(String type, Map<String, CollectionConfig> types, Set<String> keywords) {
-		BasicDBList keyquery = new BasicDBList();
-		keywords.forEach(x -> keyquery.add(new BasicDBObject("keywords", x)));
-		return types.get(type).getMongoTemplate().getCollection(types.get(type).getCollection())
-				.count(new BasicDBObject("$and", keyquery));
-	}
+        return mapperJson.writeValueAsString(result);
 
-	private Set<String> extractKw(String query) {
-		return Arrays.stream(query.trim().split(" ")).map(x -> x.trim().toLowerCase()).filter(x -> x.length() > 1)
-				.collect(Collectors.toSet());
-	}
+    }
+
+    private List<DBObject> queryList(String type, Integer perPage, Integer offset, Map<String, CollectionConfig> types,
+                                     Set<String> keywords, BasicDBObject projection,
+                                     Map<String, String> reqParams) {
+        DBObject query = getDbObjectQuery(keywords,reqParams);
+
+
+
+        List<DBObject> list = types.get(type).getMongoTemplate().getCollection(types.get(type).getCollection())
+                .find(query, projection).limit(perPage).skip(offset).toArray();
+        list.stream().forEach(x -> {
+            x.put("_id", x.get("_id").toString());
+
+        });
+        return list;
+    }
+
+    private long queryCount(String type, Map<String, CollectionConfig> types, Set<String> keywords,
+                            Map<String, String> reqParams) {
+        DBObject query = getDbObjectQuery(keywords,reqParams);
+
+
+        return types.get(type).getMongoTemplate().getCollection(types.get(type).getCollection())
+                .count(query);
+    }
+
+    private DBObject getDbObjectQuery(Set<String> keywords,Map<String, String> reqParams) {
+        DBObject query;
+        if (!keywords.isEmpty()) {
+            BasicDBList keyquery = new BasicDBList();
+            keywords.forEach(x -> keyquery.add(new BasicDBObject("keywords", x)));
+            query = new BasicDBObject("$and", keyquery);
+        } else {
+            query = new BasicDBObject();
+        }
+        final DBObject queryf = query;
+        reqParams.keySet().stream().forEach(x -> {
+            if (reqFilters.containsKey(x)) {
+                reqFilters.get(x).accept(reqParams.get(x), queryf);
+            }
+        });
+        return query;
+    }
+
+    private Set<String> extractKw(String query) {
+        return Arrays.stream(query.trim().split(" ")).map(x -> x.trim().toLowerCase()).filter(x -> x.length() > 1)
+                .collect(Collectors.toSet());
+    }
 
 }
