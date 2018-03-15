@@ -90,7 +90,7 @@ public class KronaService {
 	}
 	
 	
-	@RequestMapping(value = "/{genome}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
+	@RequestMapping(value = "/{genome:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_XML_VALUE)
 	@ResponseBody
 	public String go(@PathVariable("genome") String genome, @RequestParam(value = TERM) String term,
 			@RequestParam(value = "level", defaultValue = "4") Long maxLevel,
