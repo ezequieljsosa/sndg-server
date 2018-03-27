@@ -156,6 +156,7 @@ input[type="search"] {
 		var ontologies = ${ontologies} ;
 		var structures = ${structures} ; 
 		var user = "${user.name}";
+		var protOrganism = "${organism}";
 		
 	</script>
 
@@ -502,6 +503,7 @@ input[type="search"] {
 			
 			var prot_overview = new $.ProteinOverview($('#overview_table'),
 					protein,$.api);
+			prot_overview.organism = protOrganism;
 			prot_overview.ontologies = ontologies;
 			prot_overview.propTypes.push(user)
 			prot_overview.init();
@@ -726,7 +728,7 @@ input[type="search"] {
 			
 			//$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
 			var li = $("<li/>").appendTo( $(".breadcrumb") );
-			$("<a/>",{"href":"${baseURL}/genome/" + protein.organism}).html("<i>" + protein.organism + "</i>").appendTo(li);
+			$("<a/>",{"href":"${baseURL}/genome/" + protein.organism}).html("<i>" + protOrganism + "</i>").appendTo(li);
 			
 			li = $("<li/>").appendTo( $(".breadcrumb") );
 			$("<a/>",{"href":"${baseURL}/search/" + protein.organism +  "/product/" }).html("Search").click(function(evt){

@@ -67,16 +67,21 @@ public class SNDGController {
             dbObject.put("experiment", "/" + value.toLowerCase() + "/");
         });
         map.put("has_ligand", (value, dbObject) -> {
-            dbObject.put("ligands.0", new BasicDBObject("$exists",true));
+            dbObject.put("sndg_index.ligand", 1);
         });
         map.put("has_structure", (value, dbObject) -> {
             dbObject.put("keywords", "has_structure");
         });
         map.put("length", (value, dbObject) -> {
-            dbObject.put("size.len", value.toLowerCase());
+
+            String operator = "$" +
+                    value.toLowerCase().split("_")[0];
+            int size = Integer.parseInt(value.toLowerCase().split("_")[1]);
+            dbObject.put("size.len", new BasicDBObject(operator,
+                    size));
         });
         map.put("assembly_level", (value, dbObject) -> {
-            dbObject.put("assembly_level", value.toLowerCase());
+            dbObject.put("assemblyStatus", value);
         });
         map.put("markercode", (value, dbObject) -> {
             dbObject.put("sequences.sequence.markercode", value.toLowerCase());
@@ -159,11 +164,12 @@ public class SNDGController {
 
         List<DBObject> list = queryList(type, perPage, offset, typesMap(), keywords, projection, reqParams);
 
-        if (type.equals("prot")) {
+        if (type.equals("prot") || type.equals("seq") ) {
             list.stream().forEach(p -> {
                 DBObject genome = this.mongoTemplate.getCollection("sequence_collection").findOne(
                         new BasicDBObject("name", p.get("organism")), new BasicDBObject("description", 1));
-                p.put("organism", genome.get("description"));
+
+                p.put("colDescription", genome.get("description"));
             });
         }
 
@@ -176,8 +182,11 @@ public class SNDGController {
     private List<DBObject> queryList(String type, Integer perPage, Integer offset, Map<String, CollectionConfig> types,
                                      Set<String> keywords, BasicDBObject projection,
                                      Map<String, String> reqParams) {
-        DBObject query = getDbObjectQuery(keywords,reqParams);
+        DBObject query = getDbObjectQuery(keywords, reqParams);
 
+        if (type.equals("struct")) {
+            query.put("_cls", "Structure.ExperimentalStructure");
+        }
 
 
         List<DBObject> list = types.get(type).getMongoTemplate().getCollection(types.get(type).getCollection())
@@ -191,14 +200,16 @@ public class SNDGController {
 
     private long queryCount(String type, Map<String, CollectionConfig> types, Set<String> keywords,
                             Map<String, String> reqParams) {
-        DBObject query = getDbObjectQuery(keywords,reqParams);
-
+        DBObject query = getDbObjectQuery(keywords, reqParams);
+        if (type.equals("struct")) {
+            query.put("_cls", "Structure.ExperimentalStructure");
+        }
 
         return types.get(type).getMongoTemplate().getCollection(types.get(type).getCollection())
                 .count(query);
     }
 
-    private DBObject getDbObjectQuery(Set<String> keywords,Map<String, String> reqParams) {
+    private DBObject getDbObjectQuery(Set<String> keywords, Map<String, String> reqParams) {
         DBObject query;
         if (!keywords.isEmpty()) {
             BasicDBList keyquery = new BasicDBList();

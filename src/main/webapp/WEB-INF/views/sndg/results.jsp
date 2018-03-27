@@ -21,7 +21,6 @@
     <body>
 
 
-
     <script type="text/javascript">
         //<![CDATA[
     </script>
@@ -31,9 +30,9 @@
         function render_filter(filter_props, parent) {
             var tr = $("<tr/>").appendTo(parent);
             var enable = $("<input/>", {id: "in_" + filter_props.name, type: "checkbox"});
-            enable.change(function(){
-                filter_props.enabled = enable.is(':checked')
-            })
+            enable.change(function () {
+                filter_props.enabled = enable.is(':checked');
+            });
             $("<td/>").appendTo(tr).append(enable)
 
             var title = filter_props.name.toUpperCase().substring(0, 1) + filter_props.name.toLowerCase().replace("_", " ").substring(1);
@@ -43,45 +42,44 @@
             tr.append($("<td/>").html(title));
             var elem = $("<td/>").appendTo(tr);
             if (filter_props.type === "text") {
-                var input =$("<input/>", {id: "in_" + filter_props.name, type: "text"});
+                var input = $("<input/>", {id: "in_" + filter_props.name, type: "text"});
 
                 elem.append(input);
                 input.val(filter_props.value);
-                input.keypress(function(){
+                input.keypress(function () {
                     filter_props.value = input.val();
                     filter_props.enabled = true;
-                    enable.prop('checked',true);
+                    enable.prop('checked', true);
                 })
             }
             if (filter_props.type === "select") {
                 var sel = $("<select/>", {id: "in_" + filter_props.name}).appendTo(elem);
                 elem.append(sel);
                 filter_props.options.forEach(x => {
-                    if(x instanceof Array){
-                        sel.append($("<option/>",{value:x[1]}).html(x[0]));
+                    if (x instanceof Array) {
+                        sel.append($("<option/>", {value: x[1]}).html(x[0]));
                     } else {
-                        sel.append($("<option/>",{value:x}).html(x));
+                        sel.append($("<option/>", {value: x}).html(x));
                     }
 
                 });
                 sel.val(filter_props.value);
-                sel.change(function(){
+                sel.change(function () {
                     filter_props.value = sel.val();
                     filter_props.enabled = true;
-                    enable.prop('checked',true);
+                    enable.prop('checked', true);
                 })
             }
             if (filter_props.type === "check") {
                 var check = $("<input/>", {id: "in_" + filter_props.name, type: "checkbox"});
                 elem.append(check);
-                if(filter_props.value == "true"){
-                    debugger
+                if (filter_props.value == "true") {
                     check.prop('checked', true);
                 }
-                check.change(function(){
+                check.change(function () {
                     filter_props.value = check.is(':checked');
                     filter_props.enabled = true;
-                    enable.prop('checked',true);
+                    enable.prop('checked', true);
                 })
             }
             if (filter_props.type === "range") {
@@ -89,8 +87,8 @@
                 var values = filter_props.value.split("_");
                 var display = $("<span/>").appendTo(elem);
                 var sel = $("<select/>", {id: "in_" + filter_props.name}).appendTo(elem);
-                sel.append($("<option/>",{value:"gt"}).html(">="));
-                sel.append($("<option/>",{value:"lt"}).html("<="));
+                sel.append($("<option/>", {value: "gt"}).html(">="));
+                sel.append($("<option/>", {value: "lt"}).html("<="));
                 sel.val(values[0]);
                 var rinput = $("<input/>", {
                     id: "in_" + filter_props.name,
@@ -100,52 +98,57 @@
                 });
                 rinput.val(values[1])
                 elem.append(rinput);
-                sel.change(function(evt){
+                sel.change(function (evt) {
                     filter_props.value = sel.val() + "_" + rinput.val().toString();
                     filter_props.enabled = true;
-                    enable.prop('checked',true);
+                    enable.prop('checked', true);
                 });
-                rinput.change(function(evt){
+                rinput.change(function (evt) {
                     filter_props.value = sel.val() + "_" + rinput.val().toString();
                     display.html(rinput.val())
                     filter_props.enabled = true;
-                    enable.prop('checked',true);
+                    enable.prop('checked', true);
                 });
                 display.html(rinput.val())
             }
-            if(filter_props.help){
+            if (filter_props.help) {
                 tr.append($("<td/>").html(filter_props.help));
             }
         }
 
         var species_filter = {
-            name: "species",    type: "select", caption:"Especie",value:"Bacteria",
-            options: [["Bacteria",2],["Animales",33208], ["Plantas",3193], ["Hongos",4751],
-                ["Arquea",2157], ["Virus",10239]]
+            name: "species", type: "select", caption: "Especie", value: "Bacteria",
+            options: [["Bacteria", 2], ["Animales", 33208], ["Plantas", 3193], ["Hongos", 4751],
+                ["Arquea", 2157], ["Virus", 10239]]
         };
         var tax_filter = {
-            name: "taxonomia", caption: "Taxonomía", value:"", type: "text", help: "identificador numérico o palabra clave"
+            name: "taxonomia",
+            caption: "Taxonomía",
+            value: "",
+            type: "text",
+            help: "identificador numérico o palabra clave"
         };
         var assay_filter = {
-            name: "ensayo", type: "select", options: ["X-RAY", "NMR", "MICROSCOPY", "MODEL"],value:"X-RAY"
+            name: "ensayo", type: "select", options: ["X-RAY", "NMR", "MICROSCOPY", "MODEL"], value: "X-RAY"
         };
         var ligand_filter = {
-            name: "has_ligand", type: "check", caption:"Tiene ligando",value:"false"
+            name: "has_ligand", type: "check", caption: "Tiene ligando", value: "false"
         };
         var structure_filter = {
-            name: "has_structure", type: "check", caption:"Tiene estructura",value:"false"
+            name: "has_structure", type: "check", caption: "Tiene estructura", value: "false"
         };
 
-        var length_filter = {name: "length", type: "range", value:"gt_200", min: 1, max: 2000};
+        //var length_filter_seq = {name: "length", type: "range", value: "gt_200", min: 1, max: 10000};
+        var length_filter_prot = {name: "length", caption: "Largo",type: "range", value: "gt_200", min: 1, max: 2000};
 
         var assembly_level_filter = {
-            name: "assembly_level", type: "select", value:"Complete genome", options: ["Complete genome",
+            name: "assembly_level", type: "select", value: "Complete genome", options: ["Complete Genome",
                 "Chromosome", "Scaffold", "Contig"]
         };
         var markercode_filter = {
-            name: "markercode", type: "select", value:"COI-5P", options: [
-                "COI-5P","ARK", "atp6", "28S", "CHD-Z", "H4", "ITS1", "ITS",
-                "18S", "COII", "TPI", "PGD", "rbcLa",  "COI-3P",
+            name: "markercode", type: "select", value: "COI-5P", options: [
+                "COI-5P", "ARK", "atp6", "28S", "CHD-Z", "H4", "ITS1", "ITS",
+                "18S", "COII", "TPI", "PGD", "rbcLa", "COI-3P",
                 "ITS2", "UPA", "16S", "ENO", "hcpA", "12S",
                 "MB2-EX2-3", "MC1R", "rbcL", "5.8S", "CAD", "matK", "CYTB", "AATS", "Wnt1", "CAD4", "D-loop", "H3"
             ]
@@ -154,29 +157,30 @@
 
         var filters = {
             tool: [{
-                name: "tool_type", type: "select", value:"webserver", options: ["webserver",
+                name: "tool_type", type: "select", value: "webserver", options: ["webserver",
                     "app", "database", "library", "plugin", "program"
                 ]
             }],
-            struct: [species_filter, tax_filter, assay_filter, ligand_filter],
-            prot: [species_filter, tax_filter, structure_filter, length_filter], //"ec", "go",
-            seq: [species_filter, tax_filter, assembly_level_filter, length_filter], //"ec", "go",
+            struct: [species_filter, tax_filter,  ligand_filter],
+            prot: [species_filter, tax_filter, structure_filter, length_filter_prot], //"ec", "go",
+            seq: [species_filter, tax_filter, assembly_level_filter], //"ec", "go",
             barcode: [species_filter, tax_filter, markercode_filter],
-            genome: [species_filter, tax_filter, assembly_level_filter, length_filter] //"ec", "go",
+            genome: [species_filter, tax_filter, assembly_level_filter] //"ec", "go",
 
         };
 
         var hide_filters = true;
-        filters["${datatype}"].forEach(function(x) {
-            if ($.QueryString[x.name]){
+        filters["${datatype}"].forEach(function (x) {
+            if ($.QueryString[x.name]) {
                 hide_filters = false;
-                x.value =  $.QueryString[x.name];
+                x.value = $.QueryString[x.name];
+
             }
         });
 
 
         var urlMap = {
-            "seq": x => "${baseUrl}/sndg/protein/" + x._id,
+            "seq": x => "${baseUrl}/sndg/genome/" + x.organism + "/contig/" + x.name + "?start=1&end=20000" ,
             "genome": x => "${baseUrl}/sndg/genome/" + x.name,
             "prot": x => "${baseUrl}/sndg/protein/" + x._id,
             "struct": x => "${baseUrl}/sndg/structure/" + x.name,
@@ -184,12 +188,12 @@
             "tool": x => x.url
         };
         var nameMap = {
-            "seq":  "Secuencias Ensambladas",
-            "genome":  "Genomas",
+            "seq": "Secuencias Ensambladas",
+            "genome": "Genomas",
             "prot": "Proteinas",
-            "struct":  "Estructuras",
+            "struct": "Estructuras",
             "barcode": "Barcodes",
-            "tool":  "Herramientas"
+            "tool": "Herramientas"
         }
 
         $.maxVisiblePages = 5
@@ -201,16 +205,20 @@
             if (pageSize == undefined) {
                 pageSize = $.pageSize
             }
+            var params = [];
+            filters["${datatype}"].filter(x => x.enabled).forEach(x => {
+                params.push(x.name + "=" + x.value.toString());
+            });
 
             return ('${baseURL}/search/results?type=${datatype}&query=' + $("#searchInput").val() +
-                "&pageSize=" + pageSize.toString() + "&start=" + (page * pageSize).toString());
+                "&pageSize=" + pageSize.toString() + "&start=" + (page * pageSize).toString()) + "&" + params.join("&");
         }
 
         function createfilters(elem) {
             filters["${datatype}"].forEach(uiFilter => {
-                render_filter(uiFilter,elem)
+                render_filter(uiFilter, elem)
             });
-            if (hide_filters){
+            if (hide_filters) {
                 elem.hide();
             }
 
@@ -218,16 +226,22 @@
 
         function init() {
 
-            createfilters($('#filters_div'))
+            createfilters($('#filters_div'));
+
+
+            filters["${datatype}"].forEach(function (x) {
+                if ($.QueryString[x.name]) {
+                    x.enabled = true;
+                    $("#in_" + x.name).prop('checked', "true");
+                }
+            });
+
             $("#base_breadcrumb").html(nameMap["${datatype}"]);
 
             $('#searchBtn').click(function (evt) {
                 evt.preventDefault();
-                var params = [];
-                filters["${datatype}"].filter(x=>x.enabled).forEach(x => {
-                    params.push(x.name + "=" + x.value.toString());
-                });
-                window.location.href = searchUrl(0) + "&" +params.join("&")
+
+                window.location.href = searchUrl(0) ;
             })
 
             $("#searchInput").keyup(function (evt) {
@@ -262,7 +276,11 @@
 
                     $("<td />").appendTo(tr).append($("<a />", {href: urlMap['${datatype}'](record)}).html(name))
                     $("<td />").appendTo(tr).html(record.description)
-                    $("<td />").appendTo(tr).html(record.organism)
+                    if(  ["prot","seq"].indexOf( '${datatype}') !== -1 ){
+                        $("<a/>",{href: urlMap['genome']({name:record.organism})}).html(record.colDescription) .appendTo(
+                        $("<td />").appendTo(tr))
+                    }
+
                 });
 
 
@@ -370,7 +388,9 @@
                     </tr>
                     </thead>
                     <tbody id="resultTableBody">
-                    <tr><td><img src="${baseURL}/public/theme/img/ajax-loader.gif" alt="cargando..." /></td></tr>
+                    <tr>
+                        <td><img src="${baseURL}/public/theme/img/ajax-loader.gif" alt="cargando..."/></td>
+                    </tr>
 
                     </tbody>
                 </table>

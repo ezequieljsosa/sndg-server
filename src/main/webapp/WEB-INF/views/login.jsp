@@ -68,7 +68,7 @@
 					
 						<div class="modal-header"
 							style="cursor: pointer;"> 
-							<a href="${baseURL}/user/main"><img height="200px" src="${baseURL}/public/html/Logo PathogenTARGET.jpg" /></a>
+							<img src="http://datos.sndg.mincyt.gob.ar/assets/logo_sistemas_nacionales-48dd30357d8c0e7dc192ba175f34427a.png" />
 						</div>
 						<div class="modal-body">
 							<form:form action="login" class="form col-md-12 center-block"
@@ -77,11 +77,10 @@
 								
 
 								<c:if test="${param.error != null}">
-									<div class="alert alert-danger">Invalid username and
-										password.</div>
+									<div class="alert alert-danger"><spring:message code="login.error"/></div>
 								</c:if>
 								<c:if test="${param.logout != null}">
-									<div class="alert alert-success">You have been logged
+									<div class="alert alert-success"><spring:message code="login.logout"/>
 										out.</div>
 								</c:if>
 

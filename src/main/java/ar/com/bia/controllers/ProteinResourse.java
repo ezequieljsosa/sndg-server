@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
+import ar.com.bia.entity.SeqCollectionDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -56,13 +57,15 @@ public class ProteinResourse {
 
 		
 		GeneProductDoc protein = this.protein(proteinId);
+		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("name").is(protein.getOrganism())),
+				SeqCollectionDoc.class);
 		List<OntologyTerm> ontologies = ontologyService.ontologies(protein);
 		List<StructureDoc> structures = this.structureService.structures(protein);
 		
 		model.addAttribute("user", principal);
 		
 		model.addAttribute("sessionProts", mapperJson.writeValueAsString(sessionService.proteins()));
-		
+		model.addAttribute("organism", genome.getDescription());
 		model.addAttribute("protein", mapperJson.writeValueAsString(protein));
 		model.addAttribute("ontologies", mapperJson.writeValueAsString(ontologies));
 		model.addAttribute("structures", mapperJson.writeValueAsString(structures));

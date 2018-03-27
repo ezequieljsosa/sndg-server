@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -62,7 +63,12 @@ public class FrontController {
 
         typesMap().keySet().stream().forEach(x -> {
             CollectionConfig cc = typesMap().get(x);
-            generalStats.put(x, cc.getMongoTemplate().count(new Query(), cc.getClazz()));
+
+            Query query = new Query();
+            if(x.equals("struct")){
+                query = new Query(Criteria.where("_cls").is("Structure.ExperimentalStructure"));
+            }
+            generalStats.put(x, cc.getMongoTemplate().count(query, cc.getClazz()));
         });
 
         List<DBObject> pipeline = Arrays.asList(new BasicDBObject("$group",
