@@ -374,7 +374,7 @@
 				$("#expressionbox").remove();
 			}
 			
-			if(genome.strainProjects  && genome.strainProjects.length){
+			if((user != "demo") &&  genome.strainProjects  && genome.strainProjects.length){
 				genome.strainProjects.forEach( proj => {
 					var tr = $("<tr />").appendTo( $("#projects_table"));
 					$("<td />").appendTo(tr).append($("<a />",{ href:'${baseURL}/variant/'  + proj.id  }).html(proj.name));

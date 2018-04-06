@@ -209,6 +209,19 @@ input[type="search"] {
 		}
 
 		function load_variants(features,seq) {
+
+            if (user === "demo") {
+                $('#dbvariants-box').remove()
+                $('#strainvariants-box').remove()
+                return;
+            }
+
+            if (features === null) {
+                $('#dbvariants-box').remove()
+                $('#strainvariants-box').remove()
+                return;
+            }
+
 			if (features == null) {
 				$('#dbvariants-box').remove()
 				$('#strainvariants-box').remove()

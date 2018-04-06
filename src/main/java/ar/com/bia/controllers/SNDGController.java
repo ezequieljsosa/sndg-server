@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import ar.com.bia.entity.*;
+import ar.com.bia.services.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -35,11 +38,6 @@ import com.mongodb.DBObject;
 
 import ar.com.bia.config.CollectionConfig;
 import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.entity.BarcodeDoc;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.ToolDoc;
 import ar.com.bia.pdb.StructureDoc;
 import ar.com.bia.services.exception.OrganismNotFoundException;
 
@@ -54,6 +52,9 @@ public class SNDGController {
 
     @Autowired
     private ObjectMapper mapperJson;
+
+    @Autowired
+    private UserService userService;
 
     public static Map<String, BiConsumer<String, DBObject>> reqFilters() {
         Map<String, BiConsumer<String, DBObject>> map = new HashMap<>();
@@ -124,7 +125,7 @@ public class SNDGController {
             Set<String> keywords = extractKw(query);
 
             typesMap().keySet().forEach(k -> {
-                model.addAttribute(k, queryCount(k, typesMap(), keywords, new HashMap<>()));
+                model.addAttribute(k, queryCount(k, typesMap(), keywords, new HashMap<>(), UserDoc.publicUserId));
             });
 
             return "sndg/search";
@@ -145,7 +146,7 @@ public class SNDGController {
                            @RequestParam(value = "pageSize", defaultValue = "50") Integer perPage,
                            @RequestParam(value = "start", defaultValue = "0") Integer offset,
                            @RequestParam(value = "query", defaultValue = "") String query,
-                           @RequestParam Map<String, String> reqParams)
+                           @RequestParam Map<String, String> reqParams, Principal principal)
             throws IOException {
 
         Set<String> keywords = extractKw(query);
@@ -155,16 +156,18 @@ public class SNDGController {
         PaginatedResult<DBObject> result = new PaginatedResult<>();
         result.setRecordsTotal(count);
 
+        UserDoc user = this.userService.findUser(principal.getName());
+        ObjectId userObjectId = user.getAuthId();
 
-        result.setRecordsFiltered(queryCount(type, typesMap(), keywords, reqParams));
+        result.setRecordsFiltered(queryCount(type, typesMap(), keywords, reqParams, userObjectId));
 
 
         BasicDBObject projection = new BasicDBObject().append("name", 1).append("description", 1).append("organism", 1)
                 .append("url", 1).append("ncbi_assembly", 1).append("processid", 1);
 
-        List<DBObject> list = queryList(type, perPage, offset, typesMap(), keywords, projection, reqParams);
+        List<DBObject> list = queryList(type, perPage, offset, typesMap(), keywords, projection, reqParams, userObjectId);
 
-        if (type.equals("prot") || type.equals("seq") ) {
+        if (type.equals("prot") || type.equals("seq")) {
             list.stream().forEach(p -> {
                 DBObject genome = this.mongoTemplate.getCollection("sequence_collection").findOne(
                         new BasicDBObject("name", p.get("organism")), new BasicDBObject("description", 1));
@@ -181,8 +184,8 @@ public class SNDGController {
 
     private List<DBObject> queryList(String type, Integer perPage, Integer offset, Map<String, CollectionConfig> types,
                                      Set<String> keywords, BasicDBObject projection,
-                                     Map<String, String> reqParams) {
-        DBObject query = getDbObjectQuery(keywords, reqParams);
+                                     Map<String, String> reqParams, ObjectId userObjectId) {
+        DBObject query = getDbObjectQuery(keywords, reqParams, userObjectId);
 
         if (type.equals("struct")) {
             query.put("_cls", "Structure.ExperimentalStructure");
@@ -199,8 +202,8 @@ public class SNDGController {
     }
 
     private long queryCount(String type, Map<String, CollectionConfig> types, Set<String> keywords,
-                            Map<String, String> reqParams) {
-        DBObject query = getDbObjectQuery(keywords, reqParams);
+                            Map<String, String> reqParams, ObjectId userObjectId) {
+        DBObject query = getDbObjectQuery(keywords, reqParams, userObjectId);
         if (type.equals("struct")) {
             query.put("_cls", "Structure.ExperimentalStructure");
         }
@@ -209,19 +212,32 @@ public class SNDGController {
                 .count(query);
     }
 
-    private DBObject getDbObjectQuery(Set<String> keywords, Map<String, String> reqParams) {
-        DBObject query;
+    private DBObject getDbObjectQuery(Set<String> keywords, Map<String, String> reqParams,
+                                      ObjectId loggedUserId) {
+        final DBObject query = new BasicDBObject();
+
+        BasicDBList list = new BasicDBList();
+        if (reqParams.containsKey("type") && reqParams.get("type").equals("genome")) {
+            list.add(UserDoc.publicUserId);
+            if (!loggedUserId.equals(UserDoc.publicUserId)) {
+                list.add(loggedUserId);
+                query.put("auth", new BasicDBObject("$in", list));
+            } else {
+                query.put("auth", UserDoc.publicUserId);
+            }
+
+        }
+
+
         if (!keywords.isEmpty()) {
             BasicDBList keyquery = new BasicDBList();
             keywords.forEach(x -> keyquery.add(new BasicDBObject("keywords", x)));
-            query = new BasicDBObject("$and", keyquery);
-        } else {
-            query = new BasicDBObject();
+            query.put("$and", keyquery);
         }
-        final DBObject queryf = query;
+
         reqParams.keySet().stream().forEach(x -> {
             if (reqFilters.containsKey(x)) {
-                reqFilters.get(x).accept(reqParams.get(x), queryf);
+                reqFilters.get(x).accept(reqParams.get(x), query);
             }
         });
         return query;
