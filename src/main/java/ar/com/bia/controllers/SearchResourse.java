@@ -108,7 +108,7 @@ public class SearchResourse {
 		return "search/Search";
 	}
 
-	@RequestMapping(value = "/{genome_name}/gene/{gene_name}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	@RequestMapping(value = "/{genome_name:.+}/gene/{gene_name}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	public String organismGeneProds(@PathVariable("genome_name") String genomeName,
 			@PathVariable("gene_name") String geneName, Model model, Principal principal)
 			throws JsonProcessingException {
@@ -136,7 +136,7 @@ public class SearchResourse {
 
 		model.addAttribute("user", principal);
 		model.addAttribute("genome_id", genomeId);
-
+		model.addAttribute("organismName", genome.getDescription());
 		model.addAttribute("organism", genomeId);
 		model.addAttribute("keywords", keywords);
 		model.addAttribute("gene", geneName);
@@ -159,7 +159,7 @@ public class SearchResourse {
 		return "search/Search";
 	}
 
-	@RequestMapping(value = "/{genome_name}/pathways/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	@RequestMapping(value = "/{genome_name:.+}/pathways/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	public String genomePathwaysScore(@PathVariable("genome_name") String genomeName, Model model, Principal principal)
 			throws JsonProcessingException {
 		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("name").is(genomeName)),

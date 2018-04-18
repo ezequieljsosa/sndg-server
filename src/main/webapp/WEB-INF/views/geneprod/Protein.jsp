@@ -112,10 +112,6 @@ input[type="search"] {
 		src="${baseURL}/public/theme/js/plugins/datatables/dataTables.bootstrap.js"
 		type="text/javascript"></script>
 
-
-
-
-
 	<script type="text/javascript"
 		src="${baseURL}/public/widgets/color-picker/jquery.colorPicker.js"></script>
 
@@ -162,7 +158,8 @@ input[type="search"] {
 		var ontologies = ${ontologies} ;
 		var structures = ${structures} ; 
 		var user = "${user.name}";
-		
+		var protOrganism = "${organism}";
+
 	</script>
 
 	<script type="text/javascript">	
@@ -214,6 +211,19 @@ input[type="search"] {
 		}
 
 		function load_variants(features,seq) {
+
+            if (user === "demo") {
+                $('#dbvariants-box').remove()
+                $('#strainvariants-box').remove()
+                return;
+            }
+
+            if (features === null) {
+                $('#dbvariants-box').remove()
+                $('#strainvariants-box').remove()
+                return;
+            }
+
 			if (features == null) {
 				$('#dbvariants-box').remove()
 				$('#strainvariants-box').remove()
@@ -285,6 +295,7 @@ input[type="search"] {
 				
 			} else {
 
+				$('#sequence_row').remove()
 				$('#dbvariants-box').remove()
 
 			}
@@ -507,6 +518,7 @@ input[type="search"] {
 			
 			var prot_overview = new $.ProteinOverview($('#overview_table'),
 					protein,$.api);
+			prot_overview.organism = protOrganism;
 			prot_overview.ontologies = ontologies;
 			prot_overview.propTypes.push(user)
 			prot_overview.init();

@@ -105,7 +105,7 @@ public class GenomeResourse {
 		}
 
 		UserDoc user = this.userService.findUser(principal.getName());
-		if (!genome.getAuth().equals(new ObjectId("563b9440b1b50423d1fd1fee"))) {
+		if (!genome.getAuth().equals(UserDoc.publicUserId)) {
 			if (!genome.getAuth().equals(user.getAuthId())) {
 				throw new ForbiddenException();
 			}

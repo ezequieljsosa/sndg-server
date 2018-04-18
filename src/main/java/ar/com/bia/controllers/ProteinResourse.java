@@ -56,13 +56,15 @@ public class ProteinResourse {
 
 		
 		GeneProductDoc protein = this.protein(proteinId);
+		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("name").is(protein.getOrganism())),
+				SeqCollectionDoc.class);
 		List<OntologyTerm> ontologies = ontologyService.ontologies(protein);
 		List<StructureDoc> structures = this.structureService.structures(protein);
 		
 		model.addAttribute("user", principal);
 		
 		model.addAttribute("sessionProts", mapperJson.writeValueAsString(sessionService.proteins()));
-		
+		model.addAttribute("organism", genome.getDescription());
 		model.addAttribute("protein", mapperJson.writeValueAsString(protein));
 		model.addAttribute("ontologies", mapperJson.writeValueAsString(ontologies));
 		model.addAttribute("structures", mapperJson.writeValueAsString(structures));

@@ -3,7 +3,8 @@ $.ProteinOverview = function(divElement, protein,api) {
 	this.protein = protein;
 	this.api = api;
 	this.propTypes = ["overexpression","pathways","chokepoint","essentiality","metadata","dbxref","demo"]
-	this.ontologies = []
+	this.ontologies = [];
+	this.organism = protein.organism;
 }
 
 $.ProteinOverview.prototype = {
@@ -205,7 +206,7 @@ $.ProteinOverview.prototype = {
 		$("#strSize").html(this.protein.strSize)
 		this.divElement.find("#organism").html(
 				'<a href="' + this.api.url_genome( this.protein.organism )
-						+ '">' + this.protein.organism + '</a>');
+						+ '">' + this.organism + '</a>');
 
 	},
 	

@@ -132,6 +132,7 @@ tr.selected:hover {
 		};
 
 		var currentOrganism = '${organism}';
+        var organismName = '${organismName}';
 		var currentKeywords = '${keywords}';
 		var all_ontologies = ${ontologies};
 		var currentGene = '${gene}';
@@ -436,7 +437,7 @@ tr.selected:hover {
 				var li = $("<li/>").appendTo($(".breadcrumb"));
 				$("<a/>", {
 					"href" : "${baseURL}/genome/" + currentOrganism
-				}).html("<i>" + currentOrganism + "</i>").appendTo(li);
+				}).html("<i>" + organismName + "</i>").appendTo(li);
 				li = $("<li/>").addClass("active").appendTo($(".breadcrumb"));
 				$("<a/>", {
 					"href" : "#"

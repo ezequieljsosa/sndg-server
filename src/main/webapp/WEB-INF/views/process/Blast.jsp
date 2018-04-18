@@ -747,6 +747,7 @@
 				</div>
 				<div id="results_body" class="box-body table-responsive no-padding">
 				</div>
+
 			</div>
 		</div>
 	</div>
