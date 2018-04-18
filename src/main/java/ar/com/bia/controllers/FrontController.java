@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import ar.com.bia.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -24,11 +25,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 import ar.com.bia.config.CollectionConfig;
-import ar.com.bia.entity.BarcodeDoc;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.ToolDoc;
 import ar.com.bia.pdb.StructureDoc;
 
 @Controller
@@ -53,6 +49,9 @@ public class FrontController {
         types.put("tool", new CollectionConfig("tool", "tools", ToolDoc.class, mongoTemplate));
         types.put("prot", new CollectionConfig("prot", "proteins", GeneProductDoc.class, mongoTemplate));
         types.put("barcode", new CollectionConfig("barcode", "barcodes", BarcodeDoc.class, mongoTemplate));
+        types.put("bioproject", new CollectionConfig("bioproject", "bioprojects", BioprojectDoc.class, mongoTemplate));
+
+
         return types;
     }
 

@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import ar.com.bia.entity.*;
+import ar.com.bia.services.TriConsumer;
 import ar.com.bia.services.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,44 +58,65 @@ public class SNDGController {
     @Autowired
     private UserService userService;
 
-    public static Map<String, BiConsumer<String, DBObject>> reqFilters() {
-        Map<String, BiConsumer<String, DBObject>> map = new HashMap<>();
-        map.put("species", (value, dbObject) -> {
+    public static Map<String, TriConsumer<String, Map<String, String>, DBObject>> reqFilters() {
+        Map<String, TriConsumer<String, Map<String, String>, DBObject>> map = new HashMap<>();
+        map.put("species", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("sndg_index.tax", value.toLowerCase());
         });
-        map.put("taxonomia", (value, dbObject) -> {
+        map.put("taxonomia", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("sndg_index.tax", value.toLowerCase());
         });
-        map.put("ensayo", (value, dbObject) -> {
+        map.put("ensayo", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("experiment", "/" + value.toLowerCase() + "/");
         });
-        map.put("has_ligand", (value, dbObject) -> {
+        map.put("has_ligand", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("sndg_index.ligand", 1);
         });
-        map.put("has_structure", (value, dbObject) -> {
+        map.put("has_structure", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("keywords", "has_structure");
         });
-        map.put("length", (value, dbObject) -> {
-
+        map.put("length", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             String operator = "$" +
                     value.toLowerCase().split("_")[0];
             int size = Integer.parseInt(value.toLowerCase().split("_")[1]);
             dbObject.put("size.len", new BasicDBObject(operator,
                     size));
         });
-        map.put("assembly_level", (value, dbObject) -> {
+        map.put("assembly_level", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("assemblyStatus", value);
         });
-        map.put("markercode", (value, dbObject) -> {
+        map.put("markercode", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("sequences.sequence.markercode", value.toLowerCase());
         });
-        map.put("tool_type", (value, dbObject) -> {
+        map.put("tool_type", (tag, params, dbObject) -> {
+            String value = params.get(tag);
             dbObject.put("type", value.toLowerCase());
         });
+        map.put("local_submitter", (tag, params, dbObject) -> {
+            String value = params.get(tag);
+            dbObject.put("keywords", "local_submitter");
+        });
+        map.put("submitters", (tag, params, dbObject) -> {
+            String value = params.get(tag);
+            String prop = params.get("type").equals("barcode") ? "specimen_identifiers.institution_storing" :
+                    "submitters";
+            dbObject.put(prop, Pattern.compile(".*" + value.toLowerCase() + ".*", Pattern.CASE_INSENSITIVE));
+        });
         return map;
+
+//
+
     }
 
-    private Map<String, BiConsumer<String, DBObject>> reqFilters = reqFilters();
+    private Map<String, TriConsumer<String, Map<String, String>, DBObject>> reqFilters = reqFilters();
 
 
     public Map<String, CollectionConfig> typesMap() {
@@ -106,6 +129,7 @@ public class SNDGController {
         types.put("tool", new CollectionConfig("tool", "tools", ToolDoc.class, mongoTemplate));
         types.put("prot", new CollectionConfig("prot", "proteins", GeneProductDoc.class, mongoTemplate));
         types.put("barcode", new CollectionConfig("barcode", "barcodes", BarcodeDoc.class, mongoTemplate));
+        types.put("bioproject", new CollectionConfig("bioproject", "bioprojects", BarcodeDoc.class, mongoTemplate));
         return types;
     }
 
@@ -163,7 +187,8 @@ public class SNDGController {
 
 
         BasicDBObject projection = new BasicDBObject().append("name", 1).append("description", 1).append("organism", 1)
-                .append("url", 1).append("ncbi_assembly", 1).append("processid", 1);
+                .append("url", 1).append("ncbi_assembly", 1).append("processid", 1)
+                .append("assemblies", 1).append("submitters", 1);
 
         List<DBObject> list = queryList(type, perPage, offset, typesMap(), keywords, projection, reqParams, userObjectId);
 
@@ -175,6 +200,32 @@ public class SNDGController {
                 p.put("colDescription", genome.get("description"));
             });
         }
+
+//        if (type.equals("bioproject")) {
+//            list.stream().forEach(p -> {
+//                DBObject project = new BasicDBObject("description", 1);
+//                project.put("submitters", 1);
+//                project.put("assemblies", 1);
+//                DBObject genome = this.mongoTemplate.getCollection("bioprojects").findOne(
+//                        new BasicDBObject("name", p.get("organism")), project);
+//
+//                final StringBuilder sbSubmitter = new StringBuilder();
+//                final StringBuilder sbAssemblies = new StringBuilder();
+//                ((BasicDBList)genome.get("submitters")).stream().forEach( x ->
+//                        sbSubmitter.append( x + " ")
+//                );
+//                ((BasicDBList)genome.get("assemblies")).stream().forEach( x ->
+//                        sbAssemblies.append( x + " ")
+//                );
+//
+//                String submitters = sbSubmitter.toString();
+//                submitters = (submitters.isEmpty()) ? "" : " Submitters:" + submitters;
+//                String assemblies = sbAssemblies.toString();
+//                assemblies = (assemblies.isEmpty()) ? "" : " Assemblies:" + submitters;
+//
+//                p.put("colDescription", genome.get("description"));
+//            });
+//        }
 
         result.setData(list);
 
@@ -237,7 +288,7 @@ public class SNDGController {
 
         reqParams.keySet().stream().forEach(x -> {
             if (reqFilters.containsKey(x)) {
-                reqFilters.get(x).accept(reqParams.get(x), query);
+                reqFilters.get(x).accept(x, reqParams, query);
             }
         });
         return query;

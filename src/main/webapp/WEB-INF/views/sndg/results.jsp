@@ -51,6 +51,11 @@
                     filter_props.enabled = true;
                     enable.prop('checked', true);
                 })
+                input.change(function () {
+                    filter_props.value = input.val();
+                    filter_props.enabled = true;
+                    enable.prop('checked', true);
+                })
             }
             if (filter_props.type === "select") {
                 var sel = $("<select/>", {id: "in_" + filter_props.name}).appendTo(elem);
@@ -139,7 +144,7 @@
         };
 
         //var length_filter_seq = {name: "length", type: "range", value: "gt_200", min: 1, max: 10000};
-        var length_filter_prot = {name: "length", caption: "Largo",type: "range", value: "gt_200", min: 1, max: 2000};
+        var length_filter_prot = {name: "length", caption: "Largo", type: "range", value: "gt_200", min: 1, max: 2000};
 
         var assembly_level_filter = {
             name: "assembly_level", type: "select", value: "Complete genome", options: ["Complete Genome",
@@ -154,6 +159,16 @@
             ]
         };
 
+        var local_submitter = {
+            name: "local_submitter", type: "check", caption: "Organización Argentina", value: "false"
+        };
+        var submitter_filter = {
+            name: "submitters",
+            caption: "Organización",
+            value: "",
+            type: "text"
+        };
+
 
         var filters = {
             tool: [{
@@ -161,12 +176,12 @@
                     "app", "database", "library", "plugin", "program"
                 ]
             }],
-            struct: [species_filter, tax_filter,  ligand_filter],
-            prot: [species_filter, tax_filter, structure_filter, length_filter_prot], //"ec", "go",
-            seq: [species_filter, tax_filter, assembly_level_filter], //"ec", "go",
-            barcode: [species_filter, tax_filter, markercode_filter],
-            genome: [species_filter, tax_filter, assembly_level_filter] //"ec", "go",
-
+            struct: [species_filter, tax_filter, ligand_filter],
+            prot: [local_submitter, species_filter, tax_filter, structure_filter, length_filter_prot], //"ec", "go",
+            seq: [local_submitter, species_filter, tax_filter, assembly_level_filter], //"ec", "go",
+            barcode: [ submitter_filter, species_filter, tax_filter, markercode_filter],
+            genome: [local_submitter, submitter_filter, species_filter, tax_filter, assembly_level_filter], //"ec", "go"
+            bioproject: [local_submitter, submitter_filter]
         };
 
         var hide_filters = true;
@@ -180,12 +195,14 @@
 
 
         var urlMap = {
-            "seq": x => "${baseUrl}/sndg/genome/" + x.organism + "/contig/" + x.name + "?start=1&end=20000" ,
+            "seq": x => "${baseUrl}/sndg/genome/" + x.organism + "/contig/" + x.name + "?start=1&end=20000",
             "genome": x => "${baseUrl}/sndg/genome/" + x.name,
             "prot": x => "${baseUrl}/sndg/protein/" + x._id,
             "struct": x => "${baseUrl}/sndg/structure/" + x.name,
             "barcode": x => "${baseUrl}/sndg/barcode/" + x.processid,
-            "tool": x => x.url
+            "tool": x => x.url,
+            "bioproject": x => x.accession
+
         };
         var nameMap = {
             "seq": "Secuencias Ensambladas",
@@ -193,7 +210,8 @@
             "prot": "Proteinas",
             "struct": "Estructuras",
             "barcode": "Barcodes",
-            "tool": "Herramientas"
+            "tool": "Herramientas",
+            "bioproject": "Proyectos"
         }
 
         $.maxVisiblePages = 5
@@ -241,7 +259,7 @@
             $('#searchBtn').click(function (evt) {
                 evt.preventDefault();
 
-                window.location.href = searchUrl(0) ;
+                window.location.href = searchUrl(0);
             })
 
             $("#searchInput").keyup(function (evt) {
@@ -276,9 +294,20 @@
 
                     $("<td />").appendTo(tr).append($("<a />", {href: urlMap['${datatype}'](record)}).html(name))
                     $("<td />").appendTo(tr).html(record.description)
-                    if(  ["prot","seq"].indexOf( '${datatype}') !== -1 ){
-                        $("<a/>",{href: urlMap['genome']({name:record.organism})}).html(record.colDescription) .appendTo(
-                        $("<td />").appendTo(tr))
+                    if (["prot", "seq"].indexOf('${datatype}') !== -1) {
+                        $("<a/>", {href: urlMap['genome']({name: record.organism})}).html(record.colDescription).appendTo(
+                            $("<td />").appendTo(tr))
+                    }
+                    if ('${datatype}' === "bioproject") {
+                        var extradata = "";
+                        if (record.submitters.length > 0) {
+                            extradata += "<b>Institución/es: </b>" + record.submitters.join(" ") + "<br />";
+                        }
+                        if (record.assemblies.length > 0) {
+                            extradata += "<b>Ensamblado/s:</b> " + record.assemblies.map(x => ('<a href="' +
+                                "${baseUrl}/sndg/genome/" + x.accession + '">' + x.name + '</a>')).join(" ");
+                        }
+                        $("<td />").html(extradata).appendTo(tr);
                     }
 
                 });
@@ -364,7 +393,14 @@
                             <a onclick="$('#filters_div').show();$(this).hide()">Más filtros</a>
                         </div>
 
-                        <table id="filters_div"></table>
+                        <table id="filters_div">
+                            <tr>
+                                <th>Habilitado</th>
+                                <th>Propiedad</th>
+                                <th>Valor elegido</th>
+                            </tr>
+
+                        </table>
                     </td>
                 </tr>
 

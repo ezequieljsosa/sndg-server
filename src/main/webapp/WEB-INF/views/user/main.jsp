@@ -120,6 +120,7 @@
 										<option value="struct">Estructuras</option>
 										<option value="barcode">Barcodes</option>
 										<option value="tool">Herramientas</option>
+									<option value="bioproject">Proyecto</option>
 
 								</select></td>
 								<td width="100%"><input width="100%" type="text" id="searchInput"
@@ -253,6 +254,23 @@
 
 			</section>
 
+			<section style="float: right !important;" class="col-lg-3">
+				<div class="small-box bg-aqua">
+					<div align="left" class="inner">
+						<h3>${generalStats.bioproject}</h3>
+						<p>Proyectos</p>
+					</div>
+					<div class="icon">
+						<i class="fa fa-calendar">&#160;</i>
+					</div>
+					<a href="${baseURL}/search/results?type=bioproject" class="small-box-footer"> &#160; <i
+							class="fa fa-arrow-circle-right">&#160;</i>
+					</a>
+
+				</div>
+
+			</section>
+
 		</div>
 
 	</div>
@@ -306,8 +324,13 @@
 		<canvas id="myChart"></canvas>
 		]]>
 	</div>
+
+
+
 	</section>
-	
+
+
+
 	<br />
 	<hr />
 	<br />

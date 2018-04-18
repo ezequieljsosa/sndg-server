@@ -104,6 +104,12 @@ public class GenomeResourse {
 			genomeName = genome.getName();
 		}
 
+		if (genome == null){
+			genome = this.mongoTemplate.findOne(new Query(Criteria.where("ncbi_assembly").is(genomeName)),
+					SeqCollectionDoc.class);
+			genomeName = genome.getName();
+		}
+
 		UserDoc user = this.userService.findUser(principal.getName());
 		if (!genome.getAuth().equals(UserDoc.publicUserId)) {
 			if (!genome.getAuth().equals(user.getAuthId())) {
