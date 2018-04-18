@@ -1,10 +1,6 @@
 package ar.com.bia.services;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -338,18 +334,18 @@ public class StructureService {
             IntStream.range(0, pd.getAs_lines().size())
                     .forEach(idx -> {
 
-                        String oldAsLine = pd.getAs_lines().get(idx);
-                        String strIdx = String.format("%5s", new Integer(idx + lineCount).toString());
-                        String pol = oldAsLine.substring(11,16);
-                        if (pol.trim().length() == 1){
-                            if(pol.trim().equals("O")){
-                                pol = " APOL";
-                            } else {
-                                pol = "  POL";
-                            }
-                        }
+                                String oldAsLine = pd.getAs_lines().get(idx);
+                                String strIdx = String.format("%5s", new Integer(idx + lineCount).toString());
+                                String pol = oldAsLine.substring(11, 16);
+                                if (pol.trim().length() == 1) {
+                                    if (pol.trim().equals("O")) {
+                                        pol = " APOL";
+                                    } else {
+                                        pol = "  POL";
+                                    }
+                                }
 
-                        String asLine = "HETATM" + strIdx + pol +  oldAsLine.substring(16);
+                                String asLine = "HETATM" + strIdx + pol + oldAsLine.substring(16);
                                 asLines.add(asLine);
                             }
                     )
