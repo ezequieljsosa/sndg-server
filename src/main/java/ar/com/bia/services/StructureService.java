@@ -327,7 +327,9 @@ public class StructureService {
         }
         JavaType type = mapperJson.getTypeFactory().constructCollectionType(List.class, clz);
         List<PocketData> result = mapperJson.readValue(pocketsJson, type);
-        int lineCount = countLines(structure.getFilePath());
+        int[] lineCount = new int[]{ countLines(structure.getFilePath())};
+
+
 
         result.stream().forEach(pd -> {
             List<String> asLines = new ArrayList<>();
@@ -335,7 +337,7 @@ public class StructureService {
                     .forEach(idx -> {
 
                                 String oldAsLine = pd.getAs_lines().get(idx);
-                                String strIdx = String.format("%5s", new Integer(idx + lineCount).toString());
+                                String strIdx = String.format("%5s", new Integer(idx + lineCount[0]).toString());
                                 String pol = oldAsLine.substring(11, 16);
                                 if (pol.trim().length() == 1) {
                                     if (pol.trim().equals("O")) {
@@ -351,9 +353,10 @@ public class StructureService {
                     )
             ;
             pd.setAs_lines(asLines);
+            lineCount[0] =  lineCount[0] + asLines.size();
         });
 
-        return result;
+        return result.stream().filter(x-> x.getProperties().get("Druggability Score" ) >= 0.2).collect(Collectors.toList());
     }
 
     // public String pdb_heatatom(StructureDoc structure) throws IOException {
