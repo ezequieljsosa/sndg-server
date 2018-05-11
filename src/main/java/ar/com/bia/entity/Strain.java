@@ -12,9 +12,12 @@ public class Strain {
 	private  String date;
 	private String country;
 	private String region;
-	private List<String> projects;
+	private String user;
+
+
+
 	
-	private Map<String,Object> properties;
+	private List<Map<String,Object>> properties;
 
 	public String getName() {
 		return name;
@@ -72,22 +75,22 @@ public class Strain {
 		this.region = region;
 	}
 
-	public Map<String, Object> getProperties() {
+
+
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public List<Map<String, Object>> getProperties() {
 		return properties;
 	}
 
-	public void setProperties(Map<String, Object> properties) {
+	public void setProperties(List<Map<String, Object>> properties) {
 		this.properties = properties;
 	}
-
-	public List<String> getProjects() {
-		return projects;
-	}
-
-	public void setProjects(List<String> projects) {
-		this.projects = projects;
-	}
-	
-	
-	
 }

@@ -16,288 +16,282 @@ import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
 
 /**
  * @author eze
- * 
  */
 @Document(collection = "sequence_collection")
 public class SeqCollectionDoc {
 
-	public static final String STRAIN = "strain";
+    public static final String STRAIN = "strain";
 
-	@Id
-	private String id;
-	private String organism;
-	private String name;
-	private String description;
-	private String status;
-	private String ncbi_assembly;
-	
-	
-	
-	private ObjectId auth;
-	
-	private String _cls = "SeqCollection.Genome";
-
-	private String size;
-	private String type;
-	
-	private Boolean has_expression;
-	@Field("go_index")
-	private Boolean goIndex;
-	@Field("ec_index")
-	private Boolean ecIndex;
-	private Map<String, List<String>> expression_samples;
-
-	private List<Metric> statistics;
-	private Map<String, Object> assembly;
-	private Map<String, Object> properties;
-
-	private List<String> publications;
-	private List<ObjectId> strains;
-	private List<Strain> strainsProps;
-	private List<StrainProject> strainProjects;
-	
-	private List<PathwayDTO> pathways;
-
-	private List<SeqColDruggabilityParam> druggabilityParams;
-	private List<PropertyUpload> uploads;
-	
-	
-	@Field("ref_genome_id")
-	private String refGenomeId;
-
-	@Field("proteome_id")
-	private String proteomeId;
-
-	public String getOrganism() {
-		return organism;
-	}
-
-	public void setOrganism(String organism) {
-		this.organism = organism;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    @Id
+    private String id;
+    private String organism;
+    private String name;
+    private String description;
+    private String status;
+    private String ncbi_assembly;
 
 
+    private ObjectId auth;
 
-	public String getSize() {
-		return size;
-	}
+    private String _cls = "SeqCollection.Genome";
 
-	public void setSize(String size) {
-		this.size = size;
-	}
+    private String size;
+    private String type;
 
-	public Map<String, Object> getAssembly() {
-		return assembly;
-	}
+    private Boolean has_expression;
+    @Field("go_index")
+    private Boolean goIndex;
+    @Field("ec_index")
+    private Boolean ecIndex;
+    private Map<String, List<String>> expression_samples;
 
-	public void setAssembly(Map<String, Object> assembly) {
-		this.assembly = assembly;
-	}
+    private List<Metric> statistics;
+    private Map<String, Object> assembly;
+    private Map<String, Object> properties;
 
-	public String getId() {
-		return id;
-	}
+    private List<String> publications;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private List<Strain> strains;
+    private List<Map<String, String>> strainsProps;
+    private List<StrainProject> strainProjects;
 
-	public List<String> getPublications() {
-		return publications;
-	}
+    private List<PathwayDTO> pathways;
 
-	public void setPublications(List<String> publications) {
-		this.publications = publications;
-	}
+    private List<SeqColDruggabilityParam> druggabilityParams;
+    private List<PropertyUpload> uploads;
 
-	public String getDescription() {
-		return description;
-	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @Field("ref_genome_id")
+    private String refGenomeId;
 
-	
+    @Field("proteome_id")
+    private String proteomeId;
 
-	public String getName() {
-		return name;
-	}
+    public String getOrganism() {
+        return organism;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setOrganism(String organism) {
+        this.organism = organism;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	
 
-	
+    public String getSize() {
+        return size;
+    }
 
-	public List<Metric> getStatistics() {
-		return statistics;
-	}
+    public void setSize(String size) {
+        this.size = size;
+    }
 
-	public void setStatistics(List<Metric> statistics) {
-		this.statistics = statistics;
-	}
+    public Map<String, Object> getAssembly() {
+        return assembly;
+    }
 
-	public Map<String, Object> getProperties() {
-		return properties;
-	}
+    public void setAssembly(Map<String, Object> assembly) {
+        this.assembly = assembly;
+    }
 
-	public void setProperties(Map<String, Object> properties) {
-		this.properties = properties;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getProteomeId() {
-		return proteomeId ;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setProteomeId(String proteomeId) {
-		this.proteomeId = proteomeId;
-	}
+    public List<String> getPublications() {
+        return publications;
+    }
 
-	public Boolean getHas_expression() {
-		return has_expression;
-	}
+    public void setPublications(List<String> publications) {
+        this.publications = publications;
+    }
 
-	public void setHas_expression(Boolean has_expression) {
-		this.has_expression = has_expression;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Map<String, List<String>> getExpression_samples() {
-		return expression_samples;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setExpression_samples(
-			Map<String, List<String>> expression_samples) {
-		this.expression_samples = expression_samples;
-	}
 
-	public List<ObjectId> getStrains() {
-		return strains;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setStrains(List<ObjectId> strains) {
-		this.strains = strains;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getRefGenomeId() {
-		return refGenomeId;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setRefGenomeId(String refGenomeId) {
-		this.refGenomeId = refGenomeId;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public Boolean getGoIndex() {
-		return goIndex;
-	}
 
-	public void setGoIndex(Boolean goIndex) {
-		this.goIndex = goIndex;
-	}
+    public List<Metric> getStatistics() {
+        return statistics;
+    }
 
-	public Boolean getEcIndex() {
-		return ecIndex;
-	}
+    public void setStatistics(List<Metric> statistics) {
+        this.statistics = statistics;
+    }
 
-	public void setEcIndex(Boolean ecIndex) {
-		this.ecIndex = ecIndex;
-	}
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
 
-	public List<PathwayDTO> getPathways() {
-		return pathways;
-	}
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
 
-	public void setPathways(List<PathwayDTO> pathways) {
-		this.pathways = pathways;
-	}
+    public String getProteomeId() {
+        return proteomeId;
+    }
 
-	public List<SeqColDruggabilityParam> getDruggabilityParams() {		
-		return this.druggabilityParams;
-	}
-	
-	public ObjectId getAuth() {
-		return auth;
-	}
+    public void setProteomeId(String proteomeId) {
+        this.proteomeId = proteomeId;
+    }
 
-	public void setAuth(ObjectId auth) {
-		this.auth = auth;
-	}
-	
-	public List<Float> getMetricValues(String metricName){
-		for (Metric metric : this.getStatistics()) {
-			if(metric.getName().equals(metricName)){
-				return metric.getValues();
-			}
-		}
-		return new ArrayList<Float>();		
-	}
+    public Boolean getHas_expression() {
+        return has_expression;
+    }
 
-	public List<PropertyUpload> getUploads() {
-		return uploads;
-	}
+    public void setHas_expression(Boolean has_expression) {
+        this.has_expression = has_expression;
+    }
 
-	public void setUploads(List<PropertyUpload> uploads) {
-		this.uploads = uploads;
-	}
+    public Map<String, List<String>> getExpression_samples() {
+        return expression_samples;
+    }
 
-	public void setDruggabilityParams(List<SeqColDruggabilityParam> druggabilityParams) {
-		this.druggabilityParams = druggabilityParams;
-	}
+    public void setExpression_samples(
+            Map<String, List<String>> expression_samples) {
+        this.expression_samples = expression_samples;
+    }
 
-	public String get_cls() {
-		return _cls;
-	}
 
-	public void set_cls(String _cls) {
-		this._cls = _cls;
-	}
+    public String getRefGenomeId() {
+        return refGenomeId;
+    }
 
-	public List<Strain> getStrainsProps() {
-		return strainsProps;
-	}
+    public void setRefGenomeId(String refGenomeId) {
+        this.refGenomeId = refGenomeId;
+    }
 
-	public void setStrainsProps(List<Strain> strainsProps) {
-		this.strainsProps = strainsProps;
-	}
+    public Boolean getGoIndex() {
+        return goIndex;
+    }
 
-	public List<StrainProject> getStrainProjects() {
-		return strainProjects;
-	}
+    public void setGoIndex(Boolean goIndex) {
+        this.goIndex = goIndex;
+    }
 
-	public void setStrainProjects(List<StrainProject> strainProjects) {
-		this.strainProjects = strainProjects;
-	}
-	
-	public List<Strain> projectStrains(String projectId){
-		return this.strainsProps.stream().filter(x -> x.getProjects().contains(projectId)).collect(Collectors.toList());
-	}
+    public Boolean getEcIndex() {
+        return ecIndex;
+    }
 
-	public String getNcbi_assembly() {
-		return ncbi_assembly;
-	}
+    public void setEcIndex(Boolean ecIndex) {
+        this.ecIndex = ecIndex;
+    }
 
-	public void setNcbi_assembly(String ncbi_assembly) {
-		this.ncbi_assembly = ncbi_assembly;
-	}
-	
-	
+    public List<PathwayDTO> getPathways() {
+        return pathways;
+    }
 
+    public void setPathways(List<PathwayDTO> pathways) {
+        this.pathways = pathways;
+    }
+
+    public List<SeqColDruggabilityParam> getDruggabilityParams() {
+        return this.druggabilityParams;
+    }
+
+    public ObjectId getAuth() {
+        return auth;
+    }
+
+    public void setAuth(ObjectId auth) {
+        this.auth = auth;
+    }
+
+    public List<Float> getMetricValues(String metricName) {
+        for (Metric metric : this.getStatistics()) {
+            if (metric.getName().equals(metricName)) {
+                return metric.getValues();
+            }
+        }
+        return new ArrayList<Float>();
+    }
+
+    public List<PropertyUpload> getUploads() {
+        return uploads;
+    }
+
+    public void setUploads(List<PropertyUpload> uploads) {
+        this.uploads = uploads;
+    }
+
+    public void setDruggabilityParams(List<SeqColDruggabilityParam> druggabilityParams) {
+        this.druggabilityParams = druggabilityParams;
+    }
+
+    public String get_cls() {
+        return _cls;
+    }
+
+    public void set_cls(String _cls) {
+        this._cls = _cls;
+    }
+
+
+    public List<StrainProject> getStrainProjects() {
+        return strainProjects;
+    }
+
+    public void setStrainProjects(List<StrainProject> strainProjects) {
+        this.strainProjects = strainProjects;
+    }
+
+    public List<Strain> projectStrains(StrainProject project) {
+        return this.getStrains().stream().filter(x -> project.getStrains().contains(x.getName())).collect(Collectors.toList());
+    }
+
+    public String getNcbi_assembly() {
+        return ncbi_assembly;
+    }
+
+    public void setNcbi_assembly(String ncbi_assembly) {
+        this.ncbi_assembly = ncbi_assembly;
+    }
+
+
+    public List<Strain> getStrains() {
+        return strains;
+    }
+
+    public void setStrains(List<Strain> strains) {
+        this.strains = strains;
+    }
+
+    public List<Map<String, String>> getStrainsProps() {
+        return strainsProps;
+    }
+
+    public void setStrainsProps(List<Map<String, String>> strainsProps) {
+        this.strainsProps = strainsProps;
+    }
 }

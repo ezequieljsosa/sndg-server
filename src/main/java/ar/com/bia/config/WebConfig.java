@@ -40,7 +40,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/public/jbrowse/**").addResourceLocations("file:/data/xomeq/jbrowse/");
 		registry.addResourceHandler("/public/**").addResourceLocations("/public/");
+
+
+
+
 	}
 
 	// @Bean
