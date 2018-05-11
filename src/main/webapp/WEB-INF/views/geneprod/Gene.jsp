@@ -51,7 +51,7 @@ var product_obj = ${protein};
 			var loc = new $.Localization(gene.location.reference, gene.location.start, gene.location.end);
 			var ext_loc = loc.expand();
 			var jbrowse = new $.JBrowseWrapper($("#jbrowse"),
-					"${baseURL}/public/jbrowse/?data=data/");
+					"${baseURL}/public/jbrowse/index.html?data=data/");
 
 			jbrowse.init(genome_name, true, ext_loc, loc);
 		

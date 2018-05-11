@@ -139,6 +139,7 @@ tr.selected:hover {
 		var organisms = '${organisms}'.split(",");
 		var searchProps = ${searchProps};
 		var statistics = ${statistics};
+        var user = '${user.name}';
 
 		function save_state() {
 			var data = JSON.stringify({
@@ -250,9 +251,13 @@ tr.selected:hover {
 		}
 
 		var init = function(data) {
+            if (user == "demo") {
+                $("#filter_variant-strain").remove()
+                $("#filter_variant-db").remove()
 
+            }
 			var currentUrl = window.location.href.split($.api.url)[1]
-			searchProps = $.map(searchProps, function(x) {
+			searchProps = searchProps.filter(x => (x.uploader == "demo") || (x.uploader == user) ).map(function(x) {
 				var param = new $.ScoreParam(x.name);
 				param.description = x.description;
 				param.type = x.type;
@@ -577,15 +582,15 @@ tr.selected:hover {
 					</a> <a data-id="filter_pocket" class="btn btn-app open-modal"> <i
 						class="fa  fa-puzzle-piece">&#160;</i>Pocket
 					</a> 
-					<!--
-					<a  data-id="filter_variant-db" class="btn btn-app open-modal"> <i
+
+					<a  id="filter_variant-db" data-id="filter_variant-db" class="btn btn-app open-modal"> <i
 						class="fa fa-barcode">&#160;</i>DB Variants
 					</a> 
 					
-					<a  data-id="filter_variant-strain" class="btn btn-app open-modal"> <i
+					<a  id="filter_variant-strain" data-id="filter_variant-strain" class="btn btn-app open-modal"> <i
 						class="fa fa-barcode">&#160;</i>Strain Variants
 					</a>
-					-->
+
 					
 					<a id="filter_metadata" data-id="filter_metadata" class="btn btn-app open-modal"> <i
 						class="fa fa-tags">&#160;</i>Metadata

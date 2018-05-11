@@ -54,7 +54,7 @@ var variant = ${variant};
 			var loc = new $.Localization(variant.contig, variant.pos , variant.pos +  variant.ref.length - 1 );
 			
 			var jbrowse = new $.JBrowseWrapper($("#jbrowse"),
-					"${baseURL}/public/jbrowse/?data=data/");
+					"${baseURL}/public/jbrowse/index.html?data=data/");
 			jbrowse.tracks = jbrowse.tracks.concat(  [strain + "_vcf" ,strain + "_bam"])
 			jbrowse.init(genome_name, true, loc, loc);
 		

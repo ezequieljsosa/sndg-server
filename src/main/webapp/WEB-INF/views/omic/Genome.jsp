@@ -376,28 +376,28 @@
             }
 
 
-            if (genome.strains != null) {
-                $("#heatmap_variants").attr("href",
-                    $.api.url_genome_variants(genome.id));
-
-                var_genomes = [genome.id] + genome.strains;
-                $("#variants_query").attr(
-                    "href",
-                    $.api.url_search_genome_keyword(genome.name,
-                        'strain_variants'));
-
-                $("#variants_query").remove()
-            } else if (genome.refGenomeId != null) {
-
-                $("#heatmap_variants").attr("href",
-                    "VariantHeatmap.jsp?genome=" + genome.refGenomeId);
-                $("#variants_query").attr("href",
-                    $.api.url_genome(genome.refGenomeId)).text(
-                    "Reference Genome").val("Reference Genome");
-
-            } else {
-                $("#variantbox").remove();
-            }
+            // if (genome.strains != null) {
+            //     $("#heatmap_variants").attr("href",
+            //         $.api.url_genome_variants(genome.id));
+            //
+            //     var_genomes = [genome.id] + genome.strains;
+            //     $("#variants_query").attr(
+            //         "href",
+            //         $.api.url_search_genome_keyword(genome.name,
+            //             'strain_variants'));
+            //
+            //     $("#variants_query").remove()
+            // } else if (genome.refGenomeId != null) {
+            //
+            //     $("#heatmap_variants").attr("href",
+            //         "VariantHeatmap.jsp?genome=" + genome.refGenomeId);
+            //     $("#variants_query").attr("href",
+            //         $.api.url_genome(genome.refGenomeId)).text(
+            //         "Reference Genome").val("Reference Genome");
+            //
+            // } else {
+                 $("#variantbox").remove();
+            // }
 
             if (genome.pathways.length > 0) {
                 $("#pathways_search")
