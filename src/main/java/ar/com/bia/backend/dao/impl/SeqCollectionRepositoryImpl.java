@@ -50,7 +50,14 @@ public class SeqCollectionRepositoryImpl implements SeqCollectionRepository {
 	
 	public SeqCollectionDoc findByProject(String pid) {
 		Assert.hasText(pid, "The given pid must not be null or empty!");
-		return mongoTemplate.findOne(new Query(Criteria.where("strainProjects.id").is(new ObjectId(pid))),SeqCollectionDoc.class);
+		try{
+			return mongoTemplate.findOne(new Query(Criteria.where("strainProjects.id").is(new ObjectId(pid))),SeqCollectionDoc.class);
+		} catch(Exception ex){
+			ex.printStackTrace();
+			throw ex;
+		}
+
+
 	}
 	
 	
