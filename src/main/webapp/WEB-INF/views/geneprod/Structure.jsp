@@ -54,11 +54,6 @@
 <link href="${baseURL}/public/theme/css/bootstrap-slider/slider.css"
 	rel="stylesheet" type="text/css" />
 
-<link rel="stylesheet"
-	href="${baseURL}/public/biojs/resources/dependencies/jquery/jquery-ui-1.8.2.css" />
-<link rel="stylesheet"
-	href="${baseURL}/public/biojs/resources/dependencies/jquery/jquery.tooltip.css" />
-
 <!--  -->
 
 
@@ -198,11 +193,7 @@ div.colorPicker-specialSwatch {
 
 
 
-	<!-- 	<script
-		src="${baseURL}/public/jquery-ui-1.11.1/jquery-ui.js"
-		type="text/javascript"></script> -->
-	<script language="JavaScript" type="text/javascript"
-		src="${baseURL}/public/biojs/resources/dependencies/jquery/jquery.tooltip.js"></script>
+
 	<script language="JavaScript" type="text/javascript"
 		src="${baseURL}/public/biojs/resources/dependencies/graphics/raphael-2.1.2.js"></script>
 	<script language="JavaScript" type="text/javascript"
@@ -328,7 +319,7 @@ div.colorPicker-specialSwatch {
 		<span style="display:none" id="alnAdvice"> 
 			<h1>
 									<large class="badge bg-yellow">!</large> 
-									We are showing the monomer structure of the identified gene. To see the whole PDB  <a href="${baseURL}/structure/${pdbName}">click here</a>.  
+									We are showing the aligned structure of the identified gene. To see the whole PDB  <a href="${baseURL}/structure/${pdbName}">click here</a>.
 									</h1>
 								</span>
 			<div id="msa_reference" class="box">
@@ -343,6 +334,7 @@ div.colorPicker-specialSwatch {
 								PFAM Residue</span></td>
 						<td><span style="background-color: red">#: Pocket
 								Number</span></td>
+                        <td><select id="aln_select"></select></td>
 					</tr>
 				</table>
 				<div id="table-box-body" class="box-body no-padding">
@@ -550,8 +542,8 @@ div.colorPicker-specialSwatch {
 			
 			
 			var builder = new $.SBGBuilder().div('glmol_pdb');
-			builder.data(pdb)
-			builder.pockets_data = []
+			builder.data(pdb);
+			builder.pockets_data = [];
 			
 			$.each(pocket_pdbs,function(i,pocket_data){
 				if(valid_pockets.indexOf(pocket_data.number) != -1){					
@@ -561,9 +553,9 @@ div.colorPicker-specialSwatch {
 			} );
 			
 			builder._data_loaded_fn = function(glmol) {		
-				$("#glmol_pdb_msg").remove()
-				$.glmol = glmol		
-				$.glmol.atom_labels = []
+				$("#glmol_pdb_msg").remove();
+				$.glmol = glmol;
+				$.glmol.atom_labels = [];
 				
 				var backbone_prop = glmol.atoms.filter(x => !x.hetflag ).length / glmol.atoms.filter(x => x.atom == "CA" ).length  
 				if (backbone_prop < 5){
@@ -579,13 +571,27 @@ div.colorPicker-specialSwatch {
 				
 				
 				
-				if((chain_layers.length == 1) && ($.trim(chain_layers[0].name) == "")){
+				if((chain_layers.length === 1) && ($.trim(chain_layers[0].name) === "")){
 					chain_layers[0].name = "A";
+                    $("#aln_select").remove();
 				} else {
-					if(window.used != null){
-						$('#alnAdvice').show()
+					if(window.used !== null){
+                        Object.keys(window.used).forEach(k => {
+                            const aln =  window.used[k];
+                            const label = structure.name + " " + aln.chain + ":" + aln.start.toString() + "-" + aln.end.toString();
+                        $("<option />",{value:k}).html(label).appendTo($("#aln_select"))
+                        });
+                        $("#aln_select").change(() => {
+                            $('#msa-box-body').empty();
+                            $('#div2').empty();
+                            load_msa_cristal(structure, protein,$("#aln_select").val());
+                            render_chain_tracks(structure,$.proteins,$("#aln_select").val());
+                        });
+
+
+						$('#alnAdvice').show();
 						chain_layers = chain_layers.filter( x => {
-							if (x.name == window.used.chain ){
+							if (Object.keys(window.used).indexOf( x.name) !== -1 ){
 								
 								return true
 							} else {
@@ -594,106 +600,144 @@ div.colorPicker-specialSwatch {
 							}
 							return false;
 							
-						})	
-						var newAtoms = glmol.atoms.filter(x =>  (x.resi >= window.used.start &&  x.resi <= window.used.end && x.chain == window.used.chain ) ).map(x => x.serial);
-						chain_layers[0].atoms = newAtoms;
-						var hetChain =  glmol.chain_layers().filter( x => x.name == 'heatoms');
-						if(hetChain.length > 0 ) {
-							hetChain = hetChain[0]
-							var newAtoms2 = []
-							hetChain.atoms.forEach(h => {
-								h = glmol.atoms[h]
-								newAtoms.forEach( atm=> {
-									atm = glmol.atoms[atm]
-									var dist = Math.sqrt(
-					                        ( atm.x - h.x ) * ( atm.x - h.x ) +
-					                        ( atm.y - h.y ) * ( atm.y - h.y ) +
-					                        ( atm.z - h.z ) * ( atm.z - h.z )
-					                    );
-									if ( dist < 6){
-										newAtoms2.push(h.serial);
-								}
-							})
-							});
-							if(newAtoms2.length > 0){
-								hetChain.atoms = newAtoms2;
-								chain_layers.push(hetChain)
-								hetChain.visible = true;
-							} 
-						}
-					}
+						})	;
+                        var hetChain =  glmol.chain_layers().filter( x => x.name === 'heatoms');
+
+                        Object.keys(window.used).forEach(chain_name => {
+                            const used_chain = window.used[chain_name];
+                            const newAtoms = glmol.atoms.filter(x =>  (x.resi >= used_chain.start &&
+                                x.resi <= used_chain.end && x.chain === used_chain.chain ) ).map(x => x.serial);
+                            const chain_layer = chain_layers.filter(x => x.name === used_chain.chain)[0];
+                            chain_layer.atoms = chain_layer.atoms.concat( newAtoms);
+
+                            if(hetChain.length > 0 ) {
+                                hetChain = hetChain[0];
+                                var newAtoms2 = [];
+                                hetChain.atoms.forEach(h => {
+                                    h = glmol.atoms[h];
+                                    newAtoms.forEach( atm=> {
+                                        atm = glmol.atoms[atm];
+                                        const dist = Math.sqrt(
+                                            ( atm.x - h.x ) * ( atm.x - h.x ) +
+                                            ( atm.y - h.y ) * ( atm.y - h.y ) +
+                                            ( atm.z - h.z ) * ( atm.z - h.z )
+                                        );
+                                        if ( dist < 6){
+                                            newAtoms2.push(h.serial);
+                                        }
+                                    })
+                                });
+                                if(newAtoms2.length > 0){
+                                    hetChain.atoms = hetChain.atoms.concat( newAtoms2);
+
+                                    hetChain.visible = true;
+                                }
+                            }
+						});
+                        if(hetChain.visible){
+                            chain_layers.push(hetChain);
+                        }
+
+
+					} else  {
+                        $("#aln_select").remove();
+                    }
 				}
 				
-				var ll1 = new $.UILayerList ($("#layer_list_div"),chain_layers);
+				const ll1 = new $.UILayerList ($("#layer_list_div"),chain_layers);
 				
 				ll1.style_list = ["cartoon","spectrum","bfactor","atom"];
-				ll1.init();								
+				ll1.init();
+
+                let pockets = [];
+                if (window.used){
+                    Object.keys(window.used).forEach(chain_name => {
+                        const used_chain = window.used[chain_name];
+                        glmol.pocket_layers().filter(p_layer =>  used_chain == null ||
+                            used_chain.pockets.indexOf(p_layer.name) !== -1 ).forEach(p => {
+                            if (  pockets.filter(po => po.name === p.name ).length === 0 ){
+                                pockets.push(p);
+                            }
+                        });
+
+                    });
+                } else {
+                    pockets = glmol.pocket_layers();
+                }
+
+
+
 				
-				var pockets = glmol.pocket_layers().filter(x =>  window.used == null || window.used.pockets.indexOf(x.name) != -1 )
-				
-				$.each(pockets,function(i,pocket_layer){		
-					
-					var pocket_data = $.grep(structure.pockets,function(x){return  parseInt(x.name.split("_")[1]) ==pocket_layer.name})
+				$.each(pockets,function(i,pocket_layer){
+
+                    const pocket_data = $.grep(structure.pockets,function(x){return  parseInt(x.name.split("_")[1]) ==pocket_layer.name});
 					pocket_layer.data = pocket_data[0];
 				});
-				
-				var ll2 = new $.UILayerList ($("#pocket_list_div"),pockets);
+                pockets = pockets.sort((p,q) => parseInt(p.name) - parseInt(q.name));
+                const ll2 = new $.UILayerList ($("#pocket_list_div"),pockets);
 				
 				ll2.data_renderers = [{render:function(elem,layer){
 					elem.html(layer.data.druggability_score);
-				}}]
+				}}];
 				
 				ll2.init();
-				
-				var map_aln_pos_from_query_res_id = {} 
+
+                const map_aln_pos_from_query_res_id = {};
 				$.each(structure.chains[0].residues,function(i,residue){
 					map_aln_pos_from_query_res_id[residue.resid] = i;
 				});
 				
-				function allowResidue(res){
+				function allowResidue(res,used_chains){
 					if (window.used == null){
 						return true
 					} else {						
-						var resid = parseInt(res.split("_")[1])
-						var chain = res.split("_")[0]
-						return  chain == window.used.chain &&  window.used.start <= resid &&  window.used.end >= resid;    
+						const resid = parseInt(res.split("_")[1]);
+						const chain = res.split("_")[0];
+						let use = false;
+                        Object.keys(used_chains).forEach(chain_name => {
+                            const used_chain = used_chains[chain_name];
+                            use = use ||  (chain === used_chain.chain &&  used_chain.start <= resid &&  used_chain.end >= resid);
+						});
+						return use;
 					}
 				} 
 				
 				
-				var feature_layers = []
+				const feature_layers = [];
 				$.each(structure.residueSets,function(i,residueSet){
-					
-					var style = new $.StickStyle(new $.ByAtomColorer( $.ByAtomColorer.aa_atoms_map ), 1)
-					var residues = $.map(residueSet.residues.filter(allowResidue),function(x){return x.replace("_",".")});
+
+                    const style = new $.StickStyle(new $.ByAtomColorer( $.ByAtomColorer.aa_atoms_map ), 1);
+                    const residues = $.map(residueSet.residues.filter(res => {
+                        return allowResidue(res,window.used);
+					}),function(x){return x.replace("_",".")});
 					if (residues.length > 0){
-					var atoms = $.map(glmol.residue_atoms(residues),function(x){
+                        const atoms = $.map(glmol.residue_atoms(residues),function(x){
 						return x.serial;
 					});
-					var layer = new $.Layer(residueSet.name,atoms ,
+                        const layer = new $.Layer(residueSet.name,atoms ,
 							style, false);
 					layer.visible = false;
-					glmol.add_layer(layer)
+					glmol.add_layer(layer);
 					feature_layers.push(layer)
 					}
 				});
 				if (feature_layers.length > 0){
-					var ll3 = new $.UILayerList ($("#features_list_div"),feature_layers);
+                    const ll3 = new $.UILayerList ($("#features_list_div"),feature_layers);
 					ll3.style_list = ["atom"];
 					ll3.init();	
 				} else {
-					$("#features_list_box").remove()
+					$("#features_list_box").remove();
 				}
 				if(window.used != null){
-					glmol.zoomInto(newAtoms)
+					glmol.zoomInto(glmol.atoms.map(x => x.serial));
 				}
-			}
+			};
 			
 			builder.build();
 			
 			
 			
-		}
+		};
 		
 		
 		var init = function() {
@@ -701,7 +745,7 @@ div.colorPicker-specialSwatch {
 			//$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
 			
 			
-			if (protein != undefined){
+			if (protein !== undefined){
 				var li = $("<li/>").appendTo( $(".breadcrumb") ); 
 				$("<a/>",{"href":"${baseURL}/genome/" + protein.organism}).html("<i>" + protein.organism + "</i>").appendTo(li);			
 				li = $("<li/>").appendTo( $(".breadcrumb") );
@@ -721,14 +765,9 @@ div.colorPicker-specialSwatch {
 			load_structure_tables(structure,stemplate)
 			
 			if ($.proteins.length > 0){
-				render_chain_tracks(structure,$.proteins);
-				
-				
-				
+				render_chain_tracks(structure,$.proteins,"A");
 			}
-			
-			
-			
+
 			if ((stemplate != null) && (stemplate.name != undefined) && (structure.templates[0]["aln_query"]["seq"] != "?")){
 				$("#download_button").html("Download Model")
 				var msa =	load_msa_model(structure,stemplate,protein);	
@@ -743,19 +782,14 @@ div.colorPicker-specialSwatch {
 								$.glmol.show();
 							})	
 						}
-						
-							
 					}
-					
 				});
-				
 			} else {
 				$("#download_button").html("Download PDB")
-				if (protein != undefined){
+				if (protein !== undefined){
+                    selected_chain = "A";
 					//chain:aln_chain,{start:aln_start,end:aln_end,pockets:usedPockets,important:usedImportant,csa:usedCSA,drugBinding:usedDBinding}
-					window.used = load_msa_cristal(structure,protein);
-					
-					
+					window.used = load_msa_cristal(structure,protein,selected_chain);
 				} else {
 					$("#msa_reference").remove();
 				}
@@ -831,13 +865,17 @@ div.colorPicker-specialSwatch {
 		
 		protein_letters_3to1 = swap(protein_letters_1to3);
 		
-		function render_chain_tracks(structure,proteins) {
+		function render_chain_tracks(structure,proteins,chain) {
 			
 			//var renderer = new $.fn.SequenceRender(structure.name);
-			var protein = proteins[0];
-			
-			var aln = (structure.templates) ?  structure.templates[0].aln_query : protein.features.filter(x => x.identifier.startsWith(structure.name))[0].location
-			var ft2 = new FeatureViewer(
+			const protein = proteins[0];
+
+            const aln = ((structure.templates) ?  structure.templates[0].aln_query :
+                protein.features.filter(x => x.identifier.startsWith(structure.name) &&
+                    x.identifier.split("_")[1] == chain
+
+                )[0].location);
+            const ft2 = new FeatureViewer(
 					protein.sequence,"#div2", {
 			    showAxis: true,
 			    showSequence: false,

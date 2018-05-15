@@ -265,259 +265,275 @@ function open_residues_dialog(title, residue_set, chains) {
 
 }
 
-function load_msa_cristal(structure, protein) {
 
-	var features = $.grep(protein.features, function(x) {
-		return x.identifier.indexOf(structure.name) != -1
-	})
-	var aln = features[0].aln
-	var query_name = aln["aln_query"]["name"] + "_"
-			+ features[0].location.start.toString() + ":"
-			+ features[0].location.end.toString();
-	var hit_name = aln["aln_hit"]["name"]
-	
-	var pre_seq =  protein.sequence.substring(0,features[0].location.start - 1)
-	var post_seq = protein.sequence.substring(features[0].location.end )
-	var preStart = pre_seq.length;
-	var pre_fill = new Array(pre_seq.length + 1).join( "-" );
-	var post_fill = new Array(post_seq.length + 1).join( "-" );
-	
-	
-	var aln_msa = [ {
-		"seq" : pre_seq + aln["aln_query"]["seq"] + post_seq,
-		"name" : query_name,
-		"id" : query_name
-	}, {
-		"seq" : pre_fill + aln["aln_hit"]["seq"] + post_fill,
-		"name" : hit_name,
-		"id" : aln["aln_hit"]["name"]
-	} ]
-	
-	
-	
-	var aln_stemplate_start = aln.aln_hit.start ;
 
-	var msa = new $.MSA_UI("msa-box-body", aln_msa);
-	msa.init()
+function load_msa_feature(structure, protein,feature,selected){
+    const aln = feature.aln;
+    const query_name = aln["aln_query"]["name"] + "_"
+        + feature.location.start.toString() + ":"
+        + feature.location.end.toString();
+    const hit_name = aln["aln_hit"]["name"];
 
-	var features = {
-		config : {
-			type : "gff"
-		},
-		seqs : {}
-	}
-	features.seqs[query_name] = [];
-	features.seqs[hit_name] = [];
+    const pre_seq =  protein.sequence.substring(0,feature.location.start - 1)
+    const post_seq = protein.sequence.substring(feature.location.end )
+    const preStart = pre_seq.length;
+    const pre_fill = new Array(pre_seq.length + 1).join( "-" );
+    const post_fill = new Array(post_seq.length + 1).join( "-" );
 
-	var aln_chain = hit_name.split("_")[1];
-	var aln_start = parseInt(hit_name.split("_")[2]);
-	var aln_end = parseInt(hit_name.split("_")[3]);
-	
-	var dn_hit_start = 0;	
-	if(aln.aln_hit.name.indexOf("_PF") != -1 ){
-		dn_hit_start = parseInt(aln.aln_hit.name.split("_")[aln.aln_hit.name.split("_").length -2])
-		aln_start = structure.chains.filter(x => x.name == aln_chain)[0].residues[dn_hit_start].resid
-		dn_hit_end = parseInt(aln.aln_hit.name.split("_")[aln.aln_hit.name.split("_").length -1])
-		aln_end = structure.chains.filter(x => x.name == aln_chain)[0].residues[dn_hit_end].resid
-	}
-	
-	
-	
-	var usedPockets = [];
-	$.each(structure.pockets, function(i, p) {
 
-		var pocket_num = p.name.split("_")[1];
-		$.each($.unique(p.residues), function(i, r) {
-			if (p.druggability_score > 0.2) {
+    const aln_msa = [ {
+        "seq" : pre_seq + aln["aln_query"]["seq"] + post_seq,
+        "name" : query_name,
+        "id" : query_name
+    }, {
+        "seq" : pre_fill + aln["aln_hit"]["seq"] + post_fill,
+        "name" : hit_name,
+        "id" : aln["aln_hit"]["name"]
+    } ];
 
-				var res_num = parseInt(r.split("_")[1]);
-				var chain = r.split("_")[0];
-				if ((chain == aln_chain) && (res_num >= aln_start) && (res_num <= aln_end)) {
-					
 
-					var seq_num = res_num - aln_start - aln_stemplate_start + pre_seq.length 
-							;
 
-					var res_num = parseInt(r.split("_")[1]);
+    const aln_stemplate_start = aln.aln_hit.start ;
+    let msa = null;
+    if(selected){
+        msa = new $.MSA_UI("msa-box-body", aln_msa);
 
-					features.seqs[hit_name].push({
-						attributes : {
-							Color : "red",
-							Name : pocket_num
-						},
-						end : seq_num,
-						feature : "pocket",
-						frame : undefined,
-						score : undefined,
-						source : undefined,
-						start : seq_num,
-						strand : undefined
-					});
-					if (usedPockets.indexOf(pocket_num) == -1) {
-						usedPockets.push(pocket_num)
-					}
-				}
-			}
 
-		});
+        msa.init()
+    }
+
+
+    var features = {
+        config : {
+            type : "gff"
+        },
+        seqs : {}
+    }
+    features.seqs[query_name] = [];
+    features.seqs[hit_name] = [];
+
+    var aln_chain = hit_name.split("_")[1];
+    var aln_start = parseInt(hit_name.split("_")[2]);
+    var aln_end = parseInt(hit_name.split("_")[3]);
+
+    var dn_hit_start = 0;
+    if(aln.aln_hit.name.indexOf("_PF") !== -1 ){
+        dn_hit_start = parseInt(aln.aln_hit.name.split("_")[aln.aln_hit.name.split("_").length -2]);
+        aln_start = structure.chains.filter(x => x.name === aln_chain)[0].residues[dn_hit_start].resid;
+        dn_hit_end = parseInt(aln.aln_hit.name.split("_")[aln.aln_hit.name.split("_").length -1]);
+        aln_end = structure.chains.filter(x => x.name === aln_chain)[0].residues[dn_hit_end].resid;
+    }
+
+
+
+    var usedPockets = [];
+    $.each(structure.pockets, function(i, p) {
+
+        var pocket_num = p.name.split("_")[1];
+        $.each($.unique(p.residues), function(i, r) {
+            if (p.druggability_score > 0.2) {
+
+                var res_num = parseInt(r.split("_")[1]);
+                var chain = r.split("_")[0];
+                if ((chain === aln_chain) && (res_num >= aln_start) && (res_num <= aln_end)) {
+
+
+                    var seq_num = res_num - aln_start - aln_stemplate_start + pre_seq.length
+                    ;
+
+                    var res_num = parseInt(r.split("_")[1]);
+
+                    features.seqs[hit_name].push({
+                        attributes : {
+                            Color : "red",
+                            Name : pocket_num
+                        },
+                        end : seq_num,
+                        feature : "pocket",
+                        frame : undefined,
+                        score : undefined,
+                        source : undefined,
+                        start : seq_num,
+                        strand : undefined
+                    });
+                    if (usedPockets.indexOf(pocket_num) === -1) {
+                        usedPockets.push(pocket_num)
+                    }
+                }
+            }
+
+        });
+    });
+
+    var usedImportant = [];
+
+    var rs = $.grep(structure.residueSets, function(rs) {
+        return rs.name === "important_pfam";
+    });
+    if (rs.length > 0) {
+        rs = rs[0]
+        $.each($.unique(rs.residues), function(i, r) {
+            var res_num = parseInt(r.split("_")[1]);
+            var chain = r.split("_")[0];
+            if ((chain == aln_chain) && (res_num >= aln_start)) {
+
+                var seq_num = res_num - aln_start - aln_stemplate_start;
+
+                features.seqs[hit_name].push({
+                    attributes : {
+                        Color : "grey",
+                        Name : "I"
+                    },
+                    end : seq_num,
+                    feature : "important_pfam",
+                    frame : undefined,
+                    score : undefined,
+                    source : undefined,
+                    start : seq_num,
+                    strand : undefined,
+                    res_id : res_num
+                });
+
+                usedImportant.push(res_num);
+
+            }
+        });
+    }
+
+    var usedCSA = [];
+
+    if (structure.residueSets != undefined) {
+        var rs = $.grep(structure.residueSets, function(rs) {
+            return rs.name === "csa"
+        });
+        if (rs.length > 0) {
+            var arr_hit = hit_name.split("_");
+            var pdb = arr_hit[0];
+            var chain = arr_hit[1];
+            var start = parseInt(arr_hit[2]);
+            var end = parseInt(arr_hit[3]);
+            var map_aln_pdb = {}
+            var idx = 0;
+
+            $.each(aln["aln_hit"]["seq"].split(""), function(i, aa) {
+                if (aa !== "-") {
+                    map_aln_pdb[idx +  dn_hit_start  ] = i + pre_seq.length  ;
+                    idx++
+                }
+            });
+
+            rs = rs[0]
+            $.each($.unique(rs.residues), function(i, r) {
+                var res_num = parseInt(r.split("_")[1]);
+                if ((r.split("_")[0] == chain) && (res_num >= aln_start)
+                    && (res_num <= aln_end)) {
+                    var seq_num = res_num - start - aln_stemplate_start;
+                    var data = {
+                        attributes : {
+                            Color : "Green",
+                            Name : "A"
+                        },
+                        end : map_aln_pdb[seq_num],
+                        feature : "csa",
+                        frame : undefined,
+                        score : undefined,
+                        source : undefined,
+                        start : map_aln_pdb[seq_num],
+                        strand : undefined,
+                        res_id : seq_num - 1
+                    };
+                    features.seqs[hit_name].push(data);
+
+                    usedCSA.push(res_num)
+
+                }
+            });
+        }
+    }
+
+    var usedDBinding = [];
+
+
+    if (structure.residueSets != undefined) {
+        var rs = $.grep(structure.residueSets, function(rs) {
+            return rs.name == "drug_binding"
+        });
+        if (rs.length > 0) {
+            var arr_hit = hit_name.split("_");
+            var pdb = arr_hit[0];
+            var chain = arr_hit[1];
+            var start = parseInt(arr_hit[2]);
+            var end = parseInt(arr_hit[3]);
+            var map_aln_pdb = {};
+            var idx = 0;
+            $.each( (pre_seq.length + aln["aln_hit"]["seq"]).split(""), function(i, aa) {
+                if (aa !== "-") {
+                    map_aln_pdb[idx +  dn_hit_start  ] = i + pre_seq.length  ;
+                    idx++
+                }
+            });
+
+            rs = rs[0]
+            $.each($.unique(rs.residues), function(i, r) {
+                var res_num = parseInt(r.split("_")[1]);
+                if ((r.split("_")[0] == chain) && (res_num >= aln_start)
+                    && (res_num <= aln_end)) {
+                    var seq_num = res_num - start - aln_stemplate_start ;
+                    var data = {
+                        attributes : {
+                            Color : "Yellow",
+                            Name : "D"
+                        },
+                        end : map_aln_pdb[seq_num],
+                        feature : "drug_binding",
+                        frame : undefined,
+                        score : undefined,
+                        source : undefined,
+                        start : map_aln_pdb[seq_num],
+                        strand : undefined,
+                        res_id : seq_num - 1
+                    };
+                    features.seqs[hit_name].push(data);
+
+                    usedDBinding.push(res_num)
+
+                }
+            });
+        }
+
+    }
+    if (features.seqs[hit_name].length == 0) {
+        delete features.seqs[hit_name];
+    }
+    if (features.seqs[query_name].length == 0) {
+        delete features.seqs[query_name];
+    }
+    if ((!$.isEmptyObject(features.seqs)) & (msa !== null)) {
+        msa.msa.seqs.addFeatures(features);
+    }
+
+    return {chain:aln_chain,start:aln_start,end:aln_end,pockets:usedPockets,important:usedImportant,csa:usedCSA,drugBinding:usedDBinding}
+}
+
+function load_msa_cristal(structure, protein,selected_chain) {
+
+	const features = $.grep(protein.features, function(x) {
+		return x.identifier.indexOf(structure.name) !== -1
 	});
+	const used = {};
+	features.forEach(feature => {
+        const aln_chain =  feature.aln["aln_hit"]["name"].split("_")[1];
+        used[aln_chain] = load_msa_feature(structure, protein,feature,selected_chain == aln_chain)
+	} );
 
-	var usedImportant = [];
-
-	var rs = $.grep(structure.residueSets, function(rs) {
-		return rs.name == "important_pfam"
-	});
-	if (rs.length > 0) {
-		rs = rs[0]
-		$.each($.unique(rs.residues), function(i, r) {
-			var res_num = parseInt(r.split("_")[1]);
-			var chain = r.split("_")[0];
-			if ((chain == aln_chain) && (res_num >= aln_start)) {
-
-				var seq_num = res_num - aln_start - aln_stemplate_start;
-
-				features.seqs[hit_name].push({
-					attributes : {
-						Color : "grey",
-						Name : "I"
-					},
-					end : seq_num,
-					feature : "important_pfam",
-					frame : undefined,
-					score : undefined,
-					source : undefined,
-					start : seq_num,
-					strand : undefined,
-					res_id : res_num
-				});
-				
-					usedImportant.push(res_num);
-				
-			}
-		});
-	}
-
-	var usedCSA = [];
-
-	if (structure.residueSets != undefined) {
-		var rs = $.grep(structure.residueSets, function(rs) {
-			return rs.name == "csa"
-		});
-		if (rs.length > 0) {
-			var arr_hit = hit_name.split("_");
-			var pdb = arr_hit[0];
-			var chain = arr_hit[1];
-			var start = parseInt(arr_hit[2]);
-			var end = parseInt(arr_hit[3]);
-			var map_aln_pdb = {}
-			var idx = 0;
-
-			$.each(aln["aln_hit"]["seq"].split(""), function(i, aa) {
-				if (aa != "-") {
-					map_aln_pdb[idx +  dn_hit_start  ] = i + pre_seq.length  ;
-					idx++
-				}
-			});
-
-			rs = rs[0]
-			$.each($.unique(rs.residues), function(i, r) {
-				var res_num = parseInt(r.split("_")[1]);
-				if ((r.split("_")[0] == chain) && (res_num >= aln_start)
-						&& (res_num <= aln_end)) {
-					var seq_num = res_num - start - aln_stemplate_start;
-					var data = {
-						attributes : {
-							Color : "Green",
-							Name : "A"
-						},
-						end : map_aln_pdb[seq_num],
-						feature : "csa",
-						frame : undefined,
-						score : undefined,
-						source : undefined,
-						start : map_aln_pdb[seq_num],
-						strand : undefined,
-						res_id : seq_num - 1
-					}
-					features.seqs[hit_name].push(data);
-					
-						usedCSA.push(res_num)
-					
-				}
-			});
-		}
-	}
-
-	var usedDBinding = [];
-	
-	
-	if (structure.residueSets != undefined) {
-		var rs = $.grep(structure.residueSets, function(rs) {
-			return rs.name == "drug_binding"
-		});
-		if (rs.length > 0) {
-			var arr_hit = hit_name.split("_");
-			var pdb = arr_hit[0];
-			var chain = arr_hit[1];
-			var start = parseInt(arr_hit[2]);
-			var end = parseInt(arr_hit[3]);
-			var map_aln_pdb = {}
-			var idx = 0;
-			$.each( (pre_seq.length + aln["aln_hit"]["seq"]).split(""), function(i, aa) {  
-				if (aa != "-") {
-					map_aln_pdb[idx +  dn_hit_start  ] = i + pre_seq.length  ;
-					idx++
-				}
-			});
-
-			rs = rs[0]
-			$.each($.unique(rs.residues), function(i, r) {
-				var res_num = parseInt(r.split("_")[1]);
-				if ((r.split("_")[0] == chain) && (res_num >= aln_start)
-						&& (res_num <= aln_end)) {
-					var seq_num = res_num - start - aln_stemplate_start ;
-					var data = {
-						attributes : {
-							Color : "Yellow",
-							Name : "D"
-						},
-						end : map_aln_pdb[seq_num],
-						feature : "drug_binding",
-						frame : undefined,
-						score : undefined,
-						source : undefined,
-						start : map_aln_pdb[seq_num],
-						strand : undefined,
-						res_id : seq_num - 1
-					}
-					features.seqs[hit_name].push(data);
-					
-					usedDBinding.push(res_num)
-					
-				}
-			});
-		}
-
-	}
-	if (features.seqs[hit_name].length == 0) {
-		delete features.seqs[hit_name];
-	}
-	if (features.seqs[query_name].length == 0) {
-		delete features.seqs[query_name];
-	}
-	if (!$.isEmptyObject(features.seqs)) {
-		msa.msa.seqs.addFeatures(features);
-	}
-	
-	return {chain:aln_chain,start:aln_start,end:aln_end,pockets:usedPockets,important:usedImportant,csa:usedCSA,drugBinding:usedDBinding}
-	
+	return used
 }
 
 function load_msa_model(structure, stemplate,protein) {
 
 	//var aln_stemplate_start = structure.templates[0].aln_hit.start;
 
-	var templates = []
+	var templates = [];
 	$.each(structure.templates, function(i, x) {
 		templates.push(x.aln_hit.name.split("_"))
 	});

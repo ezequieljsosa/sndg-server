@@ -322,7 +322,11 @@ public class DruggabilityParam {
 			}
 		} else {
 			if (!searchValue.toString().toLowerCase().equals("nan")) {
-				return Double.parseDouble(searchValue) * this.getCoefficient();
+				try {
+					return Double.parseDouble(searchValue) * this.getCoefficient();
+				} catch (Exception ex){
+					throw ex;
+				}
 			}
 			return 0;
 

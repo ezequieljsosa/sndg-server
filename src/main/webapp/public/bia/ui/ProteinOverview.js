@@ -2,7 +2,7 @@ $.ProteinOverview = function(divElement, protein,api) {
 	this.divElement = divElement;
 	this.protein = protein;
 	this.api = api;
-	this.propTypes = ["overexpression","pathways","chokepoint","essentiality","metadata","dbxref","demo"]
+	this.propTypes = ["overexpression","pathways","chokepoint","essentiality","metadata","dbxref","demo","expression"]
 	this.ontologies = [];
 	this.organism = protein.organism;
 }

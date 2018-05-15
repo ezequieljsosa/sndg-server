@@ -507,14 +507,14 @@ input[type="search"] {
 					addProt(protein.name, protein.id, $(this).is(':checked'));
 				}); */
 
-			
-			
 
-			var sp = new $.SequencePanel('sequence_box', protein.sequence,
+
+
+            const sp = new $.SequencePanel('sequence_box', protein.sequence,
 					protein.name, protein.id,$.api)
 			sp.init()
-			
-			var prot_overview = new $.ProteinOverview($('#overview_table'),
+
+            const prot_overview = new $.ProteinOverview($('#overview_table'),
 					protein,$.api);
 			prot_overview.organism = protOrganism;
 			prot_overview.ontologies = ontologies;
@@ -526,7 +526,8 @@ input[type="search"] {
 			}); */
 
 			if (protein.search.druggability > 0){
-				var text = '<tr><td>Druggability</td><td>' +  	protein.search.druggability + '</td></tr>';
+			    const dtype = (protein.search.druggability >= 0.7) ? "HIGHLY DRUGGABLE" : ((protein.search.druggability >= 0.5) ? "DRUGGABLE" : "POORLY DRUGGABLE")   ;
+                const text = '<tr><td>Druggability</td><td>' +  	protein.search.druggability + ' [' + dtype   + ']</td></tr>';
 				$("#overview_table")
 						.append(text);
 			}
