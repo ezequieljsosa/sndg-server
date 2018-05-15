@@ -230,7 +230,7 @@ public class SearchResourse {
 
 	}
 
-	@Cacheable(cacheNames = "queries", key = "T(ar.com.bia.MD5).hash(#search , #perPage.toString() + '_' + #offset.toString(),#request,null)")
+	@Cacheable(cacheNames = "queries", key = "T(ar.com.bia.MD5).hash(#search ,#genomeName + '_' + #perPage.toString() + '_' + #offset.toString(),#request,null)")
 	@RequestMapping(value = "{genomeName}/pathways/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public PaginatedResult<PathwayDTO> pathways(@PathVariable(value = "genomeName") String genomeName,
