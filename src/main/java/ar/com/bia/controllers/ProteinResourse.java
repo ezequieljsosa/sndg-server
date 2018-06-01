@@ -72,6 +72,8 @@ public class ProteinResourse {
 
 		return "geneprod/Protein";
 	}
+
+
 	
 	@RequestMapping(value = "/gene/{locus_tag:.+}/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)	
 	public String genomeProtein(@PathVariable("locus_tag") String locusTag,

@@ -56,6 +56,7 @@ public class SeqCollectionDoc {
     private List<StrainProject> strainProjects;
 
     private List<PathwayDTO> pathways;
+    private List<PathwayDTO> kegg;
 
     private List<SeqColDruggabilityParam> druggabilityParams;
     private List<PropertyUpload> uploads;
@@ -82,6 +83,7 @@ public class SeqCollectionDoc {
     public void setStatus(String status) {
         this.status = status;
     }
+
 
 
     public String getSize() {
@@ -293,5 +295,13 @@ public class SeqCollectionDoc {
 
     public void setStrainsProps(List<Map<String, String>> strainsProps) {
         this.strainsProps = strainsProps;
+    }
+
+    public List<PathwayDTO> getKegg() {
+        return kegg;
+    }
+
+    public void setKegg(List<PathwayDTO> kegg) {
+        this.kegg = kegg;
     }
 }

@@ -653,9 +653,10 @@ div.colorPicker-specialSwatch {
                 if (window.used){
                     Object.keys(window.used).forEach(chain_name => {
                         const used_chain = window.used[chain_name];
+
                         glmol.pocket_layers().filter(p_layer =>  used_chain == null ||
-                            used_chain.pockets.indexOf(p_layer.name) !== -1 ).forEach(p => {
-                            if (  pockets.filter(po => po.name === p.name ).length === 0 ){
+                            used_chain.pockets.indexOf(p_layer.name.toString()) !== -1 ).forEach(p => {
+                            if (  pockets.filter(po => po.name.toString() === p.name.toString() ).length === 0 ){
                                 pockets.push(p);
                             }
                         });
