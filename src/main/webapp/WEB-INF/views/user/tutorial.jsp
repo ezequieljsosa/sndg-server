@@ -91,7 +91,7 @@ $(".content-header").remove()
 <ul>
 <li><a href="${baseURL}/genome?tour=1">Target priorization </a></li>
 <li><a href="${baseURL}/genome?tour=6">Pathway priorization</a></li>
-<li><a href="${baseURL}/genome/H37Rv?tour=2">Data upload</a></li>
+<li><a href="${baseURL}/genome/H37Rv?tour=2">Data upload</a> (Register First)</li>
 <li style="display: none;"><a href="${baseURL}/genome/H37Rv?tour=3">Protein search and navigation</a></li>
 <li style="display: none;" ><a href="${baseURL}/genome/H37Rv?tour=4">Strain proteins filter</a></li>
 <li style="display: none;" ><a href="${baseURL}/genome/H37Rv?tour=5">Variant search</a></li>

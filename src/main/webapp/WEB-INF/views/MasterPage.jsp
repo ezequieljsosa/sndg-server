@@ -297,7 +297,12 @@ ga('send', 'pageview');
 					<li><a href="${baseURL}/user/about"> <i
 							class="fa  fa-info-circle"></i> <span>About</span>
 					</a></li>
-
+					<li><a href="http://target.sbg.qb.fcen.uba.ar/targetwp/"> <i
+							class="fa fa-file-text"></i> <b><span>News</span></b>
+					</a></li>
+                    <li><a href="http://target.sbg.qb.fcen.uba.ar/targetwp/archives/1"> <i
+                            class="fa fa-adn"></i> <b><span>Ask a question</span></b>
+                    </a></li>
 				</ul>
 
 			</div>

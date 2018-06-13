@@ -51,7 +51,7 @@ $(".content-header").remove()
 	
 
 <section class="col-lg-6" >
-<a href="${baseURL}/login" class="btn btn-success btn-lg btn-block">LogIn</a>
+<a href="http://target.sbg.qb.fcen.uba.ar/targetwp/wp-login.php" class="btn btn-success btn-lg btn-block">LogIn</a>
 </section>
 
 <br />

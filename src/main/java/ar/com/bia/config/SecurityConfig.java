@@ -1,5 +1,6 @@
 package ar.com.bia.config;
 
+import ar.com.bia.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,77 +13,83 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
+import java.util.Map;
 
 @Configuration
-@ComponentScan(basePackages = { "ar.com.bia.config", "ar.com.bia.backend.dao.impl" })
+@ComponentScan(basePackages = {"ar.com.bia.config", "ar.com.bia.backend.dao.impl"})
 @EnableWebSecurity
 @Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private UserRepositoryImpl userRepository;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService());
-		// auth.inMemoryAuthentication().withUser("user").password("password")
-		// .roles("USER");
-	}
 
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService());
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-	@Bean
-	public AuthenticationSuccessHandler successHandler() {
-		return new AuthenticationSuccessHandler();
-	}
+    @Bean
+    public WordPressAuthenticationProvider authenticationProvider(){
+        return new WordPressAuthenticationProvider(userService);
+    }
 
-	protected void configure(HttpSecurity http) throws Exception {
-		// http
-		// .authorizeRequests()
-		// .anyRequest().authenticated()
-		// .and()
-		// .formLogin()
-		// .loginPage("/login")
-		// .permitAll();
-		// http.authorizeRequests()
-		// .antMatchers("/resources/**", "/signup", "/about").permitAll().
-		// anyRequest().authenticated().and().formLogin().and().httpBasic();
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-		http
-				// .csrf().disable()
-				.csrf().disable().headers().frameOptions().disable()
-				// .authorizeRequests()
-				// .antMatchers("*/xomeq/login*")
-				// .anonymous()
-				// .and()
-				.authorizeRequests().antMatchers("/public/**").permitAll().antMatchers("/login*").permitAll() // Para
-																												// poder
-																												// cambiar
-																												// el
-																												// lenguaje
-																												// en
-																												// el
-																												// login
-				// .antMatchers("/**").authenticated()
-				.and().formLogin().loginPage("/login").failureUrl("/login?error=true").successHandler(successHandler())
-				// .loginProcessingUrl("/rest/login")
-				// .defaultSuccessUrl("/genome",true)
-				.permitAll()
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new AuthenticationSuccessHandler();
+    }
 
-				// .failureHandler(authenticationFailureHandler)
-				.and().logout()
-				// .logoutSuccessUrl("/")
-				.permitAll();
-	}
+    protected void configure(HttpSecurity http) throws Exception {
+        // http
+        // .authorizeRequests()
+        // .anyRequest().authenticated()
+        // .and()
+        // .formLogin()
+        // .loginPage("/login")
+        // .permitAll();
+        // http.authorizeRequests()
+        // .antMatchers("/resources/**", "/signup", "/about").permitAll().
+        // anyRequest().authenticated().and().formLogin().and().httpBasic();
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		return new UserAuthService(userRepository);
-	}
+        http
+                // .csrf().disable()
+                .csrf().disable().headers().frameOptions().disable()
+                // .authorizeRequests()
+                // .antMatchers("*/xomeq/login*")
+                // .anonymous()
+                // .and()
+                .authorizeRequests().antMatchers("/public/**").permitAll().antMatchers("/login*").permitAll() // Para
+                // poder
+                // cambiar
+                // el
+                // lenguaje
+                // en
+                // el
+                // login
+                // .antMatchers("/**").authenticated()
+                .and().formLogin().loginPage("/login").failureUrl("/login?error=true").successHandler(successHandler())
+                // .loginProcessingUrl("/rest/login")
+                // .defaultSuccessUrl("/genome",true)
+                .permitAll()
+
+                // .failureHandler(authenticationFailureHandler)
+                .and().logout() //.logoutUrl("/")
+                .logoutSuccessUrl("/")
+                .permitAll();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserAuthService(userService);
+    }
+
 
 }
