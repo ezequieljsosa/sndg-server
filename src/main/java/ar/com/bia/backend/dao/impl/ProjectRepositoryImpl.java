@@ -167,7 +167,7 @@ public class ProjectRepositoryImpl implements PagingAndSortingRepository<Project
 		throw new RuntimeException("No implementado");
 	}
 
-	public List<ProjectDoc> projects_from_user(ObjectId userId) {
+	public List<ProjectDoc> projects_from_user(String userId) {
 		List<ProjectDoc> findAll = this.findAll(new Query(Criteria.where("user_id").is(userId)));		
 		return findAll;
 	}

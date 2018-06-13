@@ -31,7 +31,7 @@ public class SeqCollectionDoc {
     private String ncbi_assembly;
 
 
-    private ObjectId auth;
+    private String auth;
 
     private String _cls = "SeqCollection.Genome";
 
@@ -222,11 +222,11 @@ public class SeqCollectionDoc {
         return this.druggabilityParams;
     }
 
-    public ObjectId getAuth() {
+    public String getAuth() {
         return auth;
     }
 
-    public void setAuth(ObjectId auth) {
+    public void setAuth(String auth) {
         this.auth = auth;
     }
 

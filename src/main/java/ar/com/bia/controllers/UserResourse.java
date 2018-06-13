@@ -85,9 +85,9 @@ public class UserResourse {
 			produces = MediaType.APPLICATION_XHTML_XML_VALUE)
 	public String dashboard( Model model, Principal principal) {
 		
-		UserDoc user = this.userRepository.findUser(principal.getName());
+		UserDoc user = this.userService.findUser(principal.getName());
 
-		List<ObjectId> auth =  this.dataTablesUtils.authCriteria(principal);
+		List<String> auth =  this.dataTablesUtils.authCriteria(principal);
 		
 		long genomeCount =  mongoTemplate.count(new Query( Criteria.where("auth").in(auth) ), SeqCollectionDoc.class); ;
 		
@@ -106,7 +106,7 @@ public class UserResourse {
 			Model model,@ModelAttribute UserDTO userDTO,Principal principal) {
 		
 		String qpReturnTo = (userDTO.getReturnTo().isEmpty()) ? "" : "?_return=" +  userDTO.getReturnTo();
-		UserDoc user = this.userRepository.findUser(userDTO.getUsername());
+		UserDoc user = this.userService.findUser(userDTO.getUsername());
 		if (user != null ){
 			model.addAttribute("error", "user already exists" );
 			return "redirect:/user/register" + qpReturnTo;
@@ -149,8 +149,8 @@ public class UserResourse {
 		
 		
 		
-		
-		return "user/register";
+		return  "redirect:../targetwp/wp-login.php?action=register";
+		//return "user/register";
 	}
 	
 	
@@ -258,7 +258,7 @@ public class UserResourse {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDoc user(@PathVariable("username") String username) {
-		UserDoc user = this.userRepository.findUser(username);
+		UserDoc user = this.userService.findUser(username);
 //		user.setProjectCount(this.projectRepository.projects_from_user(
 //				user.getId()).size());
 		return user;
@@ -269,14 +269,14 @@ public class UserResourse {
 	@RequestMapping(value = "/{username}/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<ProjectDoc> projects(@PathVariable("username") String username) {
-		UserDoc user = this.userRepository.findUser(username);
+		UserDoc user = this.userService.findUser(username);
 		return this.projectRepository.projects_from_user(user.getId());
 	}
 
 	@RequestMapping(value = "/organism", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<String> organisms(Principal principal) {
-		UserDoc user = this.userRepository.findUser(principal.getName());		
+		UserDoc user = this.userService.findUser(principal.getName());		
 		return  this.userService.organisms(user);
 	}
 	
@@ -291,7 +291,7 @@ public class UserResourse {
 				.getAuthentication().getPrincipal();
 		String name = authenticatedUser.getUsername();
 		
-		List<ObjectId> userGenomes = userRepository.findUser(name)
+		List<ObjectId> userGenomes = userService.findUser(name)
 				.getSeqCollections();
 		
 		List<SeqCollectionDoc> genomeList = this.mongoTemplate.find(new Query(Criteria.where("_id").in(userGenomes)),
@@ -315,21 +315,21 @@ public class UserResourse {
 	// produces = MediaType.APPLICATION_JSON_VALUE)
 	// @ResponseBody
 	// public UserDoc links(@PathVariable("username") String username) {
-	// return this.userRepository.findUser(username);
+	// return this.userService.findUser(username);
 	// }
 	//
 	// @RequestMapping(value = "/{username}/clipboard", method =
 	// RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	// @ResponseBody
 	// public UserDoc clipboard(@PathVariable("username") String username) {
-	// return this.userRepository.findUser(username);
+	// return this.userService.findUser(username);
 	// }
 	//
 	// @RequestMapping(value = "/{username}/menues", method = RequestMethod.GET,
 	// produces = MediaType.APPLICATION_JSON_VALUE)
 	// @ResponseBody
 	// public UserDoc menues(@PathVariable("username") String username) {
-	// return this.userRepository.findUser(username);
+	// return this.userService.findUser(username);
 	// }
 
 }

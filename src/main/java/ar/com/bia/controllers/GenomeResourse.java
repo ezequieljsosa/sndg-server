@@ -79,7 +79,11 @@ public class GenomeResourse {
 	private @Autowired DataTablesUtils dataTablesUtils;
 
 	private @Autowired SessionService sessionService;
-	
+
+
+
+
+
 	
 
 	@Autowired
@@ -126,6 +130,8 @@ public class GenomeResourse {
 
 		model.addAttribute("druggability_distribution", mapperJson.writeValueAsString(druggabilityDistribution));
 		model.addAttribute("druggability_table", mapperJson.writeValueAsString(druggabilityTable));
+
+
 
 		return "omic/Genome";
 	}
@@ -249,7 +255,7 @@ public class GenomeResourse {
 		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("organism").is(organism)),
 				SeqCollectionDoc.class);
 		UserDoc user = this.userService.findUser(principal.getName());
-		if (!genome.getAuth().equals(new ObjectId("563b9440b1b50423d1fd1fee"))) {
+		if (!genome.getAuth().equals(UserDoc.publicUserId)) {
 			if (!genome.getAuth().equals(user.getAuthId())) {
 				throw new ForbiddenException();
 			}
@@ -264,7 +270,7 @@ public class GenomeResourse {
 			@RequestParam(value = "start", defaultValue = "0") Integer offset,
 			@RequestParam(value = "search[value]", defaultValue = "") String search, Principal principal) {
 
-		List<ObjectId> auth = this.dataTablesUtils.authCriteria(principal);
+		List<String> auth = this.dataTablesUtils.authCriteria(principal);
 		Query query = new Query(Criteria.where("auth").in(auth));
 
 		long protCount = mongoTemplate.count(query, SeqCollectionDoc.class);
@@ -354,7 +360,7 @@ System.out.println("OK");
 			@RequestParam(value = "start", defaultValue = "0") Integer offset,
 			@RequestParam(value = "search[value]", defaultValue = "") String search, Principal principal) {
 
-		List<ObjectId> auth = this.dataTablesUtils.authCriteria(principal);
+		List<String> auth = this.dataTablesUtils.authCriteria(principal);
 		UserDoc user = this.userService.findUser(principal.getName());
 		long protCount = Long.parseLong(user.getPre_loaded().get("protein_count").toString());
 

@@ -23,8 +23,19 @@ import ar.com.bia.dto.druggability.ScoreDTO;
 
 
 public class MD5 {
-	
-	public static MessageDigest instance = null;
+
+	private static MessageDigest instance = null;
+	public static MessageDigest instance(){
+		if (instance == null){
+			try {
+				instance = java.security.MessageDigest.getInstance("MD5");
+			} catch (NoSuchAlgorithmException e) {
+				//Nunca deberia Pasar...
+				e.printStackTrace();
+			}
+		}
+		return instance;
+	}
 	
 	private static final ObjectMapper SORTED_MAPPER = new ObjectMapper();
 	static {
@@ -75,16 +86,9 @@ public class MD5 {
 		}
 		
 		try {
-			if (instance == null){
-				try {
-					instance = java.security.MessageDigest.getInstance("MD5");
-				} catch (NoSuchAlgorithmException e) {
-					//Nunca deberia Pasar...
-					e.printStackTrace();
-				}	
-			}
+
 			String convertNode = convertNode(dto);			
-			String string = new String(instance.digest((convertNode + extra + createCriteriaFromQueryStringColumns(request)) .getBytes()));
+			String string = new String(instance().digest((convertNode + extra + createCriteriaFromQueryStringColumns(request)) .getBytes()));
 			
 			return string;
 		} catch (Exception e) {

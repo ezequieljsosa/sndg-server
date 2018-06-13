@@ -12,12 +12,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "users")
 public class UserDoc implements Principal {
 
-	public static final Object publicUserName = "demo";
+	public static final String publicUserName = "demo";
 
 	public static ObjectId publicUserId = new ObjectId("563b9440b1b50423d1fd1fee");
 	
 	@Id
-	private ObjectId id;
+	private String id;
 	
 	private ObjectId authId;
 	
@@ -44,13 +44,15 @@ public class UserDoc implements Principal {
 	//TODO las queries deberian ser a nivel proyecto
 	@Field("auth_queries")
 	private List<Map<String,String>> queries;
-	
-	public ObjectId getId() {
+
+	public String getId() {
 		return id;
 	}
-	public void setId(ObjectId id) {
+
+	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -114,8 +116,8 @@ public class UserDoc implements Principal {
 	public void setQueries(List<Map<String, String>> queries) {
 		this.queries = queries;
 	}
-	public ObjectId getAuthId() {
-		return (authId != null) ? authId : id;
+	public String getAuthId() {
+		return (authId != null) ? authId.toString() : id;
 	}
 	public void setAuthId(ObjectId authId) {
 		this.authId = authId;

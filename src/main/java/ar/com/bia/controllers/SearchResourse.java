@@ -490,7 +490,7 @@ public class SearchResourse {
 		
 		printDuration(startTime, "guardado en session");
 
-		List<ObjectId> auth = dataTablesUtils.authCriteria(principal);
+		List<String> auth = dataTablesUtils.authCriteria(principal);
 		
 
 		long protCount = this.geneProductRepository
@@ -674,7 +674,7 @@ public class SearchResourse {
 	}
 
 	private PaginatedResult<SearchProtDoc> defaultSearch(Integer perPage, Integer offset, String search,
-			List<ObjectId> auth, long protCount) {
+			List<String> auth, long protCount) {
 		int queryOffset = new Long(new Double(Math.ceil(offset / perPage)).longValue()).intValue();
 		Criteria[] searchFilterCriteria = dataTablesUtils.createCriteriaFromQueryString("keywords", search);
 		Criteria[] columnsSeach = dataTablesUtils.createCriteriaFromQueryStringColumns();
