@@ -1,9 +1,8 @@
 package ar.com.bia.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author eze

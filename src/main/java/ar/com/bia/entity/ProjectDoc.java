@@ -1,10 +1,10 @@
 package ar.com.bia.entity;
 
-import java.util.List;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 @Document(collection ="projects" )
 public class ProjectDoc {

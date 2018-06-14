@@ -1,13 +1,6 @@
 package ar.com.bia.backend.dao.impl;
 
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-
-import java.util.Collections;
-import java.util.List;
-
+import ar.com.bia.entity.VarOrgOntIndexElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -16,7 +9,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import ar.com.bia.entity.VarOrgOntIndexElement;
+import java.util.Collections;
+import java.util.List;
+
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 @Repository
 public class VarOntologyDocIndexRepositoryImpl {

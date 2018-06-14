@@ -1,21 +1,14 @@
 package ar.com.bia.services;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.dto.druggability.DruggabilityParam;
+import ar.com.bia.dto.druggability.DruggabilitySearch;
+import ar.com.bia.entity.PropertyUpload;
+import ar.com.bia.entity.SeqCollectionDoc;
+import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
+import ar.com.bia.services.exception.PropFileLoadException;
+import au.com.bytecode.opencsv.CSVReader;
+import com.mongodb.*;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -25,24 +18,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.AggregationOutput;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.BulkWriteOperation;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.backend.dao.SeqCollectionRepository;
-import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
-import ar.com.bia.dto.druggability.DruggabilityParam;
-import ar.com.bia.dto.druggability.DruggabilitySearch;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.PropertyUpload;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
-import ar.com.bia.services.exception.PropFileLoadException;
-import au.com.bytecode.opencsv.CSVReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.security.Principal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DruggabilityService {

@@ -1,8 +1,7 @@
 package ar.com.bia;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,8 +13,8 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 
 @EnableWebMvc

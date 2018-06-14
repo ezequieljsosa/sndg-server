@@ -1,12 +1,8 @@
 package ar.com.bia.dto.krona;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+import java.util.*;
 
 /**
  * @author eze

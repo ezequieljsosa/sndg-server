@@ -1,14 +1,11 @@
 package ar.com.bia.controllers;
 
 
-
-
+import ar.com.bia.TestContextConfig;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-
-import ar.com.bia.TestContextConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -1,9 +1,8 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import ar.com.bia.backend.dao.StructureRepository;
+import ar.com.bia.entity.ProjectDoc;
+import ar.com.bia.pdb.StructureDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,9 +14,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import ar.com.bia.backend.dao.StructureRepository;
-import ar.com.bia.entity.ProjectDoc;
-import ar.com.bia.pdb.StructureDoc;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class StructureRepositoryImpl implements StructureRepository {

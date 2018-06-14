@@ -1,8 +1,8 @@
 package ar.com.bia.entity;
 
-import java.util.List;
-
 import org.bson.types.ObjectId;
+
+import java.util.List;
 
 
 public class GeneOrthologDoc {

@@ -1,13 +1,14 @@
 package ar.com.bia.controllers.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
+import ar.com.bia.TestContextConfig;
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.backend.dao.impl.GODocumentRepositoryImpl;
+import ar.com.bia.dto.GOTermTuple;
+import ar.com.bia.dto.HierarchicNodeTreeSearchResult;
+import ar.com.bia.entity.GeneProductDoc;
+import ar.com.bia.services.JSTreeService;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,16 +19,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
-import ar.com.bia.TestContextConfig;
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.backend.dao.impl.GODocumentRepositoryImpl;
-import ar.com.bia.dto.GOTermTuple;
-import ar.com.bia.dto.HierarchicNodeTreeSearchResult;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.services.JSTreeService;
+import static org.junit.Assert.*;
 
 /**
  * Imita click sobre arbol de AmiGO Se selecciona un nodo y se piden los hijos,

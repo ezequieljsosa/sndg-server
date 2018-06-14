@@ -1,20 +1,19 @@
 package ar.com.bia.services;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Service;
-
 import ar.com.bia.backend.dao.GeneProductDocumentRepository;
 import ar.com.bia.backend.dao.StructureRepository;
 import ar.com.bia.entity.GeneProductDoc;
 import ar.com.bia.entity.SeqFeature;
 import ar.com.bia.entity.SeqFeatureEmbedDoc;
 import ar.com.bia.pdb.StructureDoc;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProteinService {

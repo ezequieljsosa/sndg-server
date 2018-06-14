@@ -1,33 +1,5 @@
 package ar.com.bia.services;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ar.com.bia.backend.dao.GeneProductDocumentRepository;
 import ar.com.bia.backend.dao.StructureRepository;
 import ar.com.bia.dto.PocketData;
@@ -39,6 +11,28 @@ import ar.com.bia.entity.aln.SimpleAligment;
 import ar.com.bia.pdb.ChainDoc;
 import ar.com.bia.pdb.HmmScanResultFeature;
 import ar.com.bia.pdb.StructureDoc;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class StructureService {

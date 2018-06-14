@@ -1,14 +1,13 @@
 package ar.com.bia.controllers;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
+import ar.com.bia.config.CollectionConfig;
 import ar.com.bia.entity.*;
+import ar.com.bia.pdb.StructureDoc;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.AggregationOutput;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -18,14 +17,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.AggregationOutput;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
-import ar.com.bia.config.CollectionConfig;
-import ar.com.bia.pdb.StructureDoc;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 @RequestMapping("/")

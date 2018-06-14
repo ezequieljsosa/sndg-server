@@ -1,26 +1,16 @@
 package ar.com.bia.controllers;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import ar.com.bia.config.CollectionConfig;
+import ar.com.bia.dto.PaginatedResult;
 import ar.com.bia.entity.*;
+import ar.com.bia.pdb.StructureDoc;
 import ar.com.bia.services.TriConsumer;
 import ar.com.bia.services.UserService;
-import org.bson.types.ObjectId;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
@@ -31,17 +21,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
-import ar.com.bia.config.CollectionConfig;
-import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.pdb.StructureDoc;
-import ar.com.bia.services.exception.OrganismNotFoundException;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/search")
@@ -149,7 +133,7 @@ public class SNDGController {
             Set<String> keywords = extractKw(query);
 
             typesMap().keySet().forEach(k -> {
-                model.addAttribute(k, queryCount(k, typesMap(), keywords, new HashMap<>(), UserDoc.publicUserId));
+                model.addAttribute(k, queryCount(k, typesMap(), keywords, new HashMap<>(), UserDoc.publicUserId.toString()));
             });
 
             return "sndg/search";
@@ -181,7 +165,7 @@ public class SNDGController {
         result.setRecordsTotal(count);
 
         UserDoc user = this.userService.findUser(principal.getName());
-        ObjectId userObjectId = user.getAuthId();
+        String userObjectId = user.getAuthId();
 
         result.setRecordsFiltered(queryCount(type, typesMap(), keywords, reqParams, userObjectId));
 
@@ -235,7 +219,7 @@ public class SNDGController {
 
     private List<DBObject> queryList(String type, Integer perPage, Integer offset, Map<String, CollectionConfig> types,
                                      Set<String> keywords, BasicDBObject projection,
-                                     Map<String, String> reqParams, ObjectId userObjectId) {
+                                     Map<String, String> reqParams, String userObjectId) {
         DBObject query = getDbObjectQuery(keywords, reqParams, userObjectId);
 
         if (type.equals("struct")) {
@@ -253,7 +237,7 @@ public class SNDGController {
     }
 
     private long queryCount(String type, Map<String, CollectionConfig> types, Set<String> keywords,
-                            Map<String, String> reqParams, ObjectId userObjectId) {
+                            Map<String, String> reqParams, String userObjectId) {
         DBObject query = getDbObjectQuery(keywords, reqParams, userObjectId);
         if (type.equals("struct")) {
             query.put("_cls", "Structure.ExperimentalStructure");
@@ -264,7 +248,7 @@ public class SNDGController {
     }
 
     private DBObject getDbObjectQuery(Set<String> keywords, Map<String, String> reqParams,
-                                      ObjectId loggedUserId) {
+                                      String loggedUserId) {
         final DBObject query = new BasicDBObject();
 
         BasicDBList list = new BasicDBList();

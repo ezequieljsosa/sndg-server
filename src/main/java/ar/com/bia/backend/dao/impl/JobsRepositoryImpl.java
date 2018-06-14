@@ -1,9 +1,6 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import ar.com.bia.entity.JobDoc;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +14,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import ar.com.bia.entity.JobDoc;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class JobsRepositoryImpl implements PagingAndSortingRepository<JobDoc, String>   {

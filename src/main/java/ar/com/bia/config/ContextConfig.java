@@ -1,13 +1,13 @@
 package ar.com.bia.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
+import ar.com.bia.services.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import org.springframework.beans.factory.annotation.Autowire;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,24 +16,15 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.mongodb.Mongo;
-import com.mongodb.MongoClient;
-
-import ar.com.bia.entity.BarcodeDoc;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.ToolDoc;
-import ar.com.bia.pdb.StructureDoc;
-
 @Configuration
 @ComponentScan(basePackages = {
         "ar.com.bia.services",
         "ar.com.bia.backend.dao.impl"})
 @PropertySource("classpath:xomeq.properties")
 public class ContextConfig {
+
+    @Autowired
+    private UserRepositoryImpl userRepository;
 
     @Value("${mongo-port}")
     private Integer port;
@@ -76,6 +67,11 @@ public class ContextConfig {
 
 
 
+
+    @Bean
+    public UserService userService() {
+        return new UserService(userRepository);
+    }
 
 
 }

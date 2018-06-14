@@ -1,19 +1,17 @@
 package ar.com.bia;
 
-import java.io.IOException;
-import java.util.Arrays;
-
+import ar.com.bia.dto.krona.KronaAttribute;
+import ar.com.bia.dto.krona.KronaDocument;
+import ar.com.bia.dto.krona.KronaNode;
+import ar.com.bia.dto.krona.KronaNodeConverter;
+import com.thoughtworks.xstream.XStream;
 import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.ElementNameAndAttributeQualifier;
 import org.custommonkey.xmlunit.XMLTestCase;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
-
-import ar.com.bia.dto.krona.KronaAttribute;
-import ar.com.bia.dto.krona.KronaDocument;
-import ar.com.bia.dto.krona.KronaNode;
-import ar.com.bia.dto.krona.KronaNodeConverter;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class KronaTest extends XMLTestCase {
 

@@ -1,29 +1,16 @@
 package ar.com.bia.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import ar.com.bia.backend.dao.OntologyDocumentRepository;
+import ar.com.bia.backend.dao.impl.OntologyDocIndexRepositoryImpl;
+import ar.com.bia.backend.dao.impl.VarOntologyDocIndexRepositoryImpl;
+import ar.com.bia.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import ar.com.bia.backend.dao.OntologyDocumentRepository;
-import ar.com.bia.backend.dao.impl.OntologyDocIndexRepositoryImpl;
-import ar.com.bia.backend.dao.impl.VarOntologyDocIndexRepositoryImpl;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.OntologyTerm;
-import ar.com.bia.entity.OrgOntIndexElement;
-import ar.com.bia.entity.ReactionDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.SeqFeature;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OntologyService {

@@ -1,27 +1,16 @@
 package ar.com.bia.controllers;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import ar.com.bia.entity.OntologyTerm;
 import ar.com.bia.entity.OrgOntIndexElement;
 import ar.com.bia.services.OntologyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 @Controller
 @RequestMapping("/ontologies")

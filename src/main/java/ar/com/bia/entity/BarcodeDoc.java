@@ -1,9 +1,9 @@
 package ar.com.bia.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "barcodes")
 public class BarcodeDoc {

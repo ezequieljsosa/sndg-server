@@ -1,48 +1,5 @@
 package ar.com.bia.controllers;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
 import ar.com.bia.DataTablesUtils;
 import ar.com.bia.backend.dao.GeneProductDocumentRepository;
 import ar.com.bia.backend.dao.SeqCollectionRepository;
@@ -54,7 +11,6 @@ import ar.com.bia.dto.druggability.DruggabilitySearch;
 import ar.com.bia.dto.druggability.ScoreDTO;
 import ar.com.bia.dto.druggability.Scoreable;
 import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.OntologyTerm;
 import ar.com.bia.entity.SearchProtDoc;
 import ar.com.bia.entity.SeqCollectionDoc;
 import ar.com.bia.entity.UserDoc;
@@ -62,6 +18,33 @@ import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
 import ar.com.bia.services.OntologyService;
 import ar.com.bia.services.UserService;
 import ar.com.bia.services.exception.OrganismNotFoundException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.security.Principal;
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/search")
@@ -490,7 +473,7 @@ public class SearchResourse {
 		
 		printDuration(startTime, "guardado en session");
 
-		List<ObjectId> auth = dataTablesUtils.authCriteria(principal);
+		List<String> auth = dataTablesUtils.authCriteria(principal);
 		
 
 		long protCount = this.geneProductRepository
@@ -674,7 +657,7 @@ public class SearchResourse {
 	}
 
 	private PaginatedResult<SearchProtDoc> defaultSearch(Integer perPage, Integer offset, String search,
-			List<ObjectId> auth, long protCount) {
+			List<String> auth, long protCount) {
 		int queryOffset = new Long(new Double(Math.ceil(offset / perPage)).longValue()).intValue();
 		Criteria[] searchFilterCriteria = dataTablesUtils.createCriteriaFromQueryString("keywords", search);
 		Criteria[] columnsSeach = dataTablesUtils.createCriteriaFromQueryStringColumns();

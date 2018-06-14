@@ -1,17 +1,15 @@
 package ar.com.bia.controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ar.com.bia.DataTablesUtils;
+import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
+import ar.com.bia.backend.dao.impl.ProjectRepositoryImpl;
+import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
+import ar.com.bia.dto.UserDTO;
+import ar.com.bia.entity.JobDoc;
+import ar.com.bia.entity.ProjectDoc;
+import ar.com.bia.entity.SeqCollectionDoc;
+import ar.com.bia.entity.UserDoc;
+import ar.com.bia.services.UserService;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -37,25 +35,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.mongodb.BasicDBObject;
-
-import ar.com.bia.DataTablesUtils;
-import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
-import ar.com.bia.backend.dao.impl.ProjectRepositoryImpl;
-import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
-import ar.com.bia.dto.UserDTO;
-import ar.com.bia.entity.JobDoc;
-import ar.com.bia.entity.ProjectDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.UserDoc;
-import ar.com.bia.services.UserService;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -85,9 +76,9 @@ public class UserResourse {
 			produces = MediaType.APPLICATION_XHTML_XML_VALUE)
 	public String dashboard( Model model, Principal principal) {
 		
-		UserDoc user = this.userRepository.findUser(principal.getName());
+		UserDoc user = this.userService.findUser(principal.getName());
 
-		List<ObjectId> auth =  this.dataTablesUtils.authCriteria(principal);
+		List<String> auth =  this.dataTablesUtils.authCriteria(principal);
 		
 		long genomeCount =  mongoTemplate.count(new Query( Criteria.where("auth").in(auth) ), SeqCollectionDoc.class); ;
 		
@@ -106,7 +97,7 @@ public class UserResourse {
 			Model model,@ModelAttribute UserDTO userDTO,Principal principal) {
 		
 		String qpReturnTo = (userDTO.getReturnTo().isEmpty()) ? "" : "?_return=" +  userDTO.getReturnTo();
-		UserDoc user = this.userRepository.findUser(userDTO.getUsername());
+		UserDoc user = this.userService.findUser(userDTO.getUsername());
 		if (user != null ){
 			model.addAttribute("error", "user already exists" );
 			return "redirect:/user/register" + qpReturnTo;
@@ -149,8 +140,8 @@ public class UserResourse {
 		
 		
 		
-		
-		return "user/register";
+		return  "redirect:../targetwp/wp-login.php?action=register";
+		//return "user/register";
 	}
 	
 	
@@ -258,7 +249,7 @@ public class UserResourse {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public UserDoc user(@PathVariable("username") String username) {
-		UserDoc user = this.userRepository.findUser(username);
+		UserDoc user = this.userService.findUser(username);
 //		user.setProjectCount(this.projectRepository.projects_from_user(
 //				user.getId()).size());
 		return user;
@@ -269,14 +260,14 @@ public class UserResourse {
 	@RequestMapping(value = "/{username}/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<ProjectDoc> projects(@PathVariable("username") String username) {
-		UserDoc user = this.userRepository.findUser(username);
+		UserDoc user = this.userService.findUser(username);
 		return this.projectRepository.projects_from_user(user.getId());
 	}
 
 	@RequestMapping(value = "/organism", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public List<String> organisms(Principal principal) {
-		UserDoc user = this.userRepository.findUser(principal.getName());		
+		UserDoc user = this.userService.findUser(principal.getName());		
 		return  this.userService.organisms(user);
 	}
 	
@@ -291,7 +282,7 @@ public class UserResourse {
 				.getAuthentication().getPrincipal();
 		String name = authenticatedUser.getUsername();
 		
-		List<ObjectId> userGenomes = userRepository.findUser(name)
+		List<ObjectId> userGenomes = userService.findUser(name)
 				.getSeqCollections();
 		
 		List<SeqCollectionDoc> genomeList = this.mongoTemplate.find(new Query(Criteria.where("_id").in(userGenomes)),
@@ -315,21 +306,21 @@ public class UserResourse {
 	// produces = MediaType.APPLICATION_JSON_VALUE)
 	// @ResponseBody
 	// public UserDoc links(@PathVariable("username") String username) {
-	// return this.userRepository.findUser(username);
+	// return this.userService.findUser(username);
 	// }
 	//
 	// @RequestMapping(value = "/{username}/clipboard", method =
 	// RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	// @ResponseBody
 	// public UserDoc clipboard(@PathVariable("username") String username) {
-	// return this.userRepository.findUser(username);
+	// return this.userService.findUser(username);
 	// }
 	//
 	// @RequestMapping(value = "/{username}/menues", method = RequestMethod.GET,
 	// produces = MediaType.APPLICATION_JSON_VALUE)
 	// @ResponseBody
 	// public UserDoc menues(@PathVariable("username") String username) {
-	// return this.userRepository.findUser(username);
+	// return this.userService.findUser(username);
 	// }
 
 }

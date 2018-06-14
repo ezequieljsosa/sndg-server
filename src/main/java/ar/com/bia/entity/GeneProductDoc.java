@@ -1,18 +1,12 @@
 package ar.com.bia.entity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import ar.com.bia.dto.druggability.DruggabilityParam;
 import ar.com.bia.dto.druggability.Scoreable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Document(collection = "proteins")
 public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {

@@ -1,8 +1,8 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.backend.dao.SeqCollectionRepository;
+import ar.com.bia.entity.SeqCollectionDoc;
+import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -11,10 +11,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.mongodb.BasicDBObject;
-
-import ar.com.bia.backend.dao.SeqCollectionRepository;
-import ar.com.bia.entity.SeqCollectionDoc;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class SeqCollectionRepositoryImpl implements SeqCollectionRepository {

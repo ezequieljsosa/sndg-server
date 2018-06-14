@@ -1,17 +1,15 @@
 package ar.com.bia.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.bson.types.ObjectId;
+import ar.com.bia.dto.PathwayDTO;
+import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import ar.com.bia.dto.PathwayDTO;
-import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,7 +29,7 @@ public class SeqCollectionDoc {
     private String ncbi_assembly;
 
 
-    private ObjectId auth;
+    private String auth;
 
     private String _cls = "SeqCollection.Genome";
 
@@ -222,11 +220,11 @@ public class SeqCollectionDoc {
         return this.druggabilityParams;
     }
 
-    public ObjectId getAuth() {
+    public String getAuth() {
         return auth;
     }
 
-    public void setAuth(ObjectId auth) {
+    public void setAuth(String auth) {
         this.auth = auth;
     }
 

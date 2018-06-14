@@ -1,29 +1,5 @@
 package ar.com.bia.controllers;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ar.com.bia.controllers.exceptions.ForbiddenException;
 import ar.com.bia.dto.druggability.DruggabilitySearch;
 import ar.com.bia.entity.PropertyUpload;
@@ -32,6 +8,23 @@ import ar.com.bia.entity.UserDoc;
 import ar.com.bia.services.DruggabilityService;
 import ar.com.bia.services.UserService;
 import ar.com.bia.services.exception.PropFileLoadException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/druggability")

@@ -1,42 +1,22 @@
 package ar.com.bia.controllers.services;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
 import ar.com.bia.BlastRunner;
 import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
 import ar.com.bia.dto.BlastJob;
 import ar.com.bia.dto.BlastParameters;
 import ar.com.bia.entity.JobDoc;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.*;
+import java.security.Principal;
+import java.util.*;
 
 @Controller
 @RequestMapping("/blast")

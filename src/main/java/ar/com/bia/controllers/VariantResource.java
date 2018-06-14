@@ -1,17 +1,19 @@
 package ar.com.bia.controllers;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.Principal;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ar.com.bia.BioPage;
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.backend.dao.SeqCollectionRepository;
+import ar.com.bia.dto.GeneProductPaginatedResult;
+import ar.com.bia.dto.PaginatedResult;
+import ar.com.bia.dto.StrainQuery;
+import ar.com.bia.entity.*;
+import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
+import ar.com.bia.entity.var.VarDoc;
+import ar.com.bia.services.OntologyService;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.biojava.nbio.alignment.Alignments;
@@ -31,32 +33,18 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ar.com.bia.BioPage;
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.backend.dao.SeqCollectionRepository;
-import ar.com.bia.dto.GeneProductPaginatedResult;
-import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.dto.StrainQuery;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.OntologyTerm;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.StrainProject;
-import ar.com.bia.entity.VariantEmbedDoc;
-import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
-import ar.com.bia.entity.var.VarDoc;
-import ar.com.bia.services.OntologyService;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/variant")

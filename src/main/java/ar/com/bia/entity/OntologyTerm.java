@@ -1,10 +1,9 @@
 package ar.com.bia.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "ontologies")
 public class OntologyTerm {

@@ -1,11 +1,9 @@
 package ar.com.bia.services;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.TestContextConfig;
+import ar.com.bia.dto.druggability.DruggabilityParam;
+import ar.com.bia.dto.druggability.DruggabilitySearch;
+import ar.com.bia.entity.PropertyUpload;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +12,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import ar.com.bia.TestContextConfig;
-import ar.com.bia.dto.druggability.DruggabilityParam;
-import ar.com.bia.dto.druggability.DruggabilitySearch;
-import ar.com.bia.entity.PropertyUpload;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = TestContextConfig.class)

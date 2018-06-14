@@ -1,15 +1,11 @@
 package ar.com.bia;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ar.com.bia.dto.PaginatedResult;
+import ar.com.bia.entity.UserDoc;
+import ar.com.bia.services.UserService;
+import ar.com.bia.services.exception.OrganismNotFoundException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -18,10 +14,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.entity.UserDoc;
-import ar.com.bia.services.UserService;
-import ar.com.bia.services.exception.OrganismNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class DataTablesUtils {
 
@@ -200,7 +197,7 @@ public class DataTablesUtils {
 	}
 
 	public static <E extends Object> PaginatedResult<E> queryCollection(int queryOffset, Integer perPage, Sort sortObj,
-			List<ObjectId> auths, Criteria filtered, Class<E> class1, MongoOperations mongoTemplate,
+			List<String> auths, Criteria filtered, Class<E> class1, MongoOperations mongoTemplate,
 			long posibleCount) {
 
 		// long posibleCount = 0;
@@ -209,7 +206,7 @@ public class DataTablesUtils {
 		// Query(Criteria.where("auth").is(auth)), class1);
 		// }
 		long filteredCount = 0;
-		for (ObjectId auth : auths) {
+		for (String auth : auths) {
 			Query query = new Query(Criteria.where("auth").is(auth));
 			query.addCriteria(filtered);
 			filteredCount += mongoTemplate.count(query, class1);
@@ -230,17 +227,17 @@ public class DataTablesUtils {
 		return result;
 	}
 
-	public List<ObjectId> authCriteria(Principal principal) {
+	public List<String> authCriteria(Principal principal) {
 		String name = principal.getName();
 		UserDoc user = this.userService.findUser(name);
 		if (user == null) {
 			throw new UsernameNotFoundException(name);
 		}
-		ObjectId userId = user.getId();
-		List<ObjectId> list = new ArrayList<ObjectId>();
-		list.add(userId);
-		if (!userId.equals(UserDoc.publicUserId)) {
-			list.add(UserDoc.publicUserId);
+
+		List<String> list = new ArrayList<>();
+		list.add(user.getId());
+		if (!user.getId().equals(UserDoc.publicUserId.toString())) {
+			list.add(UserDoc.publicUserId.toString());
 		}
 		return list;
 	}

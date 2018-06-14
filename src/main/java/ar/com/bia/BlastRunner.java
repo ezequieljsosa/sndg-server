@@ -1,23 +1,17 @@
 package ar.com.bia;
 
+import ar.com.bia.dto.BlastParameters;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-
-import ar.com.bia.dto.BlastParameters;
+import java.util.*;
 
 /**
  * @author eze

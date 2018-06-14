@@ -1,7 +1,8 @@
 package ar.com.bia.entity;
 
-import static org.junit.Assert.assertEquals;
-
+import ar.com.bia.backend.dao.ContigDocumentRepository;
+import ar.com.bia.backend.dao.GeneDocumentRepository;
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,9 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import ar.com.bia.backend.dao.ContigDocumentRepository;
-import ar.com.bia.backend.dao.GeneDocumentRepository;
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class) // classes = TestContextConfig.class

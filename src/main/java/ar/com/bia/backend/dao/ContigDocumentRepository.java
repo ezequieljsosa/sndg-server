@@ -1,12 +1,10 @@
 package ar.com.bia.backend.dao;
 
-import java.util.List;
-
+import ar.com.bia.entity.ContigDoc;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.SeqFeature;
+import java.util.List;
 
 public interface ContigDocumentRepository  extends PagingAndSortingRepository<ContigDoc, String> {
 

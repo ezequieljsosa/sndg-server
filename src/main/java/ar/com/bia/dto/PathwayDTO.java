@@ -1,11 +1,11 @@
 package ar.com.bia.dto;
 
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.nio.channels.IllegalSelectorException;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * @author eze

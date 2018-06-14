@@ -1,23 +1,20 @@
 package ar.com.bia.config;
 
-import java.util.HashSet;
-
-import org.springframework.security.authentication.BadCredentialsException;
+import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
+import ar.com.bia.entity.UserDoc;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-
-import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
-import ar.com.bia.entity.UserDoc;
+import java.util.HashSet;
 
 //http://thinkinginsoftware.blogspot.com.ar/2011/07/redirect-after-login-to-requested-page.html
 
 public class UserAuthService implements UserDetailsService {
 
-	private UserRepositoryImpl userRepository;	
+	private UserRepositoryImpl userRepository;
 	
 	
 	public UserAuthService(UserRepositoryImpl userRepository) {

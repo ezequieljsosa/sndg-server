@@ -1,9 +1,9 @@
 package ar.com.bia.dto.krona;
 
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 public class KronaDatasetCollection {
 
