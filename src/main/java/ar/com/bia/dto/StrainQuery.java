@@ -1,9 +1,8 @@
 package ar.com.bia.dto;
 
-import java.util.List;
-import java.util.Map;
-
 import ar.com.bia.dto.druggability.DruggabilityParam;
+
+import java.util.List;
 
 
 public class StrainQuery {

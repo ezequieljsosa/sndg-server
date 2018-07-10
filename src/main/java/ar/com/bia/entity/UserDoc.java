@@ -1,13 +1,13 @@
 package ar.com.bia.entity;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Map;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
 
 @Document(collection = "users")
 public class UserDoc implements Principal {
@@ -19,7 +19,7 @@ public class UserDoc implements Principal {
 	@Id
 	private String id;
 	
-	private ObjectId authId;
+	private String authId;
 	
 	private String username;
 	private String password;
@@ -119,7 +119,7 @@ public class UserDoc implements Principal {
 	public String getAuthId() {
 		return (authId != null) ? authId.toString() : id;
 	}
-	public void setAuthId(ObjectId authId) {
+	public void setAuthId(String authId) {
 		this.authId = authId;
 	}
 	public Map<String, Object> getPre_loaded() {

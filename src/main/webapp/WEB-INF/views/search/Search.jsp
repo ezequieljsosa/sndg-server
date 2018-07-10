@@ -766,7 +766,7 @@ tr.selected:hover {
 						
 							<tr id="filters">
 								<th></th>
-								<th width="80px"><a id="refresh_btn" class="btn btn-app">
+								<th width="90px"><a id="refresh_btn" class="btn btn-app">
 										<i class="fa fa-repeat">&#160;</i>Refresh
 								</a>
 								
@@ -784,7 +784,7 @@ tr.selected:hover {
 
 
 
-								<th width="80px" id="gene_filter_th"><input
+								<th width="90px" id="gene_filter_th"><input
 									id="gene_filter" type="text" style="width: 50px;"
 									placeholder="gene..." /></th>
 

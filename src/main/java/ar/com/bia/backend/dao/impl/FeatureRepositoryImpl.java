@@ -1,16 +1,15 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.backend.dao.FeatureRepository;
+import ar.com.bia.entity.ChangeEmbedDoc;
+import ar.com.bia.entity.GeneProductDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
 
-import ar.com.bia.backend.dao.FeatureRepository;
-import ar.com.bia.entity.ChangeEmbedDoc;
-import ar.com.bia.entity.GeneProductDoc;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FeatureRepositoryImpl implements FeatureRepository {

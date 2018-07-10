@@ -1,9 +1,9 @@
 package ar.com.bia.dto;
 
+import ar.com.bia.entity.GeneProductDoc;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import ar.com.bia.entity.GeneProductDoc;
 
 
 public class HierarchicNodeTreeSearchResult {

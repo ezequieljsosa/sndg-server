@@ -1,12 +1,11 @@
 package ar.com.bia.backend.dao;
 
-import java.util.List;
-import java.util.Set;
-
+import ar.com.bia.entity.OntologyDoc;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import ar.com.bia.entity.OntologyDoc;
+import java.util.List;
+import java.util.Set;
 
 public interface GODocumentRepository  extends PagingAndSortingRepository<OntologyDoc, String> {
 

@@ -1,10 +1,9 @@
 package ar.com.bia.entity.var;
 
-import java.util.List;
-
+import ar.com.bia.entity.SeqFeatureEmbedDoc;
 import org.bson.types.ObjectId;
 
-import ar.com.bia.entity.SeqFeatureEmbedDoc;
+import java.util.List;
 
 public class Allele {
 

@@ -1,17 +1,15 @@
 package ar.com.bia.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.bson.types.ObjectId;
+import ar.com.bia.dto.PathwayDTO;
+import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import ar.com.bia.dto.PathwayDTO;
-import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**

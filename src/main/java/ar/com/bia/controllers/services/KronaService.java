@@ -1,33 +1,5 @@
 package ar.com.bia.controllers.services;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-
-import org.aspectj.util.FileUtil;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.thoughtworks.xstream.XStream;
-
 import ar.com.bia.backend.dao.GODocumentRepository;
 import ar.com.bia.backend.dao.SeqCollectionRepository;
 import ar.com.bia.config.ContextConfig;
@@ -37,6 +9,28 @@ import ar.com.bia.dto.krona.KronaNode;
 import ar.com.bia.dto.krona.KronaNodeConverter;
 import ar.com.bia.entity.OntologyDoc;
 import ar.com.bia.entity.SeqCollectionDoc;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.thoughtworks.xstream.XStream;
+import org.aspectj.util.FileUtil;
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 @Controller
 @RequestMapping("/krona")

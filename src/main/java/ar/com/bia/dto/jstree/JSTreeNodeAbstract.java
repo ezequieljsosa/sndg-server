@@ -1,10 +1,10 @@
 package ar.com.bia.dto.jstree;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * http://www.jstree.com/docs/json/

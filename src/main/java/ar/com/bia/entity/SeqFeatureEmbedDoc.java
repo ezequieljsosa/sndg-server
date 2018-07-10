@@ -1,14 +1,12 @@
 package ar.com.bia.entity;
 
+import ar.com.bia.entity.aln.SimpleAligment;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.data.annotation.Id;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import ar.com.bia.entity.aln.SimpleAligment;
 
 /**
  * @author eze

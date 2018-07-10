@@ -1,16 +1,14 @@
 package ar.com.bia.backend.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.dto.druggability.DruggabilityParam;
+import ar.com.bia.entity.GeneProductDoc;
+import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.mongodb.BasicDBObject;
-
-import ar.com.bia.dto.druggability.DruggabilityParam;
-import ar.com.bia.entity.GeneProductDoc;
+import java.util.List;
+import java.util.Map;
 
 public interface GeneProductDocumentRepository extends PagingAndSortingRepository<GeneProductDoc, String> {
 
@@ -37,7 +35,7 @@ public interface GeneProductDocumentRepository extends PagingAndSortingRepositor
 
 	void removePropFromAllProteins(String collection, String property, String uploader);
 
-	GeneProductDoc findByID(ObjectId id);
+	GeneProductDoc findByID(String id);
 	
 	List<GeneProductDoc> scored(List<DruggabilityParam> dps,String organism,int size,int skip);
 

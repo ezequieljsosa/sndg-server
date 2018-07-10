@@ -1,5 +1,26 @@
 package ar.com.bia.services;
 
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.backend.dao.StructureRepository;
+import ar.com.bia.dto.PocketData;
+import ar.com.bia.entity.GeneProductDoc;
+import ar.com.bia.entity.Location;
+import ar.com.bia.entity.SeqFeature;
+import ar.com.bia.entity.SeqFeatureEmbedDoc;
+import ar.com.bia.entity.aln.SimpleAligment;
+import ar.com.bia.pdb.ChainDoc;
+import ar.com.bia.pdb.HmmScanResultFeature;
+import ar.com.bia.pdb.StructureDoc;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,29 +34,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.backend.dao.StructureRepository;
-import ar.com.bia.dto.PocketData;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.Location;
-import ar.com.bia.entity.SeqFeature;
-import ar.com.bia.entity.SeqFeatureEmbedDoc;
-import ar.com.bia.entity.aln.SimpleAligment;
-import ar.com.bia.pdb.ChainDoc;
-import ar.com.bia.pdb.HmmScanResultFeature;
-import ar.com.bia.pdb.StructureDoc;
 
 @Service
 public class StructureService {

@@ -1,13 +1,12 @@
 package ar.com.bia.controllers.services;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.text.MessageFormat;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ar.com.bia.backend.dao.GeneDocumentRepository;
+import ar.com.bia.backend.dao.StructureRepository;
+import ar.com.bia.entity.ContigDoc;
+import ar.com.bia.entity.GeneDoc;
+import ar.com.bia.entity.GeneProductDoc;
+import ar.com.bia.entity.SeqCollectionDoc;
+import ar.com.bia.pdb.StructureDoc;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -19,13 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ar.com.bia.backend.dao.GeneDocumentRepository;
-import ar.com.bia.backend.dao.StructureRepository;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.pdb.StructureDoc;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.text.MessageFormat;
 
 @Controller
 @RequestMapping("/redirect")

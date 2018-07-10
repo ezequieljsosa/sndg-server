@@ -578,15 +578,17 @@ input[type="search"] {
 			
 			
 			load_ont_net(ontologies)
-			
+
 			if (protein.features) {
-				
+
 				var features =  protein.features;
 				
 				structures.forEach(x => {
+
 					if(x.templates && x.templates.length > 0){
 						
 						var aln = x.templates[0]
+
 						var fmodel = {
 								id: x.name,						
 								identifier: x.name ,

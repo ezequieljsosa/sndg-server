@@ -66,5 +66,5 @@ and insert under AccessFileName .htaccess:
 LimitRequestLine 1000000
 LimitRequestFieldSize 1000000
 
-mvn clean package -DskipTests -Dbasepath=patho -Dfinalname=patho -Ddefault.lang=en -Dmongo.database=tdr
+mvn clean package -DskipTests -Dbasepath=patho -Dfinalname=patho -Ddefault.lang=en -Dmongo.database=tdr -Dmysql.pass=xxx
   

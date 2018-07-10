@@ -1,9 +1,9 @@
 package ar.com.bia.backend.dao;
 
+import ar.com.bia.entity.SeqCollectionDoc;
+
 import java.util.List;
 import java.util.Map;
-
-import ar.com.bia.entity.SeqCollectionDoc;
 
 public interface SeqCollectionRepository {
 

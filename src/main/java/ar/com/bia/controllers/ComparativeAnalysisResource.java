@@ -1,13 +1,8 @@
 package ar.com.bia.controllers;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.entity.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.biojava.nbio.alignment.Alignments;
 import org.biojava.nbio.alignment.template.AlignedSequence;
 import org.biojava.nbio.alignment.template.Profile;
@@ -25,22 +20,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
-import ar.com.bia.entity.ComparativeAnalysisDoc;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneOrthologDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.OrthologsDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.SeqFeatureEmbedDoc;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 @RequestMapping("/comparative")

@@ -1,14 +1,13 @@
 package ar.com.bia.pdb;
 
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.entity.aln.SimpleAligment;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import ar.com.bia.entity.aln.SimpleAligment;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author eze

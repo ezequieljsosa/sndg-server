@@ -1,10 +1,9 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
+import ar.com.bia.backend.dao.GeneDocumentRepository;
+import ar.com.bia.entity.ContigDoc;
+import ar.com.bia.entity.GeneDoc;
+import com.mongodb.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,15 +18,10 @@ import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.mongodb.AggregationOutput;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
-import ar.com.bia.backend.dao.GeneDocumentRepository;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneDoc;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 @Repository
 public class GeneDocumentRepositoryImpl implements GeneDocumentRepository {

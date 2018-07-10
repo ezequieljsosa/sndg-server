@@ -2,7 +2,6 @@ package ar.com.bia.services;
 
 import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
 import ar.com.bia.entity.UserDoc;
-import com.mashape.unirest.http.Unirest;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
@@ -99,7 +98,7 @@ public class UserService {
             userDoc.setUsername(userName);
             userDoc.setEmail(userEmail);
             userDoc.setInstitutions(institutions);
-
+            userDoc.setAuthId(rid);
             userDoc.setPassword(userPass);
             return userDoc;
         }
@@ -116,7 +115,7 @@ public class UserService {
         List<String> organisms = this.userRepository.organisms(user);
         if (!user.getAuthId().equals(UserDoc.publicUserId)) {
             UserDoc publicUser = new UserDoc();
-            publicUser.setAuthId(UserDoc.publicUserId);
+            publicUser.setAuthId(UserDoc.publicUserId.toString());
             organisms.addAll(this.userRepository.organisms(publicUser));
         }
 

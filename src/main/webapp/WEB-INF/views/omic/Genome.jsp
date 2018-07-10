@@ -243,6 +243,25 @@
             }
             loadTutorial('${baseURL}');
 
+            if (genome.pathways.length > 0) {
+                $("#pathways_button").click(function () {
+                    window.location = $.api.url_score_pathways(genome_id)
+                });
+            } else {
+
+                $("#pwtools_item").hide();
+            }
+
+
+            if (genome.kegg) {
+                $("#kegg_button").click(function () {
+                    window.location = $.api.url + "/kegg/" + genome_id;
+                })
+            } else {
+                $("#kegg_item").hide();
+            }
+
+
             $("#btn_upload_csv").click(upload_properties);
 
             $("#upload_save_btn").click(
@@ -396,7 +415,7 @@
             //         "Reference Genome").val("Reference Genome");
             //
             // } else {
-                 $("#variantbox").remove();
+            $("#variantbox").remove();
             // }
 
             if (genome.pathways.length > 0) {
@@ -443,7 +462,7 @@
 
             if (jbrowse_enabled) {
                 var jbrowse = new $.JBrowseWrapper($("#jbrowse"),
-                    "${baseURL}/public/jbrowse/?data=data/");
+                    "${baseURL}/public/jbrowse/index.html?data=data/");
 
                 jbrowse.init(genome.name, true);
 
@@ -495,9 +514,7 @@
                     data: druggability_data
                 }]
             };
-            $("#pathways_button").click(function () {
-                window.location = $.api.url_score_pathways(genome_id)
-            })
+
 
             $("#druggability_button").click(
                 function () {
@@ -544,8 +561,10 @@
                                                         data-toggle="tab" aria-expanded="true">Data</a></li>
             <li class="pull-left  "><a id="druggability_button"
                                        aria-expanded="true">Prioritize Targets</a></li>
-            <li class="pull-left  "><a id="pathways_button"> Prioritize
+            <li class="pull-left" id="pwtools_item"><a id="pathways_button"> Prioritize
                 Pathways</a></li>
+            <li class="pull-left" id="kegg_item"><a id="kegg_button"> Kegg
+                Annotation</a></li>
 
 
         </ul>

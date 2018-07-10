@@ -1,10 +1,10 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
+import ar.com.bia.backend.dao.ContigDocumentRepository;
+import ar.com.bia.entity.ContigDoc;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -17,12 +17,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
-import ar.com.bia.backend.dao.ContigDocumentRepository;
-import ar.com.bia.entity.ContigDoc;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 @Repository
 public class ContigDocumentRepositoryImpl implements ContigDocumentRepository {

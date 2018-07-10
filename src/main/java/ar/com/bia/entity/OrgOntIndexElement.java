@@ -1,8 +1,8 @@
 package ar.com.bia.entity;
 
-import java.util.List;
-
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = "col_ont_idx")
 public class OrgOntIndexElement {

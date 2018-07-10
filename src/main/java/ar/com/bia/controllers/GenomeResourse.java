@@ -1,16 +1,21 @@
 package ar.com.bia.controllers;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletResponse;
-
+import ar.com.bia.DataTablesUtils;
+import ar.com.bia.backend.dao.GeneDocumentRepository;
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.backend.dao.impl.VarDocRepositoryImpl;
+import ar.com.bia.controllers.exceptions.ForbiddenException;
+import ar.com.bia.controllers.services.SessionService;
+import ar.com.bia.dto.PaginatedResult;
+import ar.com.bia.entity.*;
+import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
+import ar.com.bia.services.DruggabilityService;
+import ar.com.bia.services.OntologyService;
+import ar.com.bia.services.UserService;
+import ar.com.bia.services.exception.PropFileLoadException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.util.FileUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,35 +26,18 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ar.com.bia.DataTablesUtils;
-import ar.com.bia.backend.dao.GeneDocumentRepository;
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.backend.dao.impl.VarDocRepositoryImpl;
-import ar.com.bia.controllers.exceptions.ForbiddenException;
-import ar.com.bia.controllers.services.SessionService;
-import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.entity.GeneDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.OntologyTerm;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.UserDoc;
-import ar.com.bia.entity.druggability.SeqColDruggabilityParam;
-import ar.com.bia.services.DruggabilityService;
-import ar.com.bia.services.OntologyService;
-import ar.com.bia.services.UserService;
-import ar.com.bia.services.exception.PropFileLoadException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/genome")
@@ -109,11 +97,14 @@ public class GenomeResourse {
 		}
 
 		UserDoc user = this.userService.findUser(principal.getName());
+	/*
 		if (!genome.getAuth().equals(UserDoc.publicUserId)) {
 			if (!genome.getAuth().equals(user.getAuthId())) {
 				throw new ForbiddenException();
 			}
 		}
+*/
+
 
 		List<Map<String, Object>> druggabilityTable = this.druggabilityService.druggabilityTable(genome);
 
@@ -400,11 +391,11 @@ System.out.println("OK");
 		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("name").is(genomeName)),
 				SeqCollectionDoc.class);
 
-		if (!genome.getAuth().equals(new ObjectId("563b9440b1b50423d1fd1fee"))) {
-			if (!genome.getAuth().equals(user.getAuthId())) {
-				throw new ForbiddenException();
-			}
-		}
+//		if (!genome.getAuth().equals(new ObjectId("563b9440b1b50423d1fd1fee"))) {
+//			if (!genome.getAuth().equals(user.getAuthId())) {
+//				throw new ForbiddenException();
+//			}
+//		}
 
 		File file = new File("/data/organismos/" + genomeName + "/anotacion/anotacion.gff3");
 
@@ -424,11 +415,11 @@ System.out.println("OK");
 		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("name").is(genomeName)),
 				SeqCollectionDoc.class);
 
-		if (!genome.getAuth().equals(new ObjectId("563b9440b1b50423d1fd1fee"))) {
-			if (!genome.getAuth().equals(user.getAuthId())) {
-				throw new ForbiddenException();
-			}
-		}
+//		if (!genome.getAuth().equals(new ObjectId("563b9440b1b50423d1fd1fee"))) {
+//			if (!genome.getAuth().equals(user.getAuthId())) {
+//				throw new ForbiddenException();
+//			}
+//		}
 
 		File file = new File("/data/organismos/" + genomeName + "/contigs/genoma.fasta");
 

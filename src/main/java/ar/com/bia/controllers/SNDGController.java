@@ -1,19 +1,17 @@
 package ar.com.bia.controllers;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import ar.com.bia.config.CollectionConfig;
+import ar.com.bia.dto.PaginatedResult;
+import ar.com.bia.entity.*;
+import ar.com.bia.pdb.StructureDoc;
+import ar.com.bia.services.exception.OrganismNotFoundException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
@@ -24,22 +22,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-
-import ar.com.bia.config.CollectionConfig;
-import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.entity.BarcodeDoc;
-import ar.com.bia.entity.ContigDoc;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.ToolDoc;
-import ar.com.bia.pdb.StructureDoc;
-import ar.com.bia.services.exception.OrganismNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/search")

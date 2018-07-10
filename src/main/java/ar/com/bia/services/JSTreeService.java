@@ -1,10 +1,16 @@
 package ar.com.bia.services;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Pattern;
-
+import ar.com.bia.backend.dao.GODocumentRepository;
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.dto.GOTermTuple;
+import ar.com.bia.dto.HierarchicNodeTreeSearchResult;
+import ar.com.bia.dto.jstree.JSTreeNodeAbstract;
+import ar.com.bia.dto.jstree.JSTreeNodeAjax;
+import ar.com.bia.entity.GeneProductDoc;
+import ar.com.bia.entity.SeqCollectionDoc;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.bson.types.ObjectId;
@@ -14,18 +20,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
-import ar.com.bia.backend.dao.GODocumentRepository;
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.dto.GOTermTuple;
-import ar.com.bia.dto.HierarchicNodeTreeSearchResult;
-import ar.com.bia.dto.jstree.JSTreeNodeAbstract;
-import ar.com.bia.dto.jstree.JSTreeNodeAjax;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class JSTreeService {

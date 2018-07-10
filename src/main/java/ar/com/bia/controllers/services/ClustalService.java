@@ -1,17 +1,8 @@
 package ar.com.bia.controllers.services;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
+import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
+import ar.com.bia.dto.MSAJob;
+import ar.com.bia.entity.JobDoc;
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
-import ar.com.bia.dto.MSAJob;
-import ar.com.bia.entity.JobDoc;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Controller
 @RequestMapping("msa")

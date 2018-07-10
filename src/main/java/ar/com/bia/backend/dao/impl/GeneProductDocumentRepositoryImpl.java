@@ -1,11 +1,13 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import ar.com.bia.backend.dao.GeneProductDocumentRepository;
+import ar.com.bia.dto.druggability.DruggabilityParam;
+import ar.com.bia.entity.GeneProductDoc;
+import ar.com.bia.entity.Sequence;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MapReduceOutput;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,15 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MapReduceOutput;
-
-import ar.com.bia.backend.dao.GeneProductDocumentRepository;
-import ar.com.bia.dto.druggability.DruggabilityParam;
-import ar.com.bia.entity.GeneProductDoc;
-import ar.com.bia.entity.Sequence;
+import java.util.*;
 
 @Repository
 public class GeneProductDocumentRepositoryImpl implements GeneProductDocumentRepository {
@@ -295,7 +289,7 @@ public class GeneProductDocumentRepositoryImpl implements GeneProductDocumentRep
 	}
 
 	@Override
-	public GeneProductDoc findByID(ObjectId id) {		
+	public GeneProductDoc findByID(String id) {
 		return  this.getMongoTemplate().findOne(getIdQuery(id),GeneProductDoc.class);
 	}
 	

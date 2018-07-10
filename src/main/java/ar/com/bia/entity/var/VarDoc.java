@@ -1,12 +1,10 @@
 package ar.com.bia.entity.var;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "variant")
 public class VarDoc {

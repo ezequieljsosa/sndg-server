@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.Map;
-
 @Configuration
 @ComponentScan(basePackages = {"ar.com.bia.config", "ar.com.bia.backend.dao.impl"})
 @EnableWebSecurity

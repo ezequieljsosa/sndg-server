@@ -1,8 +1,9 @@
 package ar.com.bia.aspects;
 
-import java.security.Principal;
-import java.util.Arrays;
-
+import ar.com.bia.backend.dao.GeneDocumentRepository;
+import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
+import ar.com.bia.entity.GeneDoc;
+import ar.com.bia.entity.UserDoc;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,10 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import ar.com.bia.backend.dao.GeneDocumentRepository;
-import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
-import ar.com.bia.entity.GeneDoc;
-import ar.com.bia.entity.UserDoc;
+import java.security.Principal;
+import java.util.Arrays;
 
 @Component
 @Aspect

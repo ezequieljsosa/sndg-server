@@ -1,22 +1,15 @@
 package ar.com.bia.dto.druggability;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
-import org.springframework.data.mongodb.core.query.Criteria;
-
+import ar.com.bia.dto.PathwayDTO;
+import ar.com.bia.entity.UserDoc;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import org.springframework.data.mongodb.core.query.Criteria;
 
-import ar.com.bia.dto.PathwayDTO;
-import ar.com.bia.entity.UserDoc;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DruggabilityParam {

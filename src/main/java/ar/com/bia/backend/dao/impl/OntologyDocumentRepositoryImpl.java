@@ -1,9 +1,9 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import ar.com.bia.backend.dao.OntologyDocumentRepository;
+import ar.com.bia.entity.OntologyTerm;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +16,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
-import ar.com.bia.backend.dao.OntologyDocumentRepository;
-import ar.com.bia.entity.OntologyTerm;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class OntologyDocumentRepositoryImpl implements OntologyDocumentRepository {

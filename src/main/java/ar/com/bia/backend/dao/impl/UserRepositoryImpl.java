@@ -1,12 +1,7 @@
 package ar.com.bia.backend.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
+import ar.com.bia.entity.SeqCollectionDoc;
+import ar.com.bia.entity.UserDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,8 +14,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.UserDoc;
+import java.util.*;
 
 @Repository
 public class UserRepositoryImpl implements PagingAndSortingRepository<UserDoc, String> {

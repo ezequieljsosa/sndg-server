@@ -1,15 +1,11 @@
 package ar.com.bia;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ar.com.bia.dto.PaginatedResult;
+import ar.com.bia.entity.UserDoc;
+import ar.com.bia.services.UserService;
+import ar.com.bia.services.exception.OrganismNotFoundException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -18,10 +14,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import ar.com.bia.dto.PaginatedResult;
-import ar.com.bia.entity.UserDoc;
-import ar.com.bia.services.UserService;
-import ar.com.bia.services.exception.OrganismNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class DataTablesUtils {
 
@@ -209,7 +206,9 @@ public class DataTablesUtils {
 		// Query(Criteria.where("auth").is(auth)), class1);
 		// }
 		long filteredCount = 0;
-		for (String auth : auths) {
+List<String> auths2 = new ArrayList<String>();
+auths2.add(UserDoc.publicUserId.toString());
+		for (String auth : auths2) {
 			Query query = new Query(Criteria.where("auth").is(auth));
 			query.addCriteria(filtered);
 			filteredCount += mongoTemplate.count(query, class1);

@@ -1,17 +1,15 @@
 package ar.com.bia.controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
+import ar.com.bia.DataTablesUtils;
+import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
+import ar.com.bia.backend.dao.impl.ProjectRepositoryImpl;
+import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
+import ar.com.bia.dto.UserDTO;
+import ar.com.bia.entity.JobDoc;
+import ar.com.bia.entity.ProjectDoc;
+import ar.com.bia.entity.SeqCollectionDoc;
+import ar.com.bia.entity.UserDoc;
+import ar.com.bia.services.UserService;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -37,25 +35,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.mongodb.BasicDBObject;
-
-import ar.com.bia.DataTablesUtils;
-import ar.com.bia.backend.dao.impl.JobsRepositoryImpl;
-import ar.com.bia.backend.dao.impl.ProjectRepositoryImpl;
-import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
-import ar.com.bia.dto.UserDTO;
-import ar.com.bia.entity.JobDoc;
-import ar.com.bia.entity.ProjectDoc;
-import ar.com.bia.entity.SeqCollectionDoc;
-import ar.com.bia.entity.UserDoc;
-import ar.com.bia.services.UserService;
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")

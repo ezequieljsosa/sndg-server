@@ -1,9 +1,9 @@
 package ar.com.bia.pdb;
 
+import ar.com.bia.entity.aln.SimpleAligment;
+
 import java.util.List;
 import java.util.Map;
-
-import ar.com.bia.entity.aln.SimpleAligment;
 
 public class ChainDoc {
 	
