@@ -124,13 +124,25 @@ public class GeneDocumentRepositoryImpl implements GeneDocumentRepository {
 			substrParams.add("$seq");
 			substrParams.add(read.getLocation().getStart());
 			substrParams.add(read.getLocation().getEnd() - read.getLocation().getStart() );
-			DBObject projectSeq = new BasicDBObject("$project",new BasicDBObject("seq",new BasicDBObject("$substr",substrParams)));
-			Object object = mongoTemplate.getCollection("contig_collection")
-					.aggregate(matchConting,projectSeq).results().iterator().next().get("seq");
-			read.setSeq(object.toString() );
-			
-			
-			
+			DBObject proj1 = new BasicDBObject("seq",new BasicDBObject("$substr",substrParams));
+            proj1.put("bigseq",1);
+			DBObject projectSeq = new BasicDBObject("$project",proj1);
+			DBObject dbobjresult = mongoTemplate.getCollection("contig_collection")
+					.aggregate(matchConting, projectSeq).results().iterator().next();
+			if ( dbobjresult.containsField("bigseq")){
+			    try {
+                String seq = new String((byte[])dbobjresult.get("bigseq")).substring(read.getLocation().getStart(),
+                        read.getLocation().getEnd() );
+                read.setSeq(seq );
+                } catch (Exception ex){
+                    Object object = dbobjresult.get("seq");
+                    read.setSeq(object.toString() );
+                }
+            } else {
+                Object object = dbobjresult.get("seq");
+                read.setSeq(object.toString() );
+            }
+
 			if(!dbObject.containsField("size")){
 				read.setUnit("bp");
 				read.initializeSize();

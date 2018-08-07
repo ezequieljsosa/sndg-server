@@ -40,7 +40,7 @@ $.KronaWrapper.prototype = {
 			},
 			error : function(jqxhr, textStatus, error) {
 				var err = textStatus + ", " + error;
-				//console.log("Request Failed: " + err);
+				console.log("Request Failed: " + err);
 			}
 		});
 		
@@ -69,9 +69,7 @@ $.KronaWrapper.prototype = {
 						me.update("ec", "root");
 					}
 					if ($(this).val() == "bp") {
-//						krona_url = "/xomeq/public/krona/index.html?genome="
-//								+ $.QueryString["genome"]
-//								+ "&term=go:0008150&ontology=go&level=3";
+
 						me.update("go", "go:0008150");
 					}
 					if ($(this).val() == "mf") {

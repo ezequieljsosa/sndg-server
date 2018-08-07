@@ -87,6 +87,7 @@ public class OntologyService {
 					try{
 						return  new OntologyTerm(x.getOntology(),x.getTerm(),x.getName(),x.getDatabase(),x.getOrder());
 					} catch(Exception ex) {
+						ex.printStackTrace();
 						return null;
 					}
 							

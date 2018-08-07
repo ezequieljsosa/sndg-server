@@ -11,6 +11,7 @@
 <head>
 
 <title>Gene Details</title>
+
 </head>
 <body>
 
@@ -37,6 +38,9 @@
 
 	<script language="JavaScript" type="text/javascript"
 		src="${baseURL}/public/biojs/Biojs.Sequence.js"></script>
+
+    <script type="application/javascript" src="${baseURL}/public/sequence-viewer.min.js">
+    </script>
 
 <script type="text/javascript">
 
@@ -106,7 +110,20 @@ var product_obj = ${protein};
 				$("#publications_row").remove();
 			}
 			;
-			$("#sequence_row").remove();
+
+            var seq1 = new Sequence(gene_obj.seq);
+
+            seq1.render('#protein-sequence-viewer', {
+                'showLineNumbers': true,
+                'wrapAminoAcids': true,
+                'charsPerLine': 100,
+                'toolbar': false,
+                'search': false,
+                'title' : gene.name,
+                'sequenceMaxHeight': "300px",
+                'badge': true
+            });
+
 		}
 
 		function load_product(gene, product) {
@@ -133,6 +150,9 @@ var product_obj = ${protein};
 		$(document).ready(function() {
 
 			load_gene(product_obj.organism,gene_obj);
+
+
+
 			setJbrowseURL(product_obj.organism, gene_obj)
 			load_product(gene_obj, product_obj)
 		});
@@ -208,52 +228,12 @@ var product_obj = ${protein};
 		</section>
 	</div>
 
-	<div id="sequence_row" class="row">
+	<div class="row">
 		<section class="col-lg-8 connectedSortable">
-			<div class="box box-primary">
-				<div class="box-header">
-					<div id="struct_toolbox" class="pull-right box-tools">
-						<div class="input-group">
-							<input id="bps_per_line" type="number" />
-							<button id="bps_per_line_btn" class="btn btn-info">
-								Change bps per line</button>
-
-							<!-- 	<input id="start_seq_input"  type="number" readonly="readonly" />
+			<div id="protein-sequence-viewer"></div>
 
 
-							<input id="end_seq_input" type="number" readonly="readonly" />
-							<button class="btn btn-info" id="blast_button"
-								title="Runs the blast algorithm">Blast</button> -->
-
-
-						</div>
-					</div>
-					<i class="fa  fa-align-justify">&#160;</i>
-					<h3 class="box-title">Sequence</h3>
-				</div>
-				<div class="box-body no-padding">
-					<div id="sequence_box"></div>
-				</div>
-				<div class="box-footer">
-					<!-- 	<textarea id="copy_area" rows="0" cols="50">-</textarea> -->
-				</div>
-			</div>
 		</section>
-	</div>
-
-	<div class="row" id="publications_row">
-		<div class="col-xs-12">
-			<div class="box">
-				<div class="box-body">
-					<h3>Publications</h3>
-
-					<ul id="publication_list">
-
-					</ul>
-				</div>
-				
-			</div>
-		</div>
 	</div>
 
 

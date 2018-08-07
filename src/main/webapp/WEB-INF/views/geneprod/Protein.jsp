@@ -151,18 +151,18 @@ input[type="search"] {
 		type="text/javascript"></script>
 
 	<script type="text/javascript">
-		 
+
 		var protein = ${protein} ;
 		var ontologies = ${ontologies} ;
-		var structures = ${structures} ; 
+		var structures = ${structures} ;
 		var user = "${user.name}";
 		var protOrganism = "${organism}";
-		
+
 	</script>
 
-	<script type="text/javascript">	
+	<script type="text/javascript">
 		function load_experimental_structures(protein) {
-			
+
 			if ((typeof protein.structures != "undefined")
 					&& (protein.structures != null)) {
 				var structs = []
@@ -233,17 +233,17 @@ input[type="search"] {
 			var strainfeatures = $.grep(features, function(e) {
 				return   ["strain_variant"].indexOf( e.type)  != -1 ;
 			});
-			
+
 			if (dbfeatures.length == 0) {
-				$('#dbvariants-box').remove()				
+				$('#dbvariants-box').remove()
 			}
 			if (strainfeatures.length == 0) {
-				$('#strainvariants-box').remove()				
+				$('#strainvariants-box').remove()
 			}
-			
-			
+
+
 			if (dbfeatures.length > 0) {
-				var in_detail = false; 
+				var in_detail = false;
 				if (dbfeatures.length > 10) {
 					in_detail = true;
 				}
@@ -254,13 +254,13 @@ input[type="search"] {
 					"paging" : in_detail,
 					"info" : false,
 					"searching" : in_detail,
-					"columns" : [ 
-						{ 
+					"columns" : [
+						{
 							data: 'type',
 							render (x,y,row){
 									if(x == "tbdream"){
 										return '<a href="' + BIAlinks.tbdream(row.qualifiers.drug,row.qualifiers.gene) + '">' + row.identifier + '</a>';
-									} else {										
+									} else {
 										return row.identifier;
 									}
 							}
@@ -271,35 +271,35 @@ input[type="search"] {
 							render (x,y,row){
 								if([ "tbdream","Aanensen2016"].indexOf(x) != -1){
 									return row.qualifiers.change + " -> " + row.qualifiers.drug
-								} else {									
-									return  row.qualifiers.type  + " -> " +  row.qualifiers.change 
+								} else {
+									return  row.qualifiers.type  + " -> " +  row.qualifiers.change
 								}
 						}},{
 							data: 'type',
 							render (x,y,row){
-								
+
 								if(x == "tbdream"){
 									return row.qualifiers.pattern;
-								} else {									
+								} else {
 									return  "";
 								}
 						}}
-			
+
 					],
 					"dom" : '<"top"f<"clear">>rt<"bottom"lp<"clear">>'
 
 				});
 
-				
+
 			} else {
-				
+
 				$('#sequence_row').remove()
 				$('#dbvariants-box').remove()
 
 			}
-			
+
 			if (strainfeatures.length > 0) {
-				var in_detail = false; 
+				var in_detail = false;
 				if (strainfeatures.length > 10) {
 					in_detail = true;
 				}
@@ -310,51 +310,51 @@ input[type="search"] {
 					"paging" : in_detail,
 					"info" : false,
 					"searching" : in_detail,
-					"columns" : [ 
-						{ 
+					"columns" : [
+						{
 							data: 'type',
-							render (x,y,row){																			
+							render (x,y,row){
 										return row.identifier;
-									
+
 							}
 						},{
 							data: 'location.start'
 						},{
 							data: 'type',
 							render (x,y,row){
-																	
-									return  row.qualifiers.type  + " -> " +  row.qualifiers.change 
-								
+
+									return  row.qualifiers.type  + " -> " +  row.qualifiers.change
+
 						}},{
 							data: 'type',
 							render (x,y,row){
-								if (row.qualifiers.ref != undefined){									
+								if (row.qualifiers.ref != undefined){
 									return dbfeatures.filter(x => x.id == row.qualifiers.ref)[0].identifier;
 								}	else {
 									return "";
-								} 
-								
+								}
+
 						}}
-			
+
 					],
 					"dom" : '<"top"f<"clear">>rt<"bottom"lp<"clear">>'
 
 				});
 
-				
+
 			} else {
 
 				$('#strainfeatures-box').remove()
 
 			}
-			
-			
+
+
 			/* $.each(features, function(type, feature) {
-				
+
 				if(feature.name == "missense_variant"){
-					
-					
-					
+
+
+
 					"position" : {
 			            "start" : int(row["AA_POS"]),
 			            "end" : int(row["AA_POS"]) + 1
@@ -372,7 +372,7 @@ input[type="search"] {
 			            "rsid" : row["RS_ID"]
 			        }
 				}
-				
+
 			}); */
 		}
 
@@ -380,19 +380,19 @@ input[type="search"] {
 			var go_ont = $.grep(ontologies, function(ont) {
 				return ont.ontology == "go";
 			});
-			
+
 			var go_graph = new $.GOGraph($('#cy'), go_ont)
 
 			$('#cy').css("min-height",500);
 			$('#cy').height($("#ontologies_section").height());
-			
+
 			$('#cy').css("max-height",2 * $(window).height() / 3);
-			
+
 			$("#enableWheel").change(function(evt){
-				
+
 				go_graph.cy.userZoomingEnabled($(this).prop("checked"))
 			});
-			
+
 			go_graph.init();
 			$("#redraw").click(function(evt) {
 				go_graph.fit();
@@ -404,7 +404,7 @@ input[type="search"] {
 		}
 
 		function load_pathways(protein) {
-			
+
 			if ($.isDefAndNotNull(protein.reactions) && (protein.reactions.length !=0 ) ) {
 				rt = new $.ReactionsTree($("#pathwaystree"), protein.organism,$.api)
 				var pathways = [];
@@ -414,14 +414,14 @@ input[type="search"] {
 							if(pathways.indexOf(pathway) == -1){
 								pathways.push(pathway);
 							}
-						});	
+						});
 					} else {
 						if(pathways.indexOf(null) == -1){
-							pathways.push(null);	
+							pathways.push(null);
 						}
-						
+
 					}
-					
+
 				});
 				rt.pathways = pathways;
 				rt.init(protein.reactions,ontologies)
@@ -432,12 +432,50 @@ input[type="search"] {
 				//$("#pathways_box").remove();
 				$("#pathways-section").html("<h2>No Pathways/Reactions information avaliable</h2>");
 			}
+
+			if (protein.tregulation){
+                if(protein.tregulation.tf_type){
+                    $("#tf_type").html(protein.tregulation.tf_type)
+                    protein.tregulation.regulates.forEach(x=>{
+                        const tr = $("<tr/>");
+                        $("<td/>").appendTo(tr).html(x.contig);
+                        $("<td/>").appendTo(tr).append( $("<a/>",{href:"${baseURL}/protein/gene/" + x.locus_tag + "/"}).html( x.locus_tag));
+                        $("<td/>").appendTo(tr).html(x.desc);
+                        $("<td/>").appendTo(tr).html(x.with_transcript);
+                        $("<td/>").appendTo(tr).html(x.is_tf);
+
+                        $("#tregulates-table").append(tr);
+					});
+                    $("#tregulates-table2").dataTable();
+				} else {
+                    $("#tregulates-section").remove()
+				}
+                if(protein.tregulation.tf_type){
+                    protein.tregulation.regulated_by.forEach(x=>{
+                        const tr = $("<tr/>");
+                        $("<td/>").appendTo(tr).html(x.contig);
+                        $("<td/>").appendTo(tr).append( $("<a/>",{href:"${baseURL}/protein/gene/" + x.locus_tag + "/"}).html( x.locus_tag));
+                        $("<td/>").appendTo(tr).html(x.desc);
+                        $("<td/>").appendTo(tr).html(x.with_transcript);
+                        $("<td/>").appendTo(tr).html(x.tf_type);
+
+                        $("#tregulated-table").append(tr);
+                        $("#tregulated-table2").dataTable();
+                    } );
+
+                } else {
+                    $("#tregulated-section").remove()
+                }
+			} else {
+                $("#tregulated-section").html("<h2>No transcription regulation information avaliable</h2>");
+                $("#tregulates-section").remove();
+			}
 		}
 
 		function presentDatabseString(str) {
 			return str.charAt(0).toUpperCase() + str.slice(1).replace("_", " ");
 		}
-		
+
 		var loadStructures = function(structures) {
 
 			$
@@ -469,7 +507,7 @@ input[type="search"] {
 
 		};
 		var loadPDBStructures = function(structures) {
-			
+
 			$
 					.each(
 							structures,
@@ -484,14 +522,14 @@ input[type="search"] {
 							});
 
 		};
-		
+
 
 		var load_protein_fn = function(protein) {
 			$("#overview_overlay").remove();
 			$("#overview_loading-img").remove();
-			
-			
-			
+
+
+
 			if ((typeof window.proteins != "undefined")
 					&& (typeof window.proteins.values[protein.name] != "undefined")
 					&& window.proteins.values[protein.name] == protein.id) {
@@ -531,15 +569,15 @@ input[type="search"] {
 				$("#overview_table")
 						.append(text);
 			}
-			
+
 			load_pathways(protein);
 			//load_protein_structure(protein.name);
-			
+
 			load_expression(protein);
 			load_experimental_structures(protein);
 			load_variants(protein.features,protein.sequence)
 
-				
+
 			if (protein.publications) {
 				$.each(protein.publications, function(key, value) {
 					$("#publication_list").append('<li>' + value + '</li>');
@@ -547,10 +585,10 @@ input[type="search"] {
 			} else {
 				$("#publications_row").remove();
 			}
-			
+
 			var go_ontologies =  (ontologies != null) ? ontologies.filter(x => x.ontology == "go")  : []
 			if ( go_ontologies.length > 0) {
-				
+
 				var ontologies_list = new $.OntologiesList(	$("#ontologies_section"),$.api );
 				//ontologies_list.organism = protein.organism
 				ontologies_list.init(ontologies);
@@ -573,58 +611,58 @@ input[type="search"] {
 				$("#cross_refereces_section").remove();
 	//		}
 			$('#structures_section').hide();
-			
-			
+
+
 			load_ont_net(ontologies)
-			
+
 			if (protein.features) {
-				
+
 				var features =  protein.features;
-				
+
 				structures.forEach(x => {
 					if(x.templates && x.templates.length > 0){
-						
+
 						var aln = x.templates[0]
 						var fmodel = {
-								id: x.name,						
+								id: x.name,
 								identifier: x.name ,
 								location:{start: aln.aln_query.start,end:aln.aln_query.end},
 								type:"SO:0001079",
 								aln: aln,
-								strLocus: aln.aln_query.start.toString() + ":" +aln.aln_query.end.toString() 
+								strLocus: aln.aln_query.start.toString() + ":" +aln.aln_query.end.toString()
 						}
 						features.push(fmodel);
 					}
 				})
-				
+
 				var fl = new $.FeaturesList($("#features"), features,
 						protein.organism);
-				
+
 				fl.init(ontologies);
-				
-				
-				
-					$('#structures_section').show();					
+
+
+
+					$('#structures_section').show();
 					var sl = new $.StructureList($('#structures_section'),$.api);
 					sl.column_renderers.push(function(row,feature,struct){
 						var cell = $('<td/>').appendTo(row);
 						cell.html('')
-						
+
 					});
 					sl.on_end = function(structs){
 						if (structs.length == 0) {
 							$('#structures_section').html("<h2>No Structure information avaliable</h2>")
 							//$('#structures_section').remove();
-						} else {							
-							
+						} else {
+
 							$('input[type="search"]').css("width","200px")
 						}
 					}
 					sl.init(protein,structures);
-				
-			
 
-				
+
+
+
 					$("#features_overlay").remove();
 					$("#features_loading-img").remove();
 
@@ -637,7 +675,7 @@ input[type="search"] {
 							protein.name, tracks_with_category,
 							protein.sequence.length);
 					ftr.onSelect = function(feature_track) {
-						
+
 						if ((typeof feature_track["aln"] != "undefined")
 								&& (typeof feature_track["aln"]["aln_query"] != "undefined")) {
 							$("#aln_section").show()
@@ -645,14 +683,14 @@ input[type="search"] {
 							load_aln([{"seq":feature_track["aln"]["aln_query"]["seq"],"name":protein.name,"id":protein.id},
 							          {"seq":feature_track["aln"]["aln_query"]["seq"],"name":protein.name,"id":protein.id},
 											 {"seq":feature_track["aln"]["aln_hit"],"name":feature_track.name,"id":feature_track.id}
-							])	 
+							])
 
 
 							var hit_name = feature_track.name;
 							if ($.isDefAndNotNull(feature_track.source)) {
 								hit_name = feature_track.source;
 							}
-							
+
 							load_aln([ {
 								"seq" : feature_track["aln"]["aln_query"]["seq"],
 								"name" : protein.name,
@@ -670,7 +708,7 @@ input[type="search"] {
 						}	;
 
 					}
-					
+
 					ftr.onUnSelect = function(feature_track) {
 						$("#aln_section").hide();
 					}
@@ -700,7 +738,7 @@ input[type="search"] {
 
 					ftr.init();
 					fl.listeners.push(sp);
-				
+
 
 			} else {
 				$("#sequence_row").remove();
@@ -733,25 +771,25 @@ input[type="search"] {
 			/* var menuOpts = {};
 			menuOpts.msa = m;
 			var defMenu = new msa.menu.defaultmenu(menuOpts); */
-			//m.addView("menu", defMenu); 
+			//m.addView("menu", defMenu);
 			m.render();
 		}
 
 		var document_ready_fn = function() {
 			$("#aln_section").hide();
-			
+
 			//$("<a/>",{"href":"${baseURL}/genome"}).html("Genomes").appendTo( $("#base_breadcrumb") );
 			var li = $("<li/>").appendTo( $(".breadcrumb") );
 			$("<a/>",{"href":"${baseURL}/genome/" + protein.organism}).html("<i>" + protOrganism + "</i>").appendTo(li);
-			
+
 			li = $("<li/>").appendTo( $(".breadcrumb") );
 			$("<a/>",{"href":"${baseURL}/search/" + protein.organism +  "/product/" }).html("Search").click(function(evt){
 				//window.history.go(-1);
 				}).appendTo(li);
-			
+
 			li = $("<li/>").addClass("active").appendTo( $(".breadcrumb") );
 			$("<a/>",{"href":"#"}).html(protein.name).appendTo(li);
-			
+
 			load_protein_fn(protein);
 		};
 
@@ -835,7 +873,7 @@ input[type="search"] {
 							<thead>
 								<tr>
 									<th>Id</th>
-									<th width="50px">AA pos</th>									
+									<th width="50px">AA pos</th>
 									<th>Description</th>
 									<th>Additional info</th>
 								</tr>
@@ -859,7 +897,7 @@ input[type="search"] {
 							<thead>
 								<tr>
 									<th>Id</th>
-									<th width="50px">AA pos</th>										
+									<th width="50px">AA pos</th>
 									<th>Description</th>
 									<th>Reported</th>
 								</tr>
@@ -872,9 +910,9 @@ input[type="search"] {
 			</div>
 </section>
 
-		
+
 		<section class="col-lg-6 connectedSortable">
-			
+
 
 			<!-- /.box -->
 
@@ -907,7 +945,7 @@ input[type="search"] {
 			</div>
 
 		</section>
-		
+
 
 	</div>
 
@@ -1011,6 +1049,46 @@ input[type="search"] {
 				</div>
 				<div class="box-body no-padding">
 					<div id="pathwaystree"></div>
+				</div>
+
+
+			</div>
+		</section>
+
+	</div>
+
+	<div class="row">
+		<section id="tregulates-section" class="col-lg-12 connectedSortable">
+			<div class="box box-primary">
+				<div class="box-header">
+
+					<i class="fa  fa-gears">&#160;</i>
+					<h3 class="box-title"> TF Regulates</h3>
+
+				</div>
+				<div class="box-body no-padding">
+                    TF type: <b id="tf_type"> - </b><br />
+					<table id="tregulates-table2" class="table table-stripped"><thead>
+					<tr><td>Contig</td><td>Locus Tag</td><td>Description</td><td>Transcript</td><td>Is TF</td></tr>
+					</thead>
+					<tbody id="tregulates-table"></tbody></table>
+				</div>
+
+
+			</div>
+		</section>
+		<section id="tregulated-section" class="col-lg-12 connectedSortable">
+			<div class="box box-primary">
+				<div class="box-header">
+
+					<i class="fa  fa-gears">&#160;</i>
+					<h3 class="box-title">Regulated by</h3>
+				</div>
+				<div class="box-body no-padding">
+					<table id="tregulated-table2" class="table table-stripped"><thead>
+					<tr><td>Contig</td><td>Locus Tag</td><td>Description</td><td>Transcript</td><td>TF Type</td></tr>
+					</thead>
+						<tbody id="tregulated-table"></tbody></table>
 				</div>
 
 
