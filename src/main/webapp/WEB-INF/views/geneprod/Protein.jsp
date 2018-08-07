@@ -460,8 +460,9 @@ input[type="search"] {
                         $("<td/>").appendTo(tr).html(x.tf_type);
 
                         $("#tregulated-table").append(tr);
-                        $("#tregulated-table2").dataTable();
+
                     } );
+                    $("#tregulated-table2").dataTable();
 
                 } else {
                     $("#tregulated-section").remove()
