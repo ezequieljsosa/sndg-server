@@ -17,12 +17,15 @@
 <!-- default header name is X-CSRF-TOKEN -->
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 
-<title>Genome Pathways</title>
+<title>TP About</title>
 
 <style type="text/css">
 .box .box-header {
 	padding-bottom: 10px;
 }
+
+
+
 </style>
 
 <!-- DATA TABLES -->
@@ -33,15 +36,50 @@
 </head>
 <body>
 <script type="text/javascript">
-$("body").addClass("container")
-$(".content-header").remove()
+$("body").addClass("container");
+$(".content-header").remove();
+
+$.get("http://target.sbg.qb.fcen.uba.ar/targetwp/feed", function (data) {
+    const ul = $("#rss-feeds");
+    $(data.getElementsByTagName("item")).each((i, x) => {
+        const title = $(x.getElementsByTagName("title")).text();
+        const link = $(x.getElementsByTagName("link")).text();
+        let pubDate = $(x.getElementsByTagName("pubDate")).text();
+        pubDate = pubDate.split(" ").slice(0, 4).join(" ");
+        const description = $(x.getElementsByTagName("description")).text();
+
+        const li = $("<li />");
+        li.appendTo(ul);
+        li.append($("<span />").html(pubDate));
+        li.append($("<br />"));
+        li.append($("<a />", {href: link}).html("<b>" + title + "</b>").css("color","blue"));
+        li.append($("<br />"));
+        li.append($("<span />").html(description));
+
+
+    });
+
+});
+
 </script>
+
+<nav class="col-sm-2 d-none d-md-block bg-light sidebar">
+	<div class="sidebar-sticky">
+
+		<ul id="rss-feeds">
+
+
+		</ul>
+
+	</div>
+</nav>
 
 
 	<div class="row">
 
-		<h2>Citing Target-Pathogen</h2>
+
 		<div class="col-md-12">
+			<h2>Citing Target-Pathogen</h2>
 			
 			If you find Target-Pathogen useful, please consider citing the reference that describes this work:<br /><br />
 			<p>
@@ -49,24 +87,31 @@ $(".content-header").remove()
 			<i>Target-Pathogen: a structural bioinformatic approach to prioritize drug targets in pathogens</i></a>
 			: Ezequiel J. Sosa,  Germ&#225;n Burguener,  Esteban Lanzarotti,  Lucas Defelipe, Leandro Radusky,  Agust&#237;n M. Pardo,  Marcelo Marti,  Adri&#225;n G. Turjanski, Dar&#237;o Fern&#225;ndez Do Porto <br />
 			</p>
-			<b>Nucleic Acids Research</b> (2017)  Database Issue 
+			<b>Nucleic Acids Research</b> (2018)  Database Issue
 		
 			
 		</div>
 
 	</div>
 
-	
+
 
 	<div class="row">
 
-		<h2>Related Publications</h2>
+
 		<div class="col-md-12">
+			<h2>Related Publications</h2>
 			<ul>
 				<li>Leandro Radusky, Lucas A. Defelipe, Esteban Lanzarotti, Javier Luque, Xavier Barril, Marcelo A. Marti and Adri&#225;n G. Turjanski (2014) <b>TuberQ: a Mycobacterium tuberculosis protein druggability database</b></li>
 				<li> Lucas A. Defelipe, Dario Fern&#225;ndez Do Porto, Pablo Ivan Pereira Ramos, d, Marisa Fabiana Nicol&#225;s, 
 					Ezequiel Sosa, Leandro Radusky, Esteban Lanzarotti, Adri&#225;n G. Turjanski, 
 					Marcelo A. Marti, (2015) <b>A whole genome bioinformatic approach to determine potential latent phase specific targets in Mycobacterium tuberculosis</b></li>
+
+				<li>
+					Pablo Ivan Pereira Ramos, Darío Fernandez Do Porto, ... , Adrian G. Turjanski - Marisa F. Nicolas  <a href="https://www.nature.com/articles/s41598-018-28916-7"> <b> An integrative, multi-omics approach towards the prioritization of Klebsiella pneumoniae drug targets</b></a>
+
+				</li>
+
 
 <li style="display:None">Karp, P. D., Latendresse, M., Paley, S. M., Krummenacker, M., Ong, Q. D., Billington, R., . . . Caspi, R. (2015). Pathway Tools version 19.0 update: software for pathway/genome informatics and systems biology. Brief Bioinform. doi: 10.1093/bib/bbv079</li>
 <li style="display:None">Le Guilloux, V., Schmidtke, P., &#38; Tuffery, P. (2009). Fpocket: an open source platform for ligand pocket detection. BMC Bioinformatics, 10, 168. doi: 10.1186/1471-2105-10-168</li>

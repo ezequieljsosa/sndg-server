@@ -2,6 +2,7 @@ package ar.com.bia.services;
 
 import ar.com.bia.backend.dao.impl.UserRepositoryImpl;
 import ar.com.bia.entity.UserDoc;
+import com.mashape.unirest.http.Unirest;
 
 import javax.sql.DataSource;
 import java.math.BigInteger;
@@ -33,8 +34,10 @@ public class UserService {
     public boolean loginUser(String user, String pass) {
         try {
             UserDoc userdoc = this.findUser(user);
-//            String res = Unirest.get(wpData.get("wplogin_url").toString() +
-//                    "?plain=" + pass + "&pass=" + userdoc.getPassword()).asString().getBody();
+//            String url = wpData.get("wplogin_url").toString() +
+//                    "?plain=" + pass + "&pass=" + userdoc.getPassword();
+//            System.out.println(url);
+//            String res = Unirest.get(url).asString().getBody();
 //            return res.equals("OK");
 
 
@@ -71,6 +74,9 @@ public class UserService {
                     String sql = "SELECT u.ID,u.user_pass,u.user_email,m.meta_value as institutions " +
                             "FROM wp_users u,wp_usermeta m " +
                             "WHERE  m.meta_key = 'institutions' AND u.ID = m.user_id  AND u.user_login = ? ";
+
+
+
                     PreparedStatement ps = conn.prepareStatement(sql);
                     ps.setString(1, userName);
 

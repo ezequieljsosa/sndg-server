@@ -101,11 +101,7 @@
                                     <button class="btn btn-primary btn-lg btn-block"><spring:message
                                             code="login.login"/></button>
                                 </div>
-                                <div class="form-group">
-                                    <spring:message code="login.or"/>
-                                    <a id="btnRegister" class="btn btn-primary btn-lg btn-block"
-                                       href="${baseURL}/user/register"><spring:message code="register.register"/> </a>
-                                </div>
+
                                 <div class="form-group">
                                     <spring:message code="login.or"/>
                                     <input id="guest_btn" type="button" onclick="window.location = '${baseURL}/genome'"

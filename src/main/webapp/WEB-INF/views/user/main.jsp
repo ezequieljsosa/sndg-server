@@ -118,10 +118,13 @@
             : Ezequiel J. Sosa, Germ&#225;n Burguener, Esteban Lanzarotti, Lucas Defelipe, Leandro Radusky, Agust&#237;n
             M. Pardo, Marcelo Marti, Adri&#225;n G. Turjanski, Dar&#237;o Fern&#225;ndez Do Porto <br/>
         </p>
-        <b>Nucleic Acids Research</b> (2017) Database Issue
+        <b>Nucleic Acids Research</b> (2018) Database Issue
 
     </section>
-
+    <section class="col-lg-12">
+        <h3>TP collaborates with the following institutions:</h3>
+        <img width="100%" src="${baseURL}/public/html/collaborators.png" />
+    </section>
     <br/>
     <hr/>
     <br/>
@@ -134,7 +137,7 @@
                 const title = $(x.getElementsByTagName("title")).text();
                 const link = $(x.getElementsByTagName("link")).text();
                 let pubDate = $(x.getElementsByTagName("pubDate")).text();
-                pubDate = pubDate.split(" ").slice(0, 3).join(" ");
+                pubDate = pubDate.split(" ").slice(0, 4).join(" ");
                 const description = $(x.getElementsByTagName("description")).text();
 
                 const li = $("<li />");
