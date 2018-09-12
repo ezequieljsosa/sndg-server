@@ -67,11 +67,11 @@ public class StructureResourse {
 		}
 		
 		
-		List<GeneProductDoc> proteins = null;
-		if (proteinId.isEmpty()){
-			proteins = this.structureService.proteins(structure);
-		} else {
-			proteins = new ArrayList<GeneProductDoc>();
+		List<GeneProductDoc> proteins =  new ArrayList<GeneProductDoc>();;
+		if (!proteinId.isEmpty()){
+//			proteins = this.structureService.proteins(structure);
+//		} else {
+
 			GeneProductDoc findOne = this.gprepo.findOne(proteinId);
 			proteins.add( findOne );
 		}
