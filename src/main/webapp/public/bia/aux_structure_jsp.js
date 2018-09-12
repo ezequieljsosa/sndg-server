@@ -79,7 +79,7 @@ function load_structure_tables(structure, stemplate) {
 		} else {
 
 		}
-		if (stemplate.quaternary.isEmpty()) {
+		if (stemplate.quaternary && stemplate.quaternary.isEmpty()) {
 			$("#quaternaryTempleteDiv").remove()
 		} else {
 			$("#quaternaryTempleteDiv").html( "<b>" + stemplate.quaternary + "</b> - The modeled structure is a monomer, there are no protein complexes modelled in this server.");
