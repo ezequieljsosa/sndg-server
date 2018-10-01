@@ -251,7 +251,7 @@ tr.selected:hover {
 		}
 
 		var init = function(data) {
-            if (user == "demo") {
+            if (user != "celfi") {
                 $("#filter_variant-strain").remove()
                 $("#filter_variant-db").remove()
 

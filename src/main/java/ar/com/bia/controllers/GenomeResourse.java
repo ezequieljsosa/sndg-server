@@ -91,7 +91,7 @@ public class GenomeResourse {
 				SeqCollectionDoc.class);
 		
 		if (genome == null){
-			genome = this.mongoTemplate.findOne(new Query(Criteria.where("_id").is(new ObjectId(genomeName))),
+			genome = this.mongoTemplate.findOne(new Query(Criteria.where("_id").is(genomeName)),
 					SeqCollectionDoc.class);
 			genomeName = genome.getName();
 		}
