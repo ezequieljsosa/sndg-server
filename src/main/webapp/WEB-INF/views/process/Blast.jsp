@@ -138,7 +138,7 @@
 					"orderable" : false,
 					"data" : "hit",
 					"render" : function(data, type, row) {
-
+						/*
 						var id = data.split("_")[0];
 						var name = data.replace(id + "_", "");
 
@@ -153,6 +153,8 @@
 								+ name + "','" + id
 								+ '\',$(this).is(\':checked\'));" '
 								+ 'type="checkbox" />';
+						*/
+						return "";
 					}
 				},
 				{

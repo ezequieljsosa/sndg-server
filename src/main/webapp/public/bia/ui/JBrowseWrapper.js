@@ -2,7 +2,7 @@ $.JBrowseWrapper = function(iframe_id, base_url,tracks) {
 	
 	this.iframe = iframe_id;
 	this.base_url = $.isDefAndNotNull(base_url) ? base_url : "/xomeq/public/jbrowse/?data=data/";
-	this.tracks = $.isDefAndNotNull(tracks) ? tracks : ["DNA","Genes"];
+	this.tracks = $.isDefAndNotNull(tracks) ? tracks : ["DNA","Genes","Regulation"];
 
 	this.default_error = function(e) {
 		console.log(e)

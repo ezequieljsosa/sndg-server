@@ -432,7 +432,7 @@ tr.selected:hover {
 			if (currentOrganism != "") {
 
 				$("<a/>", {
-					"href" : "${baseURL}/genome"
+					"href" : "${baseURL}"
 				}).html("Genomes").appendTo($("#base_breadcrumb"));
 				var li = $("<li/>").appendTo($(".breadcrumb"));
 				$("<a/>", {

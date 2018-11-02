@@ -6,7 +6,7 @@ var next = "<b>Click Next to continue. </b>";
 var baseUrl = "";
 function hideTourNext(tour) {
 	setTimeout(function() {
-		$('#tourNextButton').hide()
+		$('#tourNextButton').hide();
 	}, 700);
 }
 function showTourNext(tour) {

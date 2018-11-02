@@ -6,8 +6,11 @@ import java.util.HashMap;
 public class TrancriptionalRegulationData {
 
     private String tf_type ;
+    private String string ;
     private ArrayList<HashMap<String,Object>> regulates;
     private ArrayList<HashMap<String,Object>> regulated_by;
+
+
 
 
     public String getTf_type() {
@@ -32,5 +35,13 @@ public class TrancriptionalRegulationData {
 
     public void setRegulated_by(ArrayList<HashMap<String, Object>> regulated_by) {
         this.regulated_by = regulated_by;
+    }
+
+    public String getString() {
+        return string;
+    }
+
+    public void setString(String string) {
+        this.string = string;
     }
 }

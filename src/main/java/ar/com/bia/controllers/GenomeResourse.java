@@ -138,7 +138,7 @@ public class GenomeResourse {
 		@SuppressWarnings("unchecked")
 		List<Object> collect =  this.mapperJson.convertValue( protein.getGeneList(),List.class );
 		GeneDoc gene = this.geneRepository.findOrganismGene("identifier", collect );
-
+		model.addAttribute("jbrowse_enabled", new File("/data/xomeq/jbrowse/data/" + genomeName).exists());
 		model.addAttribute("user", principal);
 		model.addAttribute("genome_id", genomeName);
 		model.addAttribute("protein", mapperJson.writeValueAsString(protein));

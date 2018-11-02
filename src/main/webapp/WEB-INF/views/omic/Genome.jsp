@@ -306,7 +306,7 @@
                 });
 
             $("<a/>", {
-                "href": "${baseURL}/genome"
+                "href": "${baseURL}/"
             }).html('${genomes_breadcrum}').appendTo($("#base_breadcrumb"));
             var li = $("<li/>").addClass("active").appendTo($(".breadcrumb"));
             $("<a/>", {

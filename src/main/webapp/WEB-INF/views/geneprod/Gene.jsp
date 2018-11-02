@@ -51,6 +51,7 @@ var product_obj = ${protein};
 </script>
 
 	<script type="text/javascript">
+        var jbrowse_enabled = ${jbrowse_enabled};
 		function setJbrowseURL(genome_name, gene) {
 			var loc = new $.Localization(gene.location.reference, gene.location.start, gene.location.end);
 			var ext_loc = loc.expand();
@@ -152,8 +153,11 @@ var product_obj = ${protein};
 			load_gene(product_obj.organism,gene_obj);
 
 
-
-			setJbrowseURL(product_obj.organism, gene_obj)
+            if (jbrowse_enabled) {
+                setJbrowseURL(product_obj.organism, gene_obj)
+            } else {
+                $("#jbrowse_row").remove();
+			}
 			load_product(gene_obj, product_obj)
 		});
 	</script>
