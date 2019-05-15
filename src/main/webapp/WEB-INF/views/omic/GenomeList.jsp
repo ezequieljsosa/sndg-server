@@ -46,17 +46,24 @@
 
 
 	<script type="text/javascript">
+		const genomes = ${genomes};
+
+
+
+
+
 		function init() {
 			var options = {
 					 "lengthMenu": [[ 25, 50 ], [ 25, 50, "All"]],
 			
-				"ajax" : $.api.url_genomes(),
-				"processing" : true,
-				"serverSide" : true,
-				"searching":false,
-				"language" : {
-					"search" : "Filter: "
-				},
+				// "ajax" : $.api.url_genomes(),
+				"data": genomes,
+				// "processing" : true,
+				// "serverSide" : true,
+				"searching":true,
+				// "language" : {
+				// 	"search" : "Filter: "
+				// },
 				initComplete : function(e) {
 					$(".loading-img").remove();
 					$(".overlay").remove();
@@ -65,7 +72,7 @@
 					
 					
 				},
-				searchCols : [ null, null, null, null, null, null ],
+				// searchCols : [ null, null, null, null, null, null ],
 
 				"columns" : [
 						{

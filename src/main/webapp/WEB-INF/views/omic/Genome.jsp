@@ -253,7 +253,7 @@
             }
 
 
-            if (genome.kegg) {
+            if (genome.kegg && (genome.kegg.length > 1)) {
                 $("#kegg_button").click(function () {
                     window.location = $.api.url + "/kegg/" + genome_id;
                 })

@@ -24,22 +24,25 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 	private List<String> keywords;
 	private Map<String,Object> search;
 	private List<ReactionDoc> reactions;
-	
-	
+
+	private HashMap<String,String> reactome;
+	private ChEMBLTarget chembl;
+
+
 
 	private List<Map<String, String>> properties;
-	
+
 	private Double score = 0.0;
 	private List<String> alias;
-	
-	
+
+
 	public GeneProductDoc() {
 		super();
 		this.search = new HashMap<String,Object>();
 	}
 
-	
-	
+
+
 	public Map<String, Object> getSearch() {
 		return search;
 	}
@@ -116,9 +119,9 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 		this.dbxrefs = dbxrefs;
 	}
 
-	
 
-	
+
+
 
 	public Location getLocus() {
 		return this.location;
@@ -166,8 +169,8 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 		return variant;
 	}
 
-	
-	
+
+
 	public String getGene() {
 		return gene;
 	}
@@ -249,9 +252,9 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 	public List<Object> getGeneList() {
 		String[] genes = this.getGene().split(",");
 		for (int i = 0; i < genes.length; i++) {
-			genes[i] = genes[i].replace("\"","").replace("\'","").replace("[","").replace("]","").trim();			
+			genes[i] = genes[i].replace("\"","").replace("\'","").replace("[","").replace("]","").trim();
 		}
-		
+
 		return Arrays.asList(genes).stream().collect(Collectors.toList());
 	}
 
@@ -285,21 +288,30 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 		spd.setSearch(this.search);
 		spd.updateScore(scores);
 		this.setScore(spd.getScore());
-		
+
 	}
 
 
 
 	@Override
-	public String gene() {		
+	public String gene() {
 		return this.getGene();
 	}
 
 
+    public HashMap<String, String> getReactome() {
+        return reactome;
+    }
 
-	
+    public void setReactome(HashMap<String, String> reactome) {
+        this.reactome = reactome;
+    }
 
+    public ChEMBLTarget getChembl() {
+        return chembl;
+    }
 
-
-
+    public void setChembl(ChEMBLTarget chembl) {
+        this.chembl = chembl;
+    }
 }

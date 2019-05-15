@@ -78,14 +78,24 @@ public class GenomeResourse {
 	private UserService userService;
 
 	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-	public String genomes(Model model, Principal principal) {
+	public String genomes(Model model, Principal principal) throws JsonProcessingException {
+		UserDoc user = this.userService.findUser(principal.getName());
+		List<String> auths2 = new ArrayList<String>();
+		auths2.add(UserDoc.publicUserId.toString());
+		auths2.add(user.getAuthId());
+		Query query = new Query(Criteria.where("auth").in(auths2));
 		model.addAttribute("user", principal);
+		model.addAttribute("genomes", mapperJson.writeValueAsString(this.mongoTemplate.find(query,SeqCollectionDoc.class)));
 		return "omic/GenomeList";
 	}
 
 	@RequestMapping(value = "/{genome_name:.+}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	public String genome(@PathVariable("genome_name") String genomeName, Model model, Principal principal)
 			throws JsonProcessingException, ForbiddenException {
+
+		UserDoc user = this.userService.findUser(principal.getName());
+
+
 
 		SeqCollectionDoc genome = this.mongoTemplate.findOne(new Query(Criteria.where("name").is(genomeName)),
 				SeqCollectionDoc.class);
@@ -96,7 +106,7 @@ public class GenomeResourse {
 			genomeName = genome.getName();
 		}
 
-		UserDoc user = this.userService.findUser(principal.getName());
+
 	/*
 		if (!genome.getAuth().equals(UserDoc.publicUserId)) {
 			if (!genome.getAuth().equals(user.getAuthId())) {
