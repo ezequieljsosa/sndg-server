@@ -25,7 +25,7 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 	private Map<String,Object> search;
 	private List<ReactionDoc> reactions;
 
-	private HashMap<String,String> reactome;
+	private List<HashMap<String,String>> reactome;
 	private ChEMBLTarget chembl;
 
 
@@ -298,16 +298,15 @@ public class GeneProductDoc extends Sequence implements SeqFeature, Scoreable {
 		return this.getGene();
 	}
 
+	public List<HashMap<String, String>> getReactome() {
+		return reactome;
+	}
 
-    public HashMap<String, String> getReactome() {
-        return reactome;
-    }
+	public void setReactome(List<HashMap<String, String>> reactome) {
+		this.reactome = reactome;
+	}
 
-    public void setReactome(HashMap<String, String> reactome) {
-        this.reactome = reactome;
-    }
-
-    public ChEMBLTarget getChembl() {
+	public ChEMBLTarget getChembl() {
         return chembl;
     }
 

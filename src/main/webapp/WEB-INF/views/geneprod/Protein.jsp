@@ -834,7 +834,7 @@
             $("<a/>", {"href": "#"}).html(protein.name).appendTo(li);
 
             load_protein_fn(protein);
-            if (protein.reactome) {
+            if (protein.reactome && (protein.reactome.length > 0)) {
                 $("body").append($("<script/>", {src: "https://reactome.org/DiagramJs/diagram/diagram.nocache.js"}));
             } else {
                 $("#patho_host_row").hide();
@@ -1161,19 +1161,19 @@
                             });
                             const tr = $("<reactome_tr/>");
                             $("<td/>").appendTo($("#reactome_tr")).append(
-                                $("<a/>",{href:protein.reactome.url}).html(protein.reactome.event)
+                                $("<a/>",{href:protein.reactome[0].url}).html(protein.reactome[0].event)
                             );
-                            $("<td/>").appendTo($("#reactome_tr")).html("Reactome Evidence: " + protein.reactome.evidence  );
-                            $("<td/>").appendTo($("#reactome_tr")).html("Homology with: " + protein.reactome.uniprot);
+                            $("<td/>").appendTo($("#reactome_tr")).html("Reactome Evidence: " + protein.reactome[0].evidence  );
+                            $("<td/>").appendTo($("#reactome_tr")).html("Homology with: " + protein.reactome[0].uniprot);
 
-                            diagram.loadDiagram(protein.reactome.reactome_id);
+                            diagram.loadDiagram(protein.reactome[0].reactome_id);
 
                             //Adding different listeners
 
                             diagram.onDiagramLoaded(function (loaded) {
                                 console.info("Loaded ", loaded);
                                 diagram.flagItems("FYN");
-                                if (loaded == protein.reactome.reactome_id) diagram.selectItem(protein.reactome.reactome_id);
+                                if (loaded == protein.reactome[0].reactome_id) diagram.selectItem(protein.reactome[0].reactome_id);
                             });
 
                         }

@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class ChEMBLTarget {
 
-    private String chemblid;
+    private String target;
     private ArrayList<ChEMBLAssay> assays;
 
-    public String getChemblid() {
-        return chemblid;
+    public String getTarget() {
+        return target;
     }
 
-    public void setChemblid(String chemblid) {
-        this.chemblid = chemblid;
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     public ArrayList<ChEMBLAssay> getAssays() {
