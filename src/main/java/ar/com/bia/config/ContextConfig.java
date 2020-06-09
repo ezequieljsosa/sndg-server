@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.context.ApplicationContext;
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -23,8 +24,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @PropertySource("classpath:xomeq.properties")
 public class ContextConfig {
 
+    //@Autowired
+    //private UserRepositoryImpl userRepository;
+
     @Autowired
-    private UserRepositoryImpl userRepository;
+    private ApplicationContext context;
 
     @Value("${mongo-port}")
     private Integer port;
@@ -65,11 +69,10 @@ public class ContextConfig {
         return mapper;
     }
 
-
-
-
     @Bean
     public UserService userService() {
+        UserRepositoryImpl userRepository = null;
+        userRepository = context.getBean(UserRepositoryImpl.class) ;
         return new UserService(userRepository);
     }
 
