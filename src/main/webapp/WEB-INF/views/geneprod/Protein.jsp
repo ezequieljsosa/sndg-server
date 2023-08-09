@@ -168,6 +168,7 @@
                 });
 
                 $("#tr_structure").html("Structures: " + structs.join(" - "));
+
             }
 
         }
@@ -536,6 +537,8 @@
             load_experimental_structures(protein);
             load_variants(protein.features, protein.sequence)
 
+            $("#tr_ligands").append('<td><b>Ligands</b></td><td><a href="${baseURL}/compound/' + protein.organism  + '/' + eval(protein.gene)[0]  + '">' +
+                protein.search.lig_count + '  (Click here to display the ligand list)</a></td>') ;
 
             if (protein.publications) {
                 $.each(protein.publications, function (key, value) {
@@ -899,6 +902,8 @@
                                 <td id="prot_desc"></td>
                             </tr>
                             <tr id="tr_structure">
+                            </tr>
+                            <tr id="tr_ligands">
                             </tr>
                         </table>
                         <!-- /.table -->

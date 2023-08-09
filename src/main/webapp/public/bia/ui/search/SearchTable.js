@@ -169,12 +169,15 @@ $.SearchTable = function(divElement, url, api) {
 					"render" : function(data, type, row) {						
 						return  data.len.toString() + " " + data.unit ;
 					}
-				} ],
+				} ,
+
+		],
 		"order" : [ [ 3, 'asc' ] ]
 	// Ojo 1 es Organims! si se cambia el orden de la columna, hay que cambiar
 	// esto
 	};
 }
+
 
 $.SearchTable.prototype = {
 	init : function(options, on_table_initialized) {

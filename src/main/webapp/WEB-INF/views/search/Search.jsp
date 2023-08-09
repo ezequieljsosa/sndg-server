@@ -433,7 +433,15 @@ tr.selected:hover {
 			var ontologyFilter = new $.OntologyFilter($("#search_select2"),
 					$("#organism_select"), $.filterTable);
 			$.search_table.addFilter(ontologyFilter);
-
+			/*
+			$.search_table._options.columns.push({
+				"name" : "search",
+					"title" : "Ligands",
+					"data" : "search",
+					"render" : function(data, type, row) {
+				return  data.search.lig_count;
+			}
+			});*/
 			if (currentOrganism != "") {
 
 				$("<a/>", {
@@ -810,6 +818,7 @@ tr.selected:hover {
 								<th>7</th>
 								<th>8</th>
 								<th>9</th>
+								<th>10</th>
 
 								<!-- <th>11</th> -->
 							</tr>

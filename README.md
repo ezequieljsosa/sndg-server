@@ -67,4 +67,7 @@ LimitRequestLine 1000000
 LimitRequestFieldSize 1000000
 
 mvn clean package -DskipTests -Dbasepath=patho -Dfinalname=patho -Ddefault.lang=en -Dmongo.database=tdr -Dmysql.pass=xxx
+
+docker run -it --rm -v $PWD/db:/data/db -p 27017:27017 mongo:4.4
+
   
